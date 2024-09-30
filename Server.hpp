@@ -10,11 +10,14 @@
 # include <iostream>
 # include <netdb.h>
 # include <string>
+# include <sys/epoll.h>
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <unistd.h>
 
-class Request;
+# define MAX_EVENTS 100
+
+class		Request;
 
 class Server
 {
@@ -25,32 +28,36 @@ class Server
 
 	Server &operator=(Server const &src);
 
-	void receive_signal(Server serv, Request req);
+	void receive_signal();
+  void handle_client(int client_fd);
 
-    int get_server_fd();
-    int get_listen_fd();
-    int get_new_socket();
-    struct sockaddr_in get_address();
-    int get_addrlen();
-    int get_opt();
+	int get_server_fd();
+	int get_listen_fd();
+	int get_client();
+	struct sockaddr_in get_address();
+	int get_addrlen();
+	int get_opt();
+  int get_epoll_fd();
 
-    void set_server_fd(int fd);
-    void set_listen_fd(int fd);
-    void set_new_socket(int fd);
-    void set_address(struct sockaddr_in addr);
-    void set_addrlen(int len);
-    void set_opt(int opt);
+	void set_server_fd(int fd);
+	void set_listen_fd(int fd);
+	void set_client(int fd);
+	void set_address(struct sockaddr_in addr);
+	void set_addrlen(int len);
+	void set_opt(int opt);
+  void set_epoll_fd(int fd);
 
   private:
 	int server_fd;
 	int listen_fd;
+	int epoll_fd;
 	struct sockaddr_in address;
-	int new_socket;
+	int client;
 	int addrlen;
 	int opt;
 };
 
 std::string read_fd_to_end(int fd);
-Response treat_request(Request req);
+Response	treat_request(Request req);
 
 #endif

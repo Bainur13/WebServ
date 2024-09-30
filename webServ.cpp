@@ -3,8 +3,7 @@
 int main()
 {
     class Server serv;
-    class Request req;
 
-    serv.receive_signal(serv, req);
+    serv.receive_signal();
     return 0;
 }
