@@ -2,6 +2,14 @@
 
 Server::Server()
 {
+	port = 8080;
+	server_name = "";
+	root = "./";
+	error_page = "./index/404.html";
+	size_limit = -1;
+}
+void Server::Init()
+{
 	struct epoll_event	event;
 
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -18,13 +26,13 @@ Server::Server()
 		exit(EXIT_FAILURE);
 	}
 	address.sin_family = AF_INET;
-	address.sin_port = htons(8080);
+	address.sin_port = htons(port);
 	address.sin_addr.s_addr = INADDR_ANY;
 	if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0)
 	{
+		std::cout << "Bind failed" << std::endl;
 		close(server_fd);
 		std::cerr << strerror(errno) << std::endl;
-		;
 		exit(EXIT_FAILURE);
 	}
 	addrlen = sizeof(address);
@@ -84,14 +92,36 @@ void Server::handle_client(int client_fd)
 
 	std::string request;
 	request = read_fd_to_end(client_fd);
+	if (request.empty())
+	{
+		close(client_fd);
+		return ;
+	}
 	std::cout << "Request received:" << std::endl;
 	std::cout << request << std::endl;
 	req.parse_request(request);
-	res = treat_request(req);
+	if (req.get_error() != "")
+	{
+		std::cerr << req.get_error() << std::endl;
+		res.error_400(req.get_error());
+	}
+	else
+		res = treat_request(req);
 	std::cout << "Response sent:" << std::endl;
 	std::cout << res.final_response() << std::endl;
-	send(client_fd, res.final_response().c_str(), res.final_response().size(),
-		0);
+	if (send(client_fd, res.final_response().c_str(), res.final_response().size(),
+		0) == -1)
+	{
+		std::cerr << "Error of send" << std::endl;
+		close(client_fd);
+		return ;
+	}
+	if (epoll_ctl(epoll_fd, EPOLL_CTL_DEL, client_fd, NULL) == -1)
+	{
+		std::cerr << strerror(errno) << std::endl;
+		close(client_fd);
+		return ;
+	}
 	close(client_fd);
 }
 
@@ -132,9 +162,7 @@ void Server::receive_signal()
 				}
 			}
 			else
-			{
 				handle_client(events[i].data.fd);
-			}
 		}
 	}
 }
@@ -174,6 +202,31 @@ int Server::get_epoll_fd()
 	return (epoll_fd);
 }
 
+std::string Server::get_server_name()
+{
+	return (server_name);
+}
+
+std::string Server::get_root()
+{
+	return (root);
+}
+
+std::string Server::get_error_page()
+{
+	return (error_page);
+}
+
+int Server::get_size_limit()
+{
+	return (size_limit);
+}
+
+int Server::get_port()
+{
+	return (port);
+}
+
 void Server::set_server_fd(int fd)
 {
 	server_fd = fd;
@@ -207,4 +260,41 @@ void Server::set_opt(int optw)
 void Server::set_epoll_fd(int fd)
 {
 	epoll_fd = fd;
+}
+
+void Server::set_server_name(std::string name)
+{
+	int i;
+
+	i = 0;
+	while (name[i] == ' ')
+		++i;
+	if (name[i] == ';')
+		server_name = "";
+	server_name = name;
+}
+
+void Server::set_root(std::string rootw)
+{
+	root = rootw;
+}
+
+void Server::set_error_page(std::string error_pagew)
+{
+	error_page = error_pagew;
+}
+
+void Server::set_size_limit(int size_limitw)
+{
+	size_limit = size_limitw;
+}
+
+void Server::set_port(int portw)
+{
+	if (portw < 0 || portw > 65535)
+	{
+		std::cerr << "Invalid port" << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	port = portw;
 }

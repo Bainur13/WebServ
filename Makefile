@@ -4,6 +4,7 @@ SRC =				webServ.cpp \
 					reader.cpp \
 					Response.cpp \
 					treat_request.cpp \
+					conf_file/conf_file.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 

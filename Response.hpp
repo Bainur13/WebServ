@@ -8,6 +8,9 @@
 # include <iostream>
 # include <map>
 # include <netdb.h>
+# include <sstream>
+# include <stdio.h>
+# include <stdlib.h>
 # include <string>
 # include <sys/socket.h>
 # include <sys/types.h>
@@ -21,15 +24,17 @@ class Response
 	std::string _body;
 
   public:
-    Response();
-    Response(Response const &src);
-    ~Response();
+	Response();
+	Response(Response const &src);
+	~Response();
 
-    Response &operator=(Response const &src);
-    std::string final_response();
-    void set_line(std::string key, std::string value);
-    void set_header(std::string key, std::string value);
-    void set_body(std::string body);
+	Response &operator=(Response const &src);
+	std::string final_response();
+	std::string error_400(std::string error);
+	void set_line(std::string key, std::string value);
+	void set_header(std::string key, std::string value);
+	void set_body(std::string body);
+	std::string get_body_size();
 };
 
 #endif

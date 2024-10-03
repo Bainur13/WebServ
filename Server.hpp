@@ -28,8 +28,9 @@ class Server
 
 	Server &operator=(Server const &src);
 
+	void Init();
 	void receive_signal();
-  void handle_client(int client_fd);
+	void handle_client(int client_fd);
 
 	int get_server_fd();
 	int get_listen_fd();
@@ -37,7 +38,12 @@ class Server
 	struct sockaddr_in get_address();
 	int get_addrlen();
 	int get_opt();
-  int get_epoll_fd();
+	int get_epoll_fd();
+	std::string get_server_name();
+	std::string get_root();
+	std::string get_error_page();
+	int get_size_limit();
+	int get_port();
 
 	void set_server_fd(int fd);
 	void set_listen_fd(int fd);
@@ -45,16 +51,29 @@ class Server
 	void set_address(struct sockaddr_in addr);
 	void set_addrlen(int len);
 	void set_opt(int opt);
-  void set_epoll_fd(int fd);
+	void set_epoll_fd(int fd);
+	void set_server_name(std::string name);
+	void set_root(std::string root);
+	void set_error_page(std::string error_page);
+	void set_size_limit(int size_limit);
+	void set_port(int port);
 
   private:
+	int port;
+	std::string server_name;
+
+	std::string root;
+	std::string error_page;
+	int size_limit;
+
 	int server_fd;
 	int listen_fd;
-	int epoll_fd;
 	struct sockaddr_in address;
-	int client;
 	int addrlen;
 	int opt;
+
+	int epoll_fd;
+	int client;
 };
 
 std::string read_fd_to_end(int fd);

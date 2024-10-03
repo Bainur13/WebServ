@@ -17,11 +17,12 @@
 class Request
 {
   private:
-	std::map<std::string, std::string> request_line;
-	std::map<std::string, std::string> request_header;
-	std::string request_body;
+	std::map<std::string, std::string> _request_line;
+	std::map<std::string, std::string> _request_header;
+	std::string _request_body;
+	std::string _error;
 
-	void parse_request_line(std::string line);
+	bool parse_request_line(std::string line);
 	void parse_header(std::string header);
 
   public:
@@ -34,6 +35,7 @@ class Request
 	std::string get_request_line(std::string key);
 	std::string get_request_header(std::string key);
 	std::string get_request_body();
+	std::string get_error();
 	void print_request();
 };
 

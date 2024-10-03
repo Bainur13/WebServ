@@ -42,6 +42,8 @@ Response	treat_request(Request req)
 			res.set_header("Content-Type", "text/html");
 		}
 		res.set_body(read_fd_to_end(file_fd));
+		res.set_header("Content-Length", res.get_body_size());
+		close(file_fd);
 	}
 	return (res);
 }

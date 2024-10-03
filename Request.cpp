@@ -2,6 +2,12 @@
 
 Request::Request()
 {
+    _request_line["Method"] = "";
+    _request_line["Path"] = "";
+    _request_line["Version"] = "";
+    _request_body = "";
+
+    _error = "";
 }
 
 Request::Request(Request const &src)
@@ -17,42 +23,61 @@ Request &Request::operator=(Request const &src)
 {
 	if (this != &src)
 	{
-		this->request_line = src.request_line;
-		this->request_header = src.request_header;
-		this->request_body = src.request_body;
+		this->_request_line = src._request_line;
+		this->_request_header = src._request_header;
+		this->_request_body = src._request_body;
 	}
 	return (*this);
 }
 
-void Request::parse_request_line(std::string line)
+bool Request::parse_request_line(std::string line)
 {
     if (line == "")
-        return;
-    if (line.find(" ") == std::string::npos)
     {
-        request_line["Method"] = "ERROR";
-        return;
+        _error = "Error 400 : No Request Line";
+        return false;
     }
-	request_line["Method"] = line.substr(0, line.find(" "));
     if (line.find(" ") == std::string::npos)
     {
-        request_line["Path"] = "ERROR";
-        return;
+        _error = "Error 400 : Incomplete Request Line";
+        return false;
     }
-	line = line.substr(line.find(" ") + 1);
-	request_line["Path"] = line.substr(0, line.find(" "));
+	_request_line["Method"] = line.substr(0, line.find(" "));
     if (line.find(" ") == std::string::npos)
     {
-        request_line["Version"] = "ERROR";
-        return;
+        _error = "Error 400 : Incomplete Request Line";
+        return false;
     }
 	line = line.substr(line.find(" ") + 1);
-	request_line["Version"] = line;
+	_request_line["Path"] = line.substr(0, line.find(" "));
+    if (line.find(" ") == std::string::npos)
+    {
+        _error = "Error 400 : Incomplete Request Line";
+        return false;
+    }
+	line = line.substr(line.find(" ") + 1);
+	_request_line["Version"] = line;
+    if (_request_line["Method"] != "GET" && _request_line["Method"] != "POST")
+    {
+        _error =  "Error 400 : Method is incorrect";
+        return false;
+    }
+    if (_request_line["Path"] == "")
+    {
+        _error = "Error 400 : No Path";
+        return false;
+    }
+    if (_request_line["Version"] != "HTTP/1.1")
+    {
+        _error = "Error 400 : Version is incorrect";
+        return false;
+    }
+    return true;
 }
 
 void Request::parse_header(std::string header)
 {
-    request_header[header.substr(0, header.find(":"))] = header.substr(header.find(":") + 2);
+    _request_header[header.substr(0, header.find(":"))] = header.substr(header.find(":") + 2);
 }
 
 void Request::parse_request(std::string request)
@@ -65,7 +90,8 @@ void Request::parse_request(std::string request)
 
 	pos = request.find("\r\n");
 	line = request.substr(0, pos);
-    parse_request_line(line);
+    if (parse_request_line(line) == 0)
+        return;
     request = request.substr(pos + 2);
     while ((pos = request.find("\r\n")) != std::string::npos)
     {
@@ -73,33 +99,49 @@ void Request::parse_request(std::string request)
         request = request.substr(pos + 2);
         if (header == "")
             break;
-        request_header[header.substr(0, header.find(":"))] = header.substr(header.find(":") + 2);
+        _request_header[header.substr(0, header.find(":"))] = header.substr(header.find(":") + 2);
     }
-    request_body = request;
+    _request_body = request;
+    if (_request_body != "")
+           std::cout << "Body: " << _request_body << std::endl;
+    if (_request_line["Method"] == "GET" && _request_body != "")
+        _error = "Error 400 : GET request with body";
+    if (_request_line["Method"] == "POST" && _request_header.find("Content-Length") == _request_header.end())
+        _error = "Error 400 : POST request without Content-Length";
+    if (_request_line["Method"] == "POST" && (int)_request_body.size() != atoi(_request_header["Content-Length"].c_str()))
+        _error = "Error 400 : POST request with wrong Content-Length";
+    if (_request_line["Method"] == "POST" && _request_body == "")
+        _error = "Error 400 : POST request without body";
+    
 }
 
 std::string Request::get_request_line(std::string key)
 {
-    return request_line[key];
+    return _request_line[key];
 }
 
 std::string Request::get_request_header(std::string key)
 {
-    return request_header[key];
+    return _request_header[key];
 }
 
 std::string Request::get_request_body()
 {
-    return request_body;
+    return _request_body;
 }
 
 void Request::print_request()
 {
     std::map<std::string, std::string>::iterator it;
 
-    for (it = request_line.begin(); it != request_line.end(); it++)
+    for (it = _request_line.begin(); it != _request_line.end(); it++)
         std::cout << it->first << ": " << it->second << std::endl;
-    for (it = request_header.begin(); it != request_header.end(); it++)
+    for (it = _request_header.begin(); it != _request_header.end(); it++)
         std::cout << it->first << ": " << it->second << std::endl;
-    std::cout << request_body << std::endl;
+    std::cout << _request_body << std::endl;
+}
+
+std::string Request::get_error()
+{
+    return _error;
 }
