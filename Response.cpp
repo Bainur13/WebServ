@@ -21,13 +21,33 @@ Response &Response::operator=(Response const &src)
 	return (*this);
 }
 
-std::string Response::error_400(std::string error)
+std::string Response::error_basic(std::string error, short error_code, Server serv)
 {
+	std::ostringstream oss;
+	std::string error_page;
+
+	oss << error_code;
+	error_page = serv.get_error_page(error_code);
 	std::string response;
-	response += "HTTP/1.1 400 Bad Request\r\n";
-	response += "Content-Type: text/html\r\n";
-	response += "\r\n";
-	response += "<html><body><h1>" + error + "</h1></body></html>";
+	_line["Version"] = "HTTP/1.1";
+	_line["Status"] = oss.str();
+	_line["Reason"] = error;
+	_header["Content-Type"] = "text/html";
+	if (error_page != "NULL")
+	{
+		int fd = open(error_page.c_str(), O_RDONLY);
+		if (fd == -1)
+		{
+			error_basic("Error 500 : Internal Server Error", 500, serv);
+			_header["Content-Length"] = get_body_size();
+			return (response);
+		}
+		_body += read_fd_to_end(fd);
+		close(fd);
+	}
+	else
+		_body += "<html><body><h1>" + error + "</h1></body></html>";
+	_header["Content-Length"] = get_body_size();
 	return (response);
 }
 

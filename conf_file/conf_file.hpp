@@ -20,18 +20,27 @@ class Config
 {
   private:
 	std::vector<Server> _servers;
+	std::ifstream _file;
 
   public:
 	Config();
+	Config(std::string path);
 	Config(Config const &src);
 	~Config();
 
 	Config &operator=(Config const &src);
 
-	bool parse_config(std::string path);
+	bool parse_config();
 	bool setup_server(Server &serv, std::ifstream &file);
 	bool check_server(Server serv);
+	void error_put_config(std::string error);
+	std::string parse_ascii_setter(std::string line, std::string to_search);
+	int	parse_int_setter(std::string line, std::string to_search);
+	void parse_error_page(std::string line, std::string to_search, Server &serv);
 	std::vector<Server> get_servers();
+	void	is_valid_line(std::string line);
+	bool unique_symbol(std::string line, char c);
+	std::ifstream &get_file();
 };
 
 #endif

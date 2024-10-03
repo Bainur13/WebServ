@@ -41,7 +41,7 @@ class Server
 	int get_epoll_fd();
 	std::string get_server_name();
 	std::string get_root();
-	std::string get_error_page();
+	std::string get_error_page(short code);
 	int get_size_limit();
 	int get_port();
 
@@ -54,7 +54,7 @@ class Server
 	void set_epoll_fd(int fd);
 	void set_server_name(std::string name);
 	void set_root(std::string root);
-	void set_error_page(std::string error_page);
+	void set_error_page(short code, std::string error_pagew);
 	void set_size_limit(int size_limit);
 	void set_port(int port);
 
@@ -63,7 +63,7 @@ class Server
 	std::string server_name;
 
 	std::string root;
-	std::string error_page;
+	std::map<short, std::string> error_page;
 	int size_limit;
 
 	int server_fd;

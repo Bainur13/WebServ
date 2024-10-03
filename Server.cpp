@@ -5,7 +5,7 @@ Server::Server()
 	port = 8080;
 	server_name = "";
 	root = "./";
-	error_page = "./index/404.html";
+	error_page[404] = "./index/404.html";
 	size_limit = -1;
 }
 void Server::Init()
@@ -71,13 +71,18 @@ Server::~Server()
 {
 	close(server_fd);
 	close(listen_fd);
-    close(epoll_fd);
+	close(epoll_fd);
 }
 
 Server &Server::operator=(Server const &src)
 {
 	server_fd = src.server_fd;
 	listen_fd = src.listen_fd;
+	port = src.port;
+	server_name = src.server_name;
+	root = src.root;
+	error_page = src.error_page;
+	size_limit = src.size_limit;
 	address = src.address;
 	client = src.client;
 	addrlen = src.addrlen;
@@ -103,14 +108,14 @@ void Server::handle_client(int client_fd)
 	if (req.get_error() != "")
 	{
 		std::cerr << req.get_error() << std::endl;
-		res.error_400(req.get_error());
+		res.error_basic(req.get_error(), 400, *this);
 	}
 	else
 		res = treat_request(req);
 	std::cout << "Response sent:" << std::endl;
 	std::cout << res.final_response() << std::endl;
-	if (send(client_fd, res.final_response().c_str(), res.final_response().size(),
-		0) == -1)
+	if (send(client_fd, res.final_response().c_str(),
+			res.final_response().size(), 0) == -1)
 	{
 		std::cerr << "Error of send" << std::endl;
 		close(client_fd);
@@ -128,10 +133,12 @@ void Server::handle_client(int client_fd)
 void Server::receive_signal()
 {
 	struct epoll_event	events[MAX_EVENTS];
+	int					num_fds;
+				struct epoll_event event;
 
 	while (1)
 	{
-		int num_fds = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
+		num_fds = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
 		if (num_fds == -1)
 		{
 			std::cerr << strerror(errno) << std::endl;
@@ -143,15 +150,13 @@ void Server::receive_signal()
 		{
 			if (events[i].data.fd == server_fd)
 			{
-				client = accept(server_fd,
-						(struct sockaddr *)&address,
+				client = accept(server_fd, (struct sockaddr *)&address,
 						(socklen_t *)&addrlen);
 				if (client < 0)
 				{
 					std::cerr << strerror(errno) << std::endl;
 					continue ;
 				}
-                struct epoll_event event;
 				event.events = EPOLLIN;
 				event.data.fd = client;
 				if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, client, &event) == -1)
@@ -212,9 +217,13 @@ std::string Server::get_root()
 	return (root);
 }
 
-std::string Server::get_error_page()
+std::string Server::get_error_page(short code)
 {
-	return (error_page);
+	if (error_page.find(code) == error_page.end())
+	{
+		error_page[code] = "NULL";
+	}
+	return (error_page[code]);
 }
 
 int Server::get_size_limit()
@@ -264,7 +273,7 @@ void Server::set_epoll_fd(int fd)
 
 void Server::set_server_name(std::string name)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (name[i] == ' ')
@@ -279,9 +288,9 @@ void Server::set_root(std::string rootw)
 	root = rootw;
 }
 
-void Server::set_error_page(std::string error_pagew)
+void Server::set_error_page(short code, std::string error_pagew)
 {
-	error_page = error_pagew;
+	error_page[code] = error_pagew;
 }
 
 void Server::set_size_limit(int size_limitw)

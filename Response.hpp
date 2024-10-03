@@ -1,10 +1,12 @@
 #ifndef RESPONSE_HPP
 # define RESPONSE_HPP
 
+# include "Server.hpp"
 # include <arpa/inet.h>
 # include <cstdlib>
 # include <cstring>
 # include <errno.h>
+# include <fcntl.h>
 # include <iostream>
 # include <map>
 # include <netdb.h>
@@ -30,7 +32,7 @@ class Response
 
 	Response &operator=(Response const &src);
 	std::string final_response();
-	std::string error_400(std::string error);
+	std::string error_basic(std::string error, short error_code, Server serv);
 	void set_line(std::string key, std::string value);
 	void set_header(std::string key, std::string value);
 	void set_body(std::string body);
