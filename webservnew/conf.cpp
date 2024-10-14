@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   conf.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
+/*   Updated: 2024/10/14 15:25:49 by bainur           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "conf.hpp"
 
 
@@ -22,19 +35,18 @@ Conf::Conf(const std::string &filename)
 		else if (is_server(line, file))
 			_servers.push_back(parse_server(file));
 		else
-			error_exit("Error: invalid file");
+			error_exit("Error: invalid line in file");
 	}
+	check_servers();
 	file.close();
 }
 
 Server Conf::parse_server(std::ifstream &file)
 {
 	Server	server;
-	int		i;
 
 	std::string line;
 	std::vector<std::string> line_s;
-	i = 0;
 	while (std::getline(file, line))
 	{
 		line_s = split_line(line, " ");
@@ -59,17 +71,24 @@ Server Conf::parse_server(std::ifstream &file)
 		else
 			error_exit("Error: invalid server");
 	}
-	std::cout << "Server name: " << server.get_server_name() << std::endl;
-	std::cout << "Root: " << server.get_root() << std::endl;
-	std::cout << "Size limit: " << server.get_sizelimit() << std::endl;
-	std::cout << "Host: " << server.get_host() << std::endl;
-	std::cout << "Port: " << server.get_port() << std::endl;
-	std::cout << "Error page: " << server.get_error_page(404) << std::endl;
-	std::cout << "Index: " << server.get_index() << std::endl;
-	std::vector <std::string> method = server.get_method();
-	for (size_t i = 0; i < method.size(); i++)
-		std::cout << "Method: " << method[i] << std::endl;
 	return (server);
+}
+
+void Conf::check_servers()
+{
+	if (_servers.size() == 0)
+		error_exit("Error: no server");
+	for (size_t i = 0; i < _servers.size(); i++)
+	{
+		for (size_t j = i + 1; j < _servers.size(); j++)
+		{
+			if (_servers[i].get_host() == _servers[j].get_host() && _servers[i].get_port() == _servers[j].get_port())
+				error_exit("Error: duplicate server");
+			if (_servers[i].get_server_name() == _servers[j].get_server_name())
+				error_exit("Error: duplicate server name");
+		}
+	}
+	
 }
 
 Conf::Conf(const Conf &copy)

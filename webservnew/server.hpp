@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 15:26:11 by bainur            #+#    #+#             */
+/*   Updated: 2024/10/14 15:26:13 by bainur           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
@@ -10,7 +22,6 @@
 # include <unistd.h>
 # include <vector>
 # include "utils.hpp"
-# include "conf_utils.cpp"
 
 
 class Server

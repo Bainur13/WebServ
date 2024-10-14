@@ -1,48 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   conf.hpp                                           :+:      :+:    :+:   */
+/*   location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 15:25:52 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 15:25:56 by bainur           ###   ########.fr       */
+/*   Created: 2024/10/14 15:24:50 by bainur            #+#    #+#             */
+/*   Updated: 2024/10/14 15:27:30 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CONF_HPP
-# define CONF_HPP
+#ifndef LOCATION_HPP
+# define LOCATION_HPP
 
-
-# include "server.hpp"
 # include <cstdlib>
 # include <fstream>
 # include <iostream>
 # include <map>
+# include <sstream>
 # include <string>
 # include <unistd.h>
 # include <vector>
 
-# define EXIT_FAILURE 1
-
-class Server;
-
-class Conf
+class Location 
 {
-  public:
-	Conf();
-	Conf(const std::string &filename);
-	Conf(const Conf &copy);
-
-	Conf &operator=(const Conf &copy);
-
-	Server parse_server(std::ifstream &file);
-
-	~Conf();
-
-  private:
-	std::vector<Server> _servers;
-	void check_servers();
-};
-
+    public:
+        Location();
+        Location(const Location &copy);
+        Location &operator=(const Location &copy);
+        ~Location();
+    private:
+        std::string _path;
+        std::string _root;
+        std::string _index;
+        std::map<short, std::string> _error_page;
+        std::vector<std::string> _method;
+        int _size_limit;
+    
+}
 #endif
