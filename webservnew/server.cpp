@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 15:26:02 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/14 19:08:22 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,11 @@ void Server::set_method(const std::vector<std::string> &line_s)
     }
 }
 
+void Server::add_location(Location location)
+{
+    _locations.push_back(location);
+}
+
 
 std::string Server::get_server_name()
 {
@@ -156,5 +161,15 @@ std::vector<std::string> Server::get_method()
 {
     return _method;
 }
+
+// Location Server::get_locations(std::string path)
+// {
+//     for (size_t i = 0; i < _locations.size(); i++)
+//     {
+//         if (path.find(_locations[i].get_path()) == 0)
+//             return _locations[i];
+//     }
+//     return Location();
+// }
 
 

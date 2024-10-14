@@ -2,6 +2,7 @@ SRC =				main.cpp \
 					conf.cpp \
 					server.cpp \
 					utils.cpp \
+					location.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 

@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:11 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 15:26:13 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/14 19:08:30 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@
 # include <unistd.h>
 # include <vector>
 # include "utils.hpp"
+# include "location.hpp"
 
-
+class Location;
 class Server
 {
     public :
@@ -48,6 +49,9 @@ class Server
         std::string get_error_page(short error_code);
         std::string get_index();
         std::vector<std::string> get_method();
+
+        void add_location(Location location);
+        // Location get_locations(std::string path);
         
     private :
         int _port;
@@ -58,6 +62,8 @@ class Server
         std::map<short, std::string> _error_page;
         std::vector<std::string> _method;
         int _size_limit;
+
+        std::vector<Location> _locations;
 };
 
 

@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:03 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 15:26:05 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/14 19:18:19 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ bool	unique_symbol(std::vector<std::string> line_s, std::string c)
 {
 	if (line_s.size() != 2)
 		return (false);
-	if (line_s[0] != c && line_s[1] != "\0")
+	if (line_s[0] != c)
 		return (false);
 	return (true);
 }
@@ -149,6 +149,37 @@ bool	is_server(const std::string &line, std::ifstream &file)
 	}
 	if (line_s[2] != "\0")
 		return (error_exit("Error: server line invalid"), false);
+	return (true);
+}
+
+bool	is_location(const std::string &line, std::ifstream &file)
+{
+	std::vector<std::string> line_s;
+
+	line_s = split_line(line, " ");
+	if (line_s.size() != 3 && line_s.size() != 4)
+		return (false);
+	if (line_s[0] != "location")
+		return (error_exit("Error: location not found"), false);
+	if (line_s[2] != "{" && line_s[2] != "\0")
+	{
+		return (error_exit("Error: location line invalid"), false);
+	}
+	if (line_s[2] == "\0")
+	{
+		std::string line_n;
+		while (std::getline(file, line_n))
+		{
+			if (is_empty(line_n))
+				continue ;
+            if (unique_symbol(split_line(line_n, " "), "{"))
+                return (true);
+            else
+                return (error_exit("Error: location line invalid"), false);
+		}
+	}
+	if (line_s[3] != "\0")
+		return (error_exit("Error: location line invalid"), false);
 	return (true);
 }
 

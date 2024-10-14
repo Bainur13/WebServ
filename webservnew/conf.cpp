@@ -6,13 +6,11 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 15:25:49 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/14 19:20:44 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "conf.hpp"
-
 
 Conf::Conf()
 {
@@ -31,7 +29,7 @@ Conf::Conf(const std::string &filename)
 	while (std::getline(file, line))
 	{
 		if (is_empty(line))
-			continue ;
+			continue;
 		else if (is_server(line, file))
 			_servers.push_back(parse_server(file));
 		else
@@ -43,7 +41,7 @@ Conf::Conf(const std::string &filename)
 
 Server Conf::parse_server(std::ifstream &file)
 {
-	Server	server;
+	Server server;
 
 	std::string line;
 	std::vector<std::string> line_s;
@@ -51,9 +49,9 @@ Server Conf::parse_server(std::ifstream &file)
 	{
 		line_s = split_line(line, " ");
 		if (line_s.size() == 0)
-			continue ;
+			continue;
 		if (unique_symbol(line_s, "}"))
-			break ;
+			break;
 		if (line_s[0] == "server_name")
 			server.set_server_name(line_s);
 		else if (line_s[0] == "root")
@@ -68,10 +66,32 @@ Server Conf::parse_server(std::ifstream &file)
 			server.set_index(line_s);
 		else if (line_s[0] == "method")
 			server.set_method(line_s);
+		else if (is_location(line, file))
+			server.add_location(parse_location(file, line_s));
 		else
-			error_exit("Error: invalid server");
+			error_exit("Error: invalid line in server");
 	}
 	return (server);
+}
+
+Location Conf::parse_location(std::ifstream &file, std::vector<std::string> line_s)
+{
+	Location location;
+	std::string line;
+	std::vector<std::string> line_s;
+
+	location.set_path(line_s);
+	while (std::getline(file, line))
+	{
+		line_s = split_line(line, " ");
+		if (line_s.size() == 0)
+			continue;
+		if (unique_symbol(line_s, "}"))
+			break;
+		
+	}
+	
+
 }
 
 void Conf::check_servers()
@@ -88,7 +108,6 @@ void Conf::check_servers()
 				error_exit("Error: duplicate server name");
 		}
 	}
-	
 }
 
 Conf::Conf(const Conf &copy)
