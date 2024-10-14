@@ -20,7 +20,8 @@ Response	error_page(Response &res)
 	res.set_body(read_fd_to_end(file_fd));
 	return (res);
 }
-Response	treat_request(Request req)
+
+Response	treat_request(Request req, Server serv)
 {
 	Response	res;
 	int			file_fd;
@@ -29,12 +30,14 @@ Response	treat_request(Request req)
 	if (req.get_request_line("Method") == "GET")
 	{
 		std::string path = req.get_request_line("Path");
-		if (path == "/")
-			path = "/index.html";
-		path = "./index" + path;
+		if (path[path.size() - 1] == '/')
+			path = serv.get_root() + "index.html";
+		else 
+			path = serv.get_root() + path;
 		file_fd = open(path.c_str(), O_RDONLY);
+		std::cout << path << std::endl;
 		if (file_fd == -1)
-			return (error_page(res));
+			return (res.error_basic("Error 404 : Not Found", 404, serv), res);
 		else
 		{
 			res.set_line("Status", "200");

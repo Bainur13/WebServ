@@ -105,13 +105,17 @@ void Server::handle_client(int client_fd)
 	std::cout << "Request received:" << std::endl;
 	std::cout << request << std::endl;
 	req.parse_request(request);
+	if (req.get_request_body().size() > (uint)size_limit)
+		res.error_basic("Error 413 : Payload Too Large", 413, *this);
 	if (req.get_error() != "")
 	{
 		std::cerr << req.get_error() << std::endl;
 		res.error_basic(req.get_error(), 400, *this);
 	}
 	else
-		res = treat_request(req);
+	{
+		res = treat_request(req, *this);
+	}
 	std::cout << "Response sent:" << std::endl;
 	std::cout << res.final_response() << std::endl;
 	if (send(client_fd, res.final_response().c_str(),
@@ -300,6 +304,7 @@ void Server::set_size_limit(int size_limitw)
 
 void Server::set_port(int portw)
 {
+	
 	if (portw < 0 || portw > 65535)
 	{
 		std::cerr << "Invalid port" << std::endl;

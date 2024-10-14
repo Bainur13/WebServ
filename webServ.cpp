@@ -16,7 +16,6 @@ int main()
     std::cout << serv.get_port() << std::endl;
     std::cout << serv.get_root() << std::endl;
     std::cout << serv.get_error_page(404) << std::endl;
-    // serv.Init();
-    // serv.receive_signal();
-
+    serv.Init();
+    serv.receive_signal();
 }

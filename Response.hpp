@@ -1,12 +1,11 @@
 #ifndef RESPONSE_HPP
 # define RESPONSE_HPP
 
-# include "Server.hpp"
+# include "webServ.hpp"
 # include <arpa/inet.h>
 # include <cstdlib>
 # include <cstring>
 # include <errno.h>
-# include <fcntl.h>
 # include <iostream>
 # include <map>
 # include <netdb.h>
@@ -17,6 +16,8 @@
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <unistd.h>
+
+class Server;
 
 class Response
 {

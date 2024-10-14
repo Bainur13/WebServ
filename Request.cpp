@@ -112,7 +112,6 @@ void Request::parse_request(std::string request)
         _error = "Error 400 : POST request with wrong Content-Length";
     if (_request_line["Method"] == "POST" && _request_body == "")
         _error = "Error 400 : POST request without body";
-    
 }
 
 std::string Request::get_request_line(std::string key)
