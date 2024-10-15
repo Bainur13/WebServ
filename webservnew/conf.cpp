@@ -71,27 +71,39 @@ Server Conf::parse_server(std::ifstream &file)
 		else
 			error_exit("Error: invalid line in server");
 	}
+	if (!unique_symbol(line_s, "}"))
+		error_exit("Error: invalid server");
 	return (server);
 }
 
-Location Conf::parse_location(std::ifstream &file, std::vector<std::string> line_s)
+Location Conf::parse_location(std::ifstream &file, std::vector<std::string> line_path)
 {
 	Location location;
 	std::string line;
 	std::vector<std::string> line_s;
 
-	location.set_path(line_s);
+	location.set_path(line_path);
 	while (std::getline(file, line))
 	{
 		line_s = split_line(line, " ");
 		if (line_s.size() == 0)
 			continue;
+		if (line_s[0] == "root")
+			location.set_root(line_s);
+		if (line_s[0] == "index")
+			location.set_index(line_s);
+		if (line_s[0] == "error_page")
+			location.set_error_page(line_s);
+		if (line_s[0] == "redirect")
+			location.set_redirect(line_s);
+		if (line_s[0] == "method")
+			location.set_method(line_s);
+		if (line_s[0] == "auto_index")
+			location.set_listing(line_s);
 		if (unique_symbol(line_s, "}"))
 			break;
-		
 	}
-	
-
+	return (location);
 }
 
 void Conf::check_servers()

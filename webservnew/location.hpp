@@ -32,20 +32,20 @@ public:
     ~Location();
 
     void set_path(const std::vector<std::string> &line_s);
-    // void set_root(const std::vector<std::string> &line_s);
-    // void set_index(const std::vector<std::string> &line_s);
-    // void set_error_page(const std::vector<std::string> &line_s);
-    // void set_redirect(const std::vector<std::string> &line_s);
-    // void set_method(const std::vector<std::string> &line_s);
-    // void set_listing(const std::vector<std::string> &line_s);
+    void set_root(const std::vector<std::string> &line_s);
+    void set_index(const std::vector<std::string> &line_s);
+    void set_error_page(const std::vector<std::string> &line_s);
+    void set_redirect(const std::vector<std::string> &line_s);
+    void set_method(const std::vector<std::string> &line_s);
+    void set_listing(const std::vector<std::string> &line_s);
 
-    // std::string get_path();
-    // std::string get_root();
-    // std::string get_index();
-    // std::string get_error_page(short error_code);
-    // std::pair<short, std::string> get_redirect();
-    // std::vector<std::string> get_method();
-    // bool get_listing();
+    std::string get_path();
+    std::string get_root();
+    std::string get_index();
+    std::string get_error_page(short error_code);
+    std::pair<short, std::string> get_redirect();
+    std::vector<std::string> get_method();
+    bool get_listing();
 
 private:
     std::string _path;

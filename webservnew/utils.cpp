@@ -160,11 +160,9 @@ bool	is_location(const std::string &line, std::ifstream &file)
 	if (line_s.size() != 3 && line_s.size() != 4)
 		return (false);
 	if (line_s[0] != "location")
-		return (error_exit("Error: location not found"), false);
+		return (error_exit("Error: invalid line in server"), false);
 	if (line_s[2] != "{" && line_s[2] != "\0")
-	{
 		return (error_exit("Error: location line invalid"), false);
-	}
 	if (line_s[2] == "\0")
 	{
 		std::string line_n;
