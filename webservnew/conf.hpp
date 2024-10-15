@@ -14,7 +14,7 @@
 # define CONF_HPP
 
 
-# include "server.hpp"
+# include "server_conf.hpp"
 # include "location.hpp"
 # include <cstdlib>
 # include <fstream>
@@ -26,7 +26,7 @@
 
 # define EXIT_FAILURE 1
 
-class Server;
+class Server_conf;
 class Location;
 
 class Conf
@@ -38,13 +38,13 @@ class Conf
 
 	Conf &operator=(const Conf &copy);
 
-	Server parse_server(std::ifstream &file);
+	Server_conf parse_server(std::ifstream &file);
 	Location parse_location(std::ifstream &file, std::vector<std::string> line);
-
+	std::vector<Server_conf> getServers() const;
 	~Conf();
 
   private:
-	std::vector<Server> _servers;
+	std::vector<Server_conf> _servers_conf;
 	void check_servers();
 };
 

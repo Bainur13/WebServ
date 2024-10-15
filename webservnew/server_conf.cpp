@@ -10,20 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.hpp"
+#include "server_conf.hpp"
 
-Server::Server()
+Server_conf::Server_conf()
 {
     _port = 8080;
-    _host = 0;
+    _host = INADDR_ANY;
 }
 
-Server::Server(const Server &copy)
+Server_conf::Server_conf(const Server_conf &copy)
 {
     *this = copy;
 }
 
-Server &Server::operator=(const Server &copy)
+Server_conf &Server_conf::operator=(const Server_conf &copy)
 {
     if (this != &copy)
     {
@@ -37,32 +37,37 @@ Server &Server::operator=(const Server &copy)
     return *this;
 }
 
-Server::~Server()
+Server_conf::~Server_conf()
 {
 }
 
-void Server::set_server_name(const std::vector <std::string> &line_s)
+void Server_conf::init_server()
+{
+    _server.Init(*this);
+}
+
+void Server_conf::set_server_conf_name(const std::vector <std::string> &line_s)
 {
     if (line_s.size() != 3)
         error_exit("Error: invalid server name");
     this->_server_name = line_s[1];
 }
 
-void Server::set_root(const std::vector <std::string> &line_s)
+void Server_conf::set_root(const std::vector <std::string> &line_s)
 {
     if (line_s.size() != 3)
         error_exit("Error: invalid root");
     this->_root = line_s[1];
 }   
 
-void Server::set_sizelimit(const std::vector <std::string> &line_s)
+void Server_conf::set_sizelimit(const std::vector <std::string> &line_s)
 {
     if (line_s.size() != 3 || !isDigits(line_s[1]))
         error_exit("Error: invalid size limit");
     this->_size_limit = ft_atoi_s(line_s[1]);
 }
 
-void Server::set_listen(const std::vector <std::string> &line_s)
+void Server_conf::set_listen(const std::vector <std::string> &line_s)
 {
     std::vector<std::string> listen;
     std::vector<std::string> ip_adress;
@@ -83,7 +88,7 @@ void Server::set_listen(const std::vector <std::string> &line_s)
     _port = ft_atoi_s(listen[1]);
 }
 
-void Server::set_error_page(const std::vector<std::string> &line_s)
+void Server_conf::set_error_page(const std::vector<std::string> &line_s)
 {
     if (line_s.size() < 3)
         error_exit("Error: invalid error page");
@@ -95,14 +100,14 @@ void Server::set_error_page(const std::vector<std::string> &line_s)
     }
 }
 
-void Server::set_index(const std::vector<std::string> &line_s)
+void Server_conf::set_index(const std::vector<std::string> &line_s)
 {
     if (line_s.size() != 3)
         error_exit("Error: invalid index");
     this->_index = line_s[1];
 }
 
-void Server::set_method(const std::vector<std::string> &line_s)
+void Server_conf::set_method(const std::vector<std::string> &line_s)
 {
     if (line_s.size() < 3)
         error_exit("Error: invalid method");
@@ -114,62 +119,56 @@ void Server::set_method(const std::vector<std::string> &line_s)
     }
 }
 
-void Server::add_location(Location location)
+void Server_conf::add_location(Location location)
 {
     _locations.push_back(location);
 }
 
 
-std::string Server::get_server_name()
+std::string Server_conf::get_server_conf_name()
 {
     return _server_name;
 }
 
-std::string Server::get_root()
+std::string Server_conf::get_root()
 {
     return _root;
 }
 
-int Server::get_sizelimit()
+int Server_conf::get_sizelimit()
 {
     return _size_limit;
 }
 
-int Server::get_port()
+int Server_conf::get_port()
 {
     return _port;
 }
 
-uint Server::get_host()
+uint Server_conf::get_host()
 {
     return _host;
 }
 
-std::string Server::get_error_page(short error_code)
+std::string Server_conf::get_error_page(short error_code)
 {
     if (_error_page.find(error_code) == _error_page.end())
         return "";
     return _error_page[error_code];
 }
 
-std::string Server::get_index()
+std::string Server_conf::get_index()
 {
     return _index;
 }
 
-std::vector<std::string> Server::get_method()
+std::vector<std::string> Server_conf::get_method()
 {
     return _method;
 }
 
-// Location Server::get_locations(std::string path)
-// {
-//     for (size_t i = 0; i < _locations.size(); i++)
-//     {
-//         if (path.find(_locations[i].get_path()) == 0)
-//             return _locations[i];
-//     }
-//     return Location();
-// }
-
+Server Server_conf::get_server()
+{
+    return _server;
+}
 

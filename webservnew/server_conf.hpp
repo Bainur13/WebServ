@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_HPP
-# define SERVER_HPP
+#ifndef SERVER_CONF_HPP
+# define SERVER_CONF_HPP
 
 # include <cstdlib>
 # include <fstream>
@@ -23,17 +23,20 @@
 # include <vector>
 # include "utils.hpp"
 # include "location.hpp"
+# include "Server.hpp"
 
 class Location;
-class Server
+class Server;
+
+class Server_conf
 {
     public :
-        Server();
-        Server(const Server &copy);
-        Server &operator=(const Server &copy);
-        ~Server();
+        Server_conf();
+        Server_conf(const Server_conf &copy);
+        Server_conf &operator=(const Server_conf &copy);
+        ~Server_conf();
 
-        void set_server_name(const std::vector <std::string> &line_s);
+        void set_server_conf_name(const std::vector <std::string> &line_s);
         void set_root(const std::vector <std::string> &line_s);
         void set_index(const std::vector <std::string> &line_s);
         void set_sizelimit(const std::vector <std::string> &line_s);
@@ -41,7 +44,7 @@ class Server
         void set_error_page(const std::vector <std::string> &line_s);
         void set_method(const std::vector <std::string> &line_s);
 
-        std::string get_server_name();
+        std::string get_server_conf_name();
         std::string get_root();
         int get_sizelimit();
         int get_port();
@@ -49,9 +52,11 @@ class Server
         std::string get_error_page(short error_code);
         std::string get_index();
         std::vector<std::string> get_method();
+        Server get_server();
 
         void add_location(Location location);
-        // Location get_locations(std::string path);
+
+        void init_server();
         
     private :
         int _port;
@@ -64,6 +69,7 @@ class Server
         int _size_limit;
 
         std::vector<Location> _locations;
+        Server _server;
 };
 
 

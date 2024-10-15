@@ -1,6 +1,7 @@
 SRC =				main.cpp \
 					conf.cpp \
-					server.cpp \
+					server_conf.cpp \
+					Server.cpp \
 					utils.cpp \
 					location.cpp \
 

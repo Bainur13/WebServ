@@ -1,6 +1,6 @@
 SRC =				webServ.cpp \
 					Request.cpp \
-					Server.cpp \
+					server_conf.cpp \
 					reader.cpp \
 					Response.cpp \
 					treat_request.cpp \

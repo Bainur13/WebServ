@@ -31,7 +31,7 @@ Conf::Conf(const std::string &filename)
 		if (is_empty(line))
 			continue;
 		else if (is_server(line, file))
-			_servers.push_back(parse_server(file));
+			_servers_conf.push_back(parse_server(file));
 		else
 			error_exit("Error: invalid line in file");
 	}
@@ -39,9 +39,9 @@ Conf::Conf(const std::string &filename)
 	file.close();
 }
 
-Server Conf::parse_server(std::ifstream &file)
+Server_conf Conf::parse_server(std::ifstream &file)
 {
-	Server server;
+	Server_conf server;
 
 	std::string line;
 	std::vector<std::string> line_s;
@@ -53,7 +53,7 @@ Server Conf::parse_server(std::ifstream &file)
 		if (unique_symbol(line_s, "}"))
 			break;
 		if (line_s[0] == "server_name")
-			server.set_server_name(line_s);
+			server.set_server_conf_name(line_s);
 		else if (line_s[0] == "root")
 			server.set_root(line_s);
 		else if (line_s[0] == "size_limit")
@@ -108,15 +108,15 @@ Location Conf::parse_location(std::ifstream &file, std::vector<std::string> line
 
 void Conf::check_servers()
 {
-	if (_servers.size() == 0)
+	if (_servers_conf.size() == 0)
 		error_exit("Error: no server");
-	for (size_t i = 0; i < _servers.size(); i++)
+	for (size_t i = 0; i < _servers_conf.size(); i++)
 	{
-		for (size_t j = i + 1; j < _servers.size(); j++)
+		for (size_t j = i + 1; j < _servers_conf.size(); j++)
 		{
-			if (_servers[i].get_host() == _servers[j].get_host() && _servers[i].get_port() == _servers[j].get_port())
+			if (_servers_conf[i].get_host() == _servers_conf[j].get_host() && _servers_conf[i].get_port() == _servers_conf[j].get_port())
 				error_exit("Error: duplicate server");
-			if (_servers[i].get_server_name() == _servers[j].get_server_name())
+			if (_servers_conf[i].get_server_conf_name() == _servers_conf[j].get_server_conf_name())
 				error_exit("Error: duplicate server name");
 		}
 	}
@@ -133,6 +133,11 @@ Conf &Conf::operator=(const Conf &copy)
 	{
 	}
 	return (*this);
+}
+
+std::vector<Server_conf> Conf::getServers() const
+{
+	return _servers_conf;
 }
 
 Conf::~Conf()
