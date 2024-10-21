@@ -172,3 +172,8 @@ Server Server_conf::get_server()
     return _server;
 }
 
+std::vector<Location> Server_conf::get_locations()
+{
+    return _locations;
+}
+

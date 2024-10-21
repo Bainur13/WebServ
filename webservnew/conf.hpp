@@ -13,9 +13,10 @@
 #ifndef CONF_HPP
 # define CONF_HPP
 
-
-# include "server_conf.hpp"
+# include "Request.hpp"
+# include "Response.hpp"
 # include "location.hpp"
+# include "server_conf.hpp"
 # include <cstdlib>
 # include <fstream>
 # include <iostream>
@@ -23,11 +24,12 @@
 # include <string>
 # include <unistd.h>
 # include <vector>
+# include <fcntl.h>
 
 # define EXIT_FAILURE 1
 
-class Server_conf;
-class Location;
+class	Server_conf;
+class	Location;
 
 class Conf
 {

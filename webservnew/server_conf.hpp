@@ -53,6 +53,7 @@ class Server_conf
         std::string get_index();
         std::vector<std::string> get_method();
         Server get_server();
+        std::vector<Location> get_locations();
 
         void add_location(Location location);
 

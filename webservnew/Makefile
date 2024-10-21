@@ -4,6 +4,8 @@ SRC =				main.cpp \
 					Server.cpp \
 					utils.cpp \
 					location.cpp \
+					Response.cpp \
+					Request.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 
