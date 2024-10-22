@@ -7,10 +7,12 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 
 	std::string path;
 	path = req.get_request_line("Path");
-	std::cout << "Path: " << path << std::endl;
 	location = search_location(path, server_c);
 	if (location.get_path() != "")
 	{
+		std::cout << "Location found" << std::endl;
+		std::cout << "Path: " << location.get_path() << std::endl;
+		std::cout << "Root: " << location.get_root() << std::endl;
 		if (!check_method_right(location.get_method(), "GET"))
 		{
 			res.error_basic("Error 405 : Method Not Allowed", 405, server_c);
@@ -64,6 +66,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			if (server_c.get_index() != "")
 			{
 				path += server_c.get_index();
+				std::cout << path << std::endl;
 				fd = open(path.c_str(), O_RDONLY);
 				if (fd < 0)
 				{

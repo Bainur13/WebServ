@@ -44,6 +44,8 @@ void	handle_client(int client_fd, Server_conf &server_c)
 		return ;
 	}
 	req.parse_request(request);
+	std::cout << "Request received:" << std::endl;
+	std::cout << request << std::endl;
 	if (req.get_request_body().size() > (uint)server_c.get_sizelimit())
 		res.error_basic("Error 413 : Payload Too Large", 413, server_c);
 	if (req.get_error() != "")

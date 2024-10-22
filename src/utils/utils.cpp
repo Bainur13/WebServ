@@ -205,15 +205,17 @@ std::string read_fd_to_end(int fd)
 	while (1)
 	{
 		valread = read(fd, buffer, 1024);
-		if (valread <= 0)
+		if (valread < 0)
 		{
 			std::cerr << "Error of read / Nothing to read from fd" << std::endl;
 			break ;
 		}
+		if (valread == 0)
+			break ;
 		buffer[valread] = '\0';
 		result += buffer;
 		ft_bzero(buffer, 1024);
-		if (valread < 1024)
+		if (valread < (int)sizeof(buffer))
 			break ;
 	}
 	return (result);
