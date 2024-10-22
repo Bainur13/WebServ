@@ -1,11 +1,13 @@
-SRC =				main.cpp \
-					conf.cpp \
-					server_conf.cpp \
-					Server.cpp \
-					utils.cpp \
-					location.cpp \
-					Response.cpp \
-					Request.cpp \
+SRC =				./src/main.cpp \
+					./src/conf/conf.cpp \
+					./src/conf/server_conf.cpp \
+					./src/server/Server.cpp \
+					./src/utils/utils.cpp \
+					./src/utils/utils_treat.cpp \
+					./src/conf/location.cpp \
+					./src/format/Response.cpp \
+					./src/format/Request.cpp \
+					./src/method/get.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 
