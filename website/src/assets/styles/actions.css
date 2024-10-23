@@ -36,3 +36,24 @@ main
 	background-color: white;
 	color: black;
 }
+
+#cardsText
+{
+	font-size: 180%;
+	font-weight: lighter;
+	margin-top: 5%;
+	opacity: 0;
+	animation: fadeInCardsText 1s ease-in forwards;
+}
+
+@keyframes fadeInCardsText
+{
+	0%
+	{
+		opacity: 0;
+	}
+	100%
+	{
+		opacity: 1;
+	}
+}
