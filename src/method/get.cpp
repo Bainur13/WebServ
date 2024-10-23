@@ -99,7 +99,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 		res.error_basic("Error 404 : Not Found", 404, server_c);
 		return (false);
 	}
-	res.set_line("Version", req.get_request_line("Version"));
+	res.set_line("Version", "HTTP/1.1");
 	res.set_line("Status", "200");
 	res.set_line("Reason", "OK");
 	res.set_header("Content-Type", get_content_type(path));

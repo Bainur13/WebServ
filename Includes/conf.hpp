@@ -16,6 +16,7 @@
 # include "Request.hpp"
 # include "Response.hpp"
 # include "get.hpp"
+# include "post.hpp"
 # include "location.hpp"
 # include "server_conf.hpp"
 # include "utils_treat.hpp"

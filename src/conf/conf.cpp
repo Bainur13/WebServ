@@ -29,7 +29,7 @@ Conf::Conf(const std::string &filename)
 	while (std::getline(file, line))
 	{
 		if (is_empty(line))
-			continue;
+			continue ;
 		else if (is_server(line, file))
 			_servers_conf.push_back(parse_server(file));
 		else
@@ -41,7 +41,7 @@ Conf::Conf(const std::string &filename)
 
 Server_conf Conf::parse_server(std::ifstream &file)
 {
-	Server_conf server;
+	Server_conf	server;
 
 	std::string line;
 	std::vector<std::string> line_s;
@@ -49,9 +49,9 @@ Server_conf Conf::parse_server(std::ifstream &file)
 	{
 		line_s = split_line(line, " ");
 		if (line_s.size() == 0)
-			continue;
+			continue ;
 		if (unique_symbol(line_s, "}"))
-			break;
+			break ;
 		if (line_s[0] == "server_name")
 			server.set_server_conf_name(line_s);
 		else if (line_s[0] == "root")
@@ -76,32 +76,35 @@ Server_conf Conf::parse_server(std::ifstream &file)
 	return (server);
 }
 
-Location Conf::parse_location(std::ifstream &file, std::vector<std::string> line_path)
+Location Conf::parse_location(std::ifstream &file,
+	std::vector<std::string> line_path)
 {
-	Location location;
+	Location	location;
+
 	std::string line;
 	std::vector<std::string> line_s;
-
 	location.set_path(line_path);
 	while (std::getline(file, line))
 	{
 		line_s = split_line(line, " ");
 		if (line_s.size() == 0)
-			continue;
-		if (line_s[0] == "root")
-			location.set_root(line_s);
-		if (line_s[0] == "index")
-			location.set_index(line_s);
-		if (line_s[0] == "error_page")
-			location.set_error_page(line_s);
-		if (line_s[0] == "redirect")
-			location.set_redirect(line_s);
-		if (line_s[0] == "method")
-			location.set_method(line_s);
-		if (line_s[0] == "auto_index")
-			location.set_listing(line_s);
+			continue ;
 		if (unique_symbol(line_s, "}"))
-			break;
+			break ;
+		else if (line_s[0] == "root")
+			location.set_root(line_s);
+		else if (line_s[0] == "index")
+			location.set_index(line_s);
+		else if (line_s[0] == "error_page")
+			location.set_error_page(line_s);
+		else if (line_s[0] == "redirect")
+			location.set_redirect(line_s);
+		else if (line_s[0] == "method")
+			location.set_method(line_s);
+		else if (line_s[0] == "auto_index")
+			location.set_listing(line_s);
+		else
+			error_exit("Error: invalid line in location");
 	}
 	return (location);
 }
@@ -114,7 +117,8 @@ void Conf::check_servers()
 	{
 		for (size_t j = i + 1; j < _servers_conf.size(); j++)
 		{
-			if (_servers_conf[i].get_host() == _servers_conf[j].get_host() && _servers_conf[i].get_port() == _servers_conf[j].get_port())
+			if (_servers_conf[i].get_host() == _servers_conf[j].get_host()
+				&& _servers_conf[i].get_port() == _servers_conf[j].get_port())
 				_servers_conf.erase(_servers_conf.begin() + j);
 			if (_servers_conf[i].get_server_conf_name() == _servers_conf[j].get_server_conf_name())
 				error_exit("Error: duplicate server name");
@@ -137,7 +141,7 @@ Conf &Conf::operator=(const Conf &copy)
 
 std::vector<Server_conf> Conf::getServers() const
 {
-	return _servers_conf;
+	return (_servers_conf);
 }
 
 Conf::~Conf()

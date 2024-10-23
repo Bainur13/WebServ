@@ -28,6 +28,11 @@ Response	treat_request(Request req, Server_conf &server_c)
 		if (!get_request(req, server_c, res))
 			std::cerr << "Error getting request" << std::endl;
 	}
+	if (req.get_request_line("Method") == "POST")
+	{
+		if (!post_request(req, server_c, res))
+			std::cerr << "Error posting request" << std::endl;
+	}
 	return (res);
 }
 
