@@ -8,6 +8,7 @@ SRC =				./src/main.cpp \
 					./src/format/Response.cpp \
 					./src/format/Request.cpp \
 					./src/method/get.cpp \
+					./src/method/post.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 
