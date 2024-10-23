@@ -27,20 +27,19 @@ export function Homepage()
 
 export function MainBtn() {
     const [isActive, setIsActive] = useState(false);
-
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsActive(true); // met l'etat isActive a true apres un delai
-        }, 6500); // 7 secondes (durée de l'animation + délai)
+        }, 5000); // 5 secondes (durée de l'animation + délai)
 
         return () => clearTimeout(timer); // Nettoyage du timer
     }, []);
 
     return (
-		<Link to="/actions">
-			<button id="mainButton" className={isActive ? 'active' : ''}>
+		<button id="mainButton" className={isActive ? 'active' : ''}>
+				<Link to="/actions">
 				Explore Now
-			</button>
-		</Link>
+				</Link>
+		</button>
     );
 }

@@ -94,7 +94,7 @@ main {
 /* Footer Part */
 
 footer {
-	text-align: left;
+	text-align: center;
     padding: 10px 0;
 }
 
@@ -110,7 +110,6 @@ footer {
 
 #footerUpperPart
 {
-	display: flex;
 	margin: 0;
 }
 
