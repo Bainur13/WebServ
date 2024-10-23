@@ -34,7 +34,7 @@ bool	post_request(Request &req, Server_conf &server_c, Response &res)
 	}
     if (stat(path.c_str(), &info) == 0)
         exist = 1;
-    if (fd = open(path.c_str(), O_CREAT | O_WRONLY | O_APPEND, 0644) < 0)
+    if ((fd = open(path.c_str(), O_CREAT | O_WRONLY | O_APPEND, 0644)) < 0)
     {
         res.error_basic("Error 500 : Internal Server Error", 500, server_c);
         return (false);
@@ -54,8 +54,8 @@ bool	post_request(Request &req, Server_conf &server_c, Response &res)
         std::string boundary = content_type.substr(content_type.find("boundary=") + 9);
         std::string body = req.get_request_body();
         body = body.substr(body.find(boundary) + boundary.size());
-        
-        
+
+
     }
-    
+	return 1;
 }

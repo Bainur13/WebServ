@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vk1337 <vk1337@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:03 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 19:18:19 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/23 19:37:07 by vk1337           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ std::vector<std::string> split_line(const std::string &line, const std::string c
 	}
 	line_s.push_back("\0");
 	return (line_s);
-	
+
 }
 
 bool	is_server(const std::string &line, std::ifstream &file)
@@ -197,27 +197,23 @@ void	ft_bzero(void *s, size_t n)
 
 std::string read_fd_to_end(int fd)
 {
-	char	buffer[1024];
-	int		valread;
+    char buffer[1024];
+    int valread;
 
-	std::string result;
-	result = "";
-	while (1)
-	{
-		valread = read(fd, buffer, 1024);
-		if (valread < 0)
-		{
-			std::cerr << "Error of read / Nothing to read from fd" << std::endl;
-			break ;
-		}
-		if (valread == 0)
-			break ;
-		buffer[valread] = '\0';
-		result += buffer;
-		ft_bzero(buffer, 1024);
-		if (valread < (int)sizeof(buffer))
-			break ;
-	}
-	return (result);
+    std::string result;
+    while (1)
+    {
+        valread = read(fd, buffer, sizeof(buffer));
+        if (valread < 0)
+        {
+            std::cerr << "Error of read / Nothing to read from fd" << std::endl;
+            break;
+        }
+        if (valread == 0)
+            break;
+        result.append(buffer, valread);
+        if (valread < (int)sizeof(buffer))
+            break;
+    }
+    return result;
 }
-

@@ -29,12 +29,17 @@ $(NAME): $(OBJ)
 					+------------------------+$(NC)"
 
 all: $(NAME)
+	./WebServ file.conf &
+	cd ./website && npm run build
+	sleep 3
+	firefox http://localhost:8080
 
 clean:
 	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf ./build
 
 .cpp.o:
 	c++ $(C++FLAGS) -c $< -o ${<:.cpp=.o}
