@@ -38,7 +38,7 @@ export function CustomPageForm()
 
 			{activeForm && (
 			<div id="returnBtnDiv">
-				<button id='returnBtn' onClick={handleRetour}> &#x2190; Retour </button>
+				<button id='returnBtn' onClick={handleRetour}> &#x2190; Go back </button>
 			</div>
 			)}
 
@@ -58,13 +58,13 @@ function CustomForm( {activeForm} )
 				<div id="internFormDiv">
 					<div id="formLabels">
 						<label>
-							Nom :
+							Last Name :
 						</label>
 						<label>
-							Prenom :
+							First Name :
 						</label>
 						<label>
-							Date de naissance :
+							Date of birth :
 						</label>
 					</div>
 					<div id="formInputs">

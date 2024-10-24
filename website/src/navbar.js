@@ -8,7 +8,7 @@ export function NavBar()
 {
 	return (
 		<nav id='navBar'>
-			<Link to="/">
+			<Link to="/actions">
 				<div>Webserv</div>
 			</Link>
 			<main></main>

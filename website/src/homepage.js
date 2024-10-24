@@ -15,7 +15,7 @@ export function Homepage()
 			</header>
 			<main>
 				<div id='mainText'>
-					<p id='firstSentence'>Web Serv is a 42 project that consists to build a HTTP server from scratch.</p>
+					<p id='firstSentence'>Web Serv is a 42 project that consists in building a HTTP server from scratch.</p>
 					<p id='secondSentence'>It has to be powered in C++</p>
 				</div>
 				<MainBtn />

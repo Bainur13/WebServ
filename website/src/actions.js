@@ -13,7 +13,7 @@ export function Actions()
 		<>
 		<NavBar />
 		<main>
-			<p id='mainTextActions'>You can chose multiple actions</p>
+			<p id='mainTextActions'>Try one of the following actions</p>
 			<div id='cardsSection'>
 				<Cards setHoveredAction={setHoveredAction}/>
 			</div>
@@ -60,7 +60,7 @@ function definePath(action)
 		'Custom Page': '/custom_page',
         'Bad request': '/bad_request',
         '404': '/coucousalut',
-        'Upload File': '/upload_file',
+        'Upload File': '/uploader',
         'Delete file': '/delete_file',
         'Calculations': '/calulations'
 	}
@@ -70,11 +70,11 @@ function definePath(action)
 function CardText({ hoveredAction }) {
     // Messages à afficher pour chaque carte
     const messages = {
-        'Custom Page': 'This will create a custom page by asking you personnal informations.',
+        'Custom Page': 'This will create a custom page by asking you personal information.',
         'Bad request': 'This simulates a bad request.',
         '404': 'This displays a 404 error page by accessing a bad URL.',
-        'Upload File': 'This lets you upload a file on the server.',
-        'Delete file': 'This action deletes a file from the server.',
+        'Upload File': 'This lets you upload a file to the server.',
+        'Delete file': 'This lets you delete a file from the server.',
         'Calculations': 'Perform some calculations here.'
     };
 
