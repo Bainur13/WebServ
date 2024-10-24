@@ -1,0 +1,133 @@
+#choiceTitle
+{
+	margin-top: 5%;
+	font-weight: 200;
+	text-align: center;
+}
+
+#choices
+{
+	margin: 5%;
+	display: flex;
+	width: 100%;
+	justify-content: space-evenly;
+}
+
+.choiceBtn
+{
+	padding: 5%;
+	font-size: 100%;
+	border: 1px solid white;
+	background-color: black;
+	color: white;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+.choiceBtn:hover
+{
+	background-color: white;
+	color: black;
+}
+
+#returnBtnDiv
+{
+	width: 100%;
+}
+
+#returnBtn
+{
+	cursor: pointer;
+	margin-top: 2%;
+	margin-left: 2%;
+	font-weight: 200;
+	font-size: 150%;
+	background-color: black;
+	border: none;
+	color: white;
+}
+
+.customPageForms
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+#internFormDiv
+{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 1%;
+}
+
+main h2
+{
+	font-weight: 200;
+}
+
+#formInputs
+{
+	display: flex;
+	flex-direction: column;
+	margin-top: 12px;
+}
+
+#formInputs input
+{
+
+	font-size: 150%;
+	margin-bottom: 10%;
+}
+
+.customPageForms label
+{
+	font-weight: 200;
+	white-space: nowrap;
+	display: inline-block;
+	font-size: 170%;
+	width: 100%;
+	margin-bottom: 2%;
+	margin-top: 2%;
+}
+
+#formLabels
+{
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+.customPageForms input {
+	font-weight: 200;
+	color: white;
+	background-color: black;
+	border: none;
+	border-bottom: 1px solid white;
+  }
+
+.customPageForms input:focus {
+outline: none;
+border-bottom: 1px solid white;
+}
+
+#formSubmitBtn
+{
+	cursor: pointer;
+	font-weight: 300;
+	background-color: black;
+	color: white;
+	border: 1px solid white;
+	font-size: 120%;
+	padding: 1.5%;
+	transition: all 0.5s ease;
+}
+
+#formSubmitBtn:hover
+{
+	background-color: white;
+	color: black;
+}

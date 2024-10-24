@@ -6,7 +6,7 @@ main
 
 #mainTextActions
 {
-	font-weight: lighter;
+	font-weight: 200;
 	text-align: center;
 	font-size: 30px;
 	margin: 8%;
@@ -22,13 +22,14 @@ main
 
 .cards
 {
+	cursor: pointer;
 	text-align: center;
 	text-wrap: nowrap;
 	border: 1px solid white;
-	padding: 2%;
-	margin: 1%;
+	padding: 1.5%;
+	margin-right: 3%;
 	justify-content: center;
-	transition: all 0.5s ease;
+	transition: all 1s ease;
 }
 
 .cards:hover
@@ -40,7 +41,7 @@ main
 #cardsText
 {
 	font-size: 180%;
-	font-weight: lighter;
+	font-weight: 200;
 	margin-top: 5%;
 	opacity: 0;
 	animation: fadeInCardsText 1s ease-in forwards;

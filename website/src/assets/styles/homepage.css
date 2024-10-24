@@ -16,7 +16,7 @@ header
 
 #homePageTitle
 {
-	font-weight: lighter;
+	font-weight: 100;
 	margin-left: 7%;
 	animation: fadeInTitle 2s ease-in;
 	font-size: clamp(6vh, 8vw, 8vh);
@@ -32,6 +32,10 @@ header
 }
 
 /* Main Part */
+body
+{
+	margin: 0;
+}
 
 main {
 	flex: 1;
@@ -42,10 +46,10 @@ main {
 
 #mainText
 {
-	font-weight: lighter;
+	font-weight: 200;
 	text-align: center;
 	font-size: clamp(1vh, 2vw, 3vh);
-	margin: 8%;
+	margin: 5%;
 }
 
 #firstSentence
@@ -66,12 +70,12 @@ main {
 {
 	height: auto;
 	opacity: 0;
-	font-weight: lighter;
+	font-weight: 200;
 	border: none;
 	background-color: black;
 	color: white;
 	font-size: clamp(1vh, 2vw, 3vh);
-	margin-bottom: 12%;
+	margin-bottom: 6%;
 	animation: buttonFadeIn 3s ease-in forwards;
 	animation-delay: 4s;
 	border-bottom: 1px solid transparent;
@@ -89,33 +93,6 @@ main {
     opacity: 1;
     pointer-events: auto;
 	cursor: pointer;
-}
-
-/* Footer Part */
-
-footer {
-	text-align: center;
-    padding: 10px 0;
-}
-
-#footerLowerPart
-{
- margin-bottom: 10px;
-}
-
-#footerLowerPart p
-{
-	margin: 0;
-}
-
-#footerUpperPart
-{
-	margin: 0;
-}
-
-#footerUpperPart p
-{
-	margin : 0;
 }
 
 

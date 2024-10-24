@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { NavBar } from './navbar.js';
 import { Footer } from './footer.js';
@@ -41,14 +42,29 @@ function Cards( {setHoveredAction} )
 function Card({ action, setHoveredAction })
 {
 	return (
-		<div
+		<Link
 			className='cards'
+			to={definePath(action)}
 			onMouseEnter={() => setHoveredAction(action)}  // Definir l'action survolee
-            onMouseLeave={() => setHoveredAction('')} // Reinitialiser le contenu quand l'action n'est plus survolee
+			onMouseLeave={() => setHoveredAction('')} // Reinitialiser le contenu quand l'action n'est plus survolee
 		>
 			{action}
-		</div>
+		</Link>
 	)
+}
+
+function definePath(action)
+{
+	const paths =
+	{
+		'Custom Page': '/custom_page',
+        'Bad request': '/bad_request',
+        '404': '/coucousalut',
+        'Upload File': '/upload_file',
+        'Delete file': '/delete_file',
+        'Calculations': '/calulations'
+	}
+	return paths[action];
 }
 
 function CardText({ hoveredAction }) {

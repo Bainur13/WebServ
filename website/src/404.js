@@ -12,7 +12,7 @@ export function Error404()
 		<NavBar />
 		<main id='errorMain'>
 			<h1>404 Error, you lost ?</h1>
-			<a href="javascript:history.back()">Go back</a>
+			<a id='backLink' href="javascript:history.back()">Go back</a>
 		</main>
 		<Footer />
 		</>
