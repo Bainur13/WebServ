@@ -26,6 +26,7 @@ std::string Response::error_location(std::string error, short error_code, Locati
 	std::ostringstream oss;
 	std::string error_page;
 
+	std::cout << error_page;
 	oss << error_code;
 	error_page = location.get_error_page(error_code);
 	std::string response;
@@ -72,7 +73,7 @@ std::string Response::error_basic(std::string error, short error_code, Server_co
 		int fd = open(error_page.c_str(), O_RDONLY);
 		if (fd == -1)
 		{
-			error_basic("Error 500 : Internal Server Error", 500, serv);
+			error_basic("00 : Internal Server Error", 500, serv);
 			_header["Content-Length"] = get_body_size();
 			return (response);
 		}
