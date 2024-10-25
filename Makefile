@@ -29,7 +29,6 @@ $(NAME): $(OBJ)
 					+------------------------+$(NC)"
 
 all: $(NAME)
-	./WebServ file.conf &
 	cd ./website && npm run build
 	# sleep 3
 	# firefox http://localhost:8080

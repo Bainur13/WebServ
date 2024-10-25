@@ -1,13 +1,81 @@
 #include "../../Includes/post.hpp"
 #include <sys/stat.h>
 
-bool	post_request(Request &req, Server_conf &server_c, Response &res)
+bool handle_multipart(Request &req, Response &res, Server_conf &server_c, std::string path, Location &location, bool &exist)
 {
-	Location	location;
-	int			fd;
-	struct stat	info;
-    std::string path;
-    bool exist = 0;
+	std::string content_type = req.get_request_line("Content-Type");
+	size_t pos = content_type.find("boundary=");
+
+	if (pos == std::string::npos)
+	{
+		if (location.get_path() != "")
+			res.error_location("Error 400 : Bad Request", 400, location, server_c);
+		else
+			res.error_basic("Error 400 : Bad Request", 400, server_c);
+		return (false);
+	}
+	std::string boundary = content_type.substr(pos + 9);
+
+	std::string body = req.get_request_body();
+	if (body.find(boundary + "--") == std::string::npos)
+	{
+		res.error_location("Error 400 : Bad Request", 400, location, server_c);
+		return (false);
+	}
+	while (1)
+	{
+		size_t start = body.find(boundary);
+		if (start == std::string::npos)
+			break;
+		size_t end = body.find(boundary, start + boundary.size());
+		if (end == std::string::npos)
+			break;
+		std::string part = body.substr(start + boundary.size(), end - start - boundary.size());
+		size_t pos = part.find("\r\n\r\n");
+		if (pos == std::string::npos)
+		{
+			res.error_location("Error 400 : Bad Request", 400, location, server_c);
+			return (false);
+		}
+		std::string header = part.substr(0, pos);
+		std::string content = part.substr(pos + 4);
+		pos = header.find("filename=\"");
+		if (pos == std::string::npos)
+		{
+			res.error_location("Error 400 : Bad Request", 400, location, server_c);
+			return (false);
+		}
+		std::string filename = header.substr(pos + 10);
+		pos = filename.find("\"");
+		if (pos == std::string::npos)
+		{
+			res.error_location("Error 400 : Bad Request", 400, location, server_c);
+			return (false);
+		}
+		filename = filename.substr(0, pos);
+		std::string filepath = path + filename;
+		struct stat info;
+		if (stat(filepath.c_str(), &info) == 0)
+			exist = 1;
+		int file_fd = open(filepath.c_str(), O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (file_fd < 0)
+		{
+			res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+			return (false);
+		}
+		write(file_fd, content.c_str(), content.size());
+		close(file_fd);
+		body = body.substr(end + boundary.size());
+	}
+	return (true);
+}
+bool post_request(Request &req, Server_conf &server_c, Response &res)
+{
+	Location location;
+	int fd;
+	struct stat info;
+	std::string path;
+	bool exist = 0;
 
 	path = req.get_request_line("Path");
 	std::cout << path << std::endl;
@@ -16,7 +84,7 @@ bool	post_request(Request &req, Server_conf &server_c, Response &res)
 	{
 		if (!check_method_right(location.get_method(), "POST"))
 		{
-			res.error_basic("Error 405 : Method Not Allowed", 405, server_c);
+			res.error_location("Error 405 : Method Not Allowed", 405, location, server_c);
 			return (false);
 		}
 		if (location.get_root() != "")
@@ -32,30 +100,37 @@ bool	post_request(Request &req, Server_conf &server_c, Response &res)
 		if (server_c.get_root() != "")
 			path = server_c.get_root() + path;
 	}
-    if (stat(path.c_str(), &info) == 0)
-        exist = 1;
-    if ((fd = open(path.c_str(), O_CREAT | O_WRONLY | O_APPEND, 0644)) < 0)
-    {
-        res.error_basic("Error 500 : Internal Server Error", 500, server_c);
-        return (false);
-    }
-    std::string content_type = req.get_request_line("Content-Type");
-    if (content_type == "application/x-www-form-urlencoded")
-    {
-        std::string body = req.get_request_body();
-        write(fd, body.c_str(), body.size());
-        if (exist)
-            res.error_basic("Error 200 : OK", 200, server_c);
-        else
-            res.error_basic("Error 201 : Created", 201, server_c);
-    }
-    else if (content_type == "multipart/form-data")
-    {
-        std::string boundary = content_type.substr(content_type.find("boundary=") + 9);
-        std::string body = req.get_request_body();
-        body = body.substr(body.find(boundary) + boundary.size());
-
-
-    }
-	return 1;
+	std::string content_type = req.get_request_line("Content-Type");
+	if (content_type == "application/x-www-form-urlencoded")
+	{
+		if (stat(path.c_str(), &info) == 0)
+			exist = 1;
+		if ((fd = open(path.c_str(), O_CREAT | O_WRONLY | O_APPEND, 0644)) < 0)
+		{
+			res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+			return false;
+		}
+		std::string body = req.get_request_body();
+		write(fd, body.c_str(), body.size());
+		close(fd);
+	}
+	else if (content_type == "multipart/form-data")
+	{
+		if (!handle_multipart(req, res, server_c, path, location, exist))
+			return (false);
+	}
+	else
+	{
+		res.error_basic("Error 400 : Bad Request", 400, server_c);
+		return (false);
+	}
+	if (exist)
+		res.set_line("Status", "200");
+	else
+		res.set_line("Status", "201");
+	res.set_line("Version", "HTTP/1.1");
+	res.set_line("Reason", "OK");
+	res.set_header("Content-Type", "text/html");
+	res.set_header("Content-Length", res.get_body_size());
+	return (true);
 }

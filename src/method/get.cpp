@@ -10,9 +10,6 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 	location = search_location(path, server_c);
 	if (location.get_path() != "")
 	{
-		std::cout << "Location found" << std::endl;
-		std::cout << "Path: " << location.get_path() << std::endl;
-		std::cout << "Root: " << location.get_root() << std::endl;
 		if (!check_method_right(location.get_method(), "GET"))
 		{
 			res.error_basic("Error 405 : Method Not Allowed", 405, server_c);
@@ -26,7 +23,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 				fd = open(path.c_str(), O_RDONLY);
 				if (fd < 0)
 				{
-					res.error_location("Error 404 : Not Found", 404, location);
+					res.error_location("Error 404 : Not Found", 404, location, server_c);
 					return (false);
 				}
 				res.set_body(read_fd_to_end(fd));
@@ -38,7 +35,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			// }
 			else
 			{
-				res.error_location("Error 403 : Forbidden", 403, location);
+				res.error_location("Error 403 : Forbidden", 403, location, server_c);
 				return (false);
 			}
 		}
@@ -47,7 +44,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			fd = open(path.c_str(), O_RDONLY);
 			if (fd < 0)
 			{
-				res.error_location("Error 404 : Not Found", 404, location);
+				res.error_location("Error 404 : Not Found", 404, location, server_c);
 				return (false);
 			}
 			res.set_body(read_fd_to_end(fd));

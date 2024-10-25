@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vk1337 <vk1337@student.42.fr>              +#+  +:+       +#+        */
+/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/23 19:35:56 by vk1337           ###   ########.fr       */
+/*   Updated: 2024/10/25 17:06:00 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,9 +142,7 @@ void	init_servers(Conf &conf)
 			if (!server_status)
 			{
 				if (events[i].events)
-				{
 					handle_client(events[i].data.fd, servers[server_conf]);
-				}
 				close(events[i].data.fd);
 			}
 		}
