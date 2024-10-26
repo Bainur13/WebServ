@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/25 17:06:00 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/25 18:39:38 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	handle_client(int client_fd, Server_conf &server_c)
 
 	std::string request;
 	request = read_fd_to_end(client_fd);
+	std::cout << "Request received:" << std::endl;
 	if (request.empty())
 	{
 		close(client_fd);

@@ -57,12 +57,12 @@ function definePath(action)
 {
 	const paths =
 	{
-		'Custom Page': '/custom_page',
-        'Bad request': '/bad_request',
-        '404': '/coucousalut',
-        'Upload File': '/uploader',
-        'Delete file': '/delete_file',
-        'Calculations': '/calulations'
+		'Custom Page': '/action/custom_page',
+        'Bad request': '/action/bad_request',
+        '404': '/action/coucousalut',
+        'Upload File': '/action/uploader',
+        'Delete file': '/action/delete_file',
+        'Calculations': '/action/calulations'
 	}
 	return paths[action];
 }

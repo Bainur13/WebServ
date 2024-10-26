@@ -41,6 +41,8 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 		}
 		else
 		{
+			std::cout << "PATH: " << path << std::endl;
+			std::cout << path << std::endl;
 			fd = open(path.c_str(), O_RDONLY);
 			if (fd < 0)
 			{

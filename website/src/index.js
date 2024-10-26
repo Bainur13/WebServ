@@ -15,8 +15,8 @@ function App()
 			<Routes>
 				<Route path='/' element={ <Homepage /> }/>
 				<Route path='/actions' element={ <Actions /> }/>
-				<Route path='/custom_page' element={ <CustomPage /> }/>
-				<Route path='/uploader' element={ <Uploader />}/>
+				<Route path='/action/custom_page' element={ <CustomPage /> }/>
+				<Route path='/action/uploader' element={ <Uploader />}/>
 				<Route path='*' element={ <Error404 /> }/>
 			</Routes>
 		</Router>

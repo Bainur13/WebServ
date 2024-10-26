@@ -3,9 +3,10 @@
 
 bool handle_multipart(Request &req, Response &res, Server_conf &server_c, std::string path, Location &location, bool &exist)
 {
-	std::string content_type = req.get_request_line("Content-Type");
+	std::string content_type = req.get_request_header("Content-Type");
 	size_t pos = content_type.find("boundary=");
-
+	std::cout << "content_type" << std::endl;
+	std::cout << content_type << std::endl;
 	if (pos == std::string::npos)
 	{
 		if (location.get_path() != "")
@@ -17,6 +18,10 @@ bool handle_multipart(Request &req, Response &res, Server_conf &server_c, std::s
 	std::string boundary = content_type.substr(pos + 9);
 
 	std::string body = req.get_request_body();
+	std::cout << "body" << std::endl;
+	std::cout << body << std::endl;
+	std::cout << "boundary" << std::endl;
+	std::cout << boundary << std::endl;
 	if (body.find(boundary + "--") == std::string::npos)
 	{
 		res.error_location("Error 400 : Bad Request", 400, location, server_c);
@@ -37,8 +42,14 @@ bool handle_multipart(Request &req, Response &res, Server_conf &server_c, std::s
 			res.error_location("Error 400 : Bad Request", 400, location, server_c);
 			return (false);
 		}
+		std::cout << "part" << std::endl;
+		std::cout << part << std::endl;
 		std::string header = part.substr(0, pos);
+		std::cout << "header" << std::endl;
+		std::cout << header << std::endl;
+
 		std::string content = part.substr(pos + 4);
+		content = content.substr(0, content.size() - 5);
 		pos = header.find("filename=\"");
 		if (pos == std::string::npos)
 		{
@@ -78,7 +89,6 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	bool exist = 0;
 
 	path = req.get_request_line("Path");
-	std::cout << path << std::endl;
 	location = search_location(path, server_c);
 	if (location.get_path() != "")
 	{
@@ -87,8 +97,6 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 			res.error_location("Error 405 : Method Not Allowed", 405, location, server_c);
 			return (false);
 		}
-		if (location.get_root() != "")
-			path = location.get_root() + path;
 	}
 	else
 	{
@@ -100,7 +108,14 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 		if (server_c.get_root() != "")
 			path = server_c.get_root() + path;
 	}
-	std::string content_type = req.get_request_line("Content-Type");
+	std::string content_type = req.get_request_header("Content-Type");
+	std::cout << "content_type" << std::endl;
+	std::cout << content_type << std::endl;
+	size_t pos = content_type.find(";");
+	if (pos != std::string::npos)
+		content_type = content_type.substr(0, pos);
+	std::cout << "content_type" << std::endl;
+	std::cout << content_type << std::endl;
 	if (content_type == "application/x-www-form-urlencoded")
 	{
 		if (stat(path.c_str(), &info) == 0)
@@ -116,6 +131,7 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	}
 	else if (content_type == "multipart/form-data")
 	{
+		std::cout << "multipart" << std::endl;
 		if (!handle_multipart(req, res, server_c, path, location, exist))
 			return (false);
 	}

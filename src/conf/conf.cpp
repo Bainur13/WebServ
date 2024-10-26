@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 19:20:44 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/25 17:30:09 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ Location Conf::parse_location(std::ifstream &file,
 			continue ;
 		if (unique_symbol(line_s, "}"))
 			break ;
+		else if (line_s[0] == "alias")
+			location.set_alias(line_s);
 		else if (line_s[0] == "root")
 			location.set_root(line_s);
 		else if (line_s[0] == "index")

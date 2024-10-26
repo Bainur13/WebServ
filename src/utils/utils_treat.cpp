@@ -25,6 +25,7 @@ Location	search_location(std::string &path, Server_conf &server_c)
 						location = locations[i];
 						continue ;
 					}
+					std::cout << "location root: " << locations[i].get_root() << std::endl;
 					root = locations[i].get_root();
 					best_match = locations_path;
 					location = locations[i];
@@ -34,7 +35,15 @@ Location	search_location(std::string &path, Server_conf &server_c)
 		}
 		if (!match)
 			break ;
-		path.replace(path.find(best_match), best_match.size(), root);
+		if (location.get_alias() != "")
+		{
+			if (root == "")
+				path = server_c.get_root() + location.get_alias();
+			else
+				path = root + location.get_alias();
+		}
+		else
+			path.replace(path.find(best_match), best_match.size(), root);
 		best_match.clear();
 	}
 	if (location.get_path() == "")

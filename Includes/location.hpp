@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:24:50 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 19:19:52 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/25 17:30:42 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,13 @@ public:
     void set_redirect(const std::vector<std::string> &line_s);
     void set_method(const std::vector<std::string> &line_s);
     void set_listing(const std::vector<std::string> &line_s);
-
+    void set_alias(const std::vector<std::string> &line_s);
+    
     std::string get_path();
     std::string get_root();
     std::string get_index();
+    std::string get_alias();
+    
     std::string get_error_page(short error_code);
     std::pair<short, std::string> get_redirect();
     std::vector<std::string> get_method();
@@ -51,6 +54,7 @@ private:
     std::string _path;
     std::string _root;
     std::string _index;
+    std::string _alias;
     std::map<short, std::string> _error_page;
     std::pair<short, std::string> _redirect;
     std::vector<std::string> _method;

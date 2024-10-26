@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 19:19:57 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/25 17:43:54 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ Location &Location::operator=(const Location &copy)
         this->_redirect = copy._redirect;
         this->_method = copy._method;
         this->_listing = copy._listing;
+        this->_alias = copy._alias;
     }
     return *this;
 }
@@ -113,6 +114,13 @@ void Location::set_listing(const std::vector<std::string> &line_s)
         error_exit("Error: invalid listing");
 }
 
+void Location::set_alias(const std::vector<std::string> &line_s)
+{
+    if (line_s.size() != 3)
+        error_exit("Error: invalid alias");
+    _alias = line_s[1];
+}
+
 std::string Location::get_path()
 {
     return this->_path;
@@ -153,6 +161,11 @@ std::vector<std::string> Location::get_method()
 bool Location::get_listing()
 {
     return this->_listing;
+}
+
+std::string Location::get_alias()
+{
+    return this->_alias;
 }
 
 
