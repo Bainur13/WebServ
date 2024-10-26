@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:52 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 19:19:20 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/26 20:41:31 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "location.hpp"
 # include "server_conf.hpp"
 # include "utils_treat.hpp"
+# include "auto_index.hpp"
 # include <cstdlib>
 # include <fcntl.h>
 # include <fstream>

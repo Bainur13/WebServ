@@ -9,6 +9,7 @@ SRC =				./src/main.cpp \
 					./src/format/Request.cpp \
 					./src/method/get.cpp \
 					./src/method/post.cpp \
+					./src/auto_index/auto_index.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
 

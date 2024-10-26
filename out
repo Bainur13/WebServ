@@ -4,37 +4,50 @@ ndfs: 1
 Waiting for connection
 ndfs: 1
 Request received:
-Body: firstName=zdzd&lastName=zdzqdqzd&birthday=0012-10-09
 Request received:
-POST /createcustom HTTP/1.1
+GET /upload/ HTTP/1.1
 Host: localhost:8081
 User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:129.0) Gecko/20100101 Firefox/129.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8
 Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
 Accept-Encoding: gzip, deflate, br, zstd
-Referer: http://localhost:8081/action/custom_page
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 52
-Origin: http://localhost:8081
 Connection: keep-alive
 Upgrade-Insecure-Requests: 1
 Sec-Fetch-Dest: document
 Sec-Fetch-Mode: navigate
-Sec-Fetch-Site: same-origin
+Sec-Fetch-Site: none
 Sec-Fetch-User: ?1
 Priority: u=0, i
 
-firstName=zdzd&lastName=zdzqdqzd&birthday=0012-10-09
+
 location root: ./website/build/
-location root: ./custom/custom_data
-content_type
-application/x-www-form-urlencoded
-content_type
-application/x-www-form-urlencoded
+location root: ./upload/
+.
+/
+u
+p
+l
+o
+a
+d
+/
+erase
+/
 Response sent:
-HTTP/1.1 201 OK
-Content-Length: 0
-Content-Type: text/html
+HTTP/1.1 200 OK
+Content-Length: 197
+Content-Type: application/octet-stream
 
-
+<html>
+<head>
+<title>Index of ./upload/</title>
+</head>
+<body>
+<h1>Index of ./upload/</h1>
+<ul>
+<li><a href="./upload/bbb">bbb</a></li>
+<li><a href="./upload/aaa">aaa</a></li>
+</ul>
+</body>
+</html>
 Waiting for connection

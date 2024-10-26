@@ -29,10 +29,10 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 				res.set_body(read_fd_to_end(fd));
 				close(fd);
 			}
-			// else if (location.get_autoindex())
-			// {
-			// 		res.set_body(autoindex(path));
-			// }
+			else if (location.get_listing())
+			{
+				auto_index(path, location, server_c, res);
+			}
 			else
 			{
 				res.error_location("Error 403 : Forbidden", 403, location, server_c);
