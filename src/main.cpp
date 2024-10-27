@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/25 18:39:38 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/27 19:33:47 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ Response	treat_request(Request req, Server_conf &server_c)
 	{
 		if (!post_request(req, server_c, res))
 			std::cerr << "Error posting request" << std::endl;
+	}
+	if (req.get_request_line("Method") == "DELETE")
+	{
+		if (!delete_request(req, server_c, res))
+			std::cerr << "Error deleting request" << std::endl;
 	}
 	return (res);
 }

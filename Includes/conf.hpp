@@ -6,7 +6,7 @@
 /*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:52 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/26 20:41:31 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/27 19:48:25 by bainur           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "Response.hpp"
 # include "get.hpp"
 # include "post.hpp"
+# include "delete.hpp"
 # include "location.hpp"
 # include "server_conf.hpp"
 # include "utils_treat.hpp"
