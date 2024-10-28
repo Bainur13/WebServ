@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/25 17:43:54 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/28 17:11:25 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,14 @@ void Location::set_method(const std::vector<std::string> &line_s)
 
 void Location::set_listing(const std::vector<std::string> &line_s)
 {
-    if (line_s.size() != 3)
+    if (line_s.size() != 4)
         error_exit("Error: invalid listing");
     if (line_s[1] == "on")
         _listing = true;
     else if (line_s[1] == "off")
         _listing = false;
+	else if (line_s[2] != "")
+		_auto_index_cgi_path = line_s[2];
     else
         error_exit("Error: invalid listing");
 }
@@ -136,6 +138,11 @@ std::string Location::get_index()
     return this->_index;
 }
 
+std::string Location::get_auto_index_cgi_path()
+{
+	return this->_auto_index_cgi_path;
+}
+
 std::string Location::get_error_page(short error_code)
 {
     if (_error_page.find(error_code) == _error_page.end())
@@ -144,7 +151,7 @@ std::string Location::get_error_page(short error_code)
 }
 
 std::pair<short, std::string> Location::get_redirect()
-{ 
+{
     return this->_redirect;
 }
 
@@ -167,5 +174,3 @@ std::string Location::get_alias()
 {
     return this->_alias;
 }
-
-
