@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.cpp                                         :+:      :+:    :+:   */
+/*   server_conf.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/14 19:08:22 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/28 18:51:08 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ Server_conf &Server_conf::operator=(const Server_conf &copy)
         this->_method = copy._method;
         this->_server = copy._server;
         this->_locations = copy._locations;
+		this->_cgis = copy._cgis;
     }
     return *this;
 }
@@ -62,7 +63,7 @@ void Server_conf::set_root(const std::vector <std::string> &line_s)
     if (line_s.size() != 3)
         error_exit("Error: invalid root");
     this->_root = line_s[1];
-}   
+}
 
 void Server_conf::set_sizelimit(const std::vector <std::string> &line_s)
 {
@@ -128,6 +129,11 @@ void Server_conf::add_location(Location location)
     _locations.push_back(location);
 }
 
+void Server_conf::addCgi(Cgi cgi)
+{
+	_cgis.push_back(cgi);
+}
+
 
 std::string Server_conf::get_server_conf_name()
 {
@@ -181,3 +187,7 @@ std::vector<Location> Server_conf::get_locations()
     return _locations;
 }
 
+std::vector<Cgi> Server_conf::get_cgis()
+{
+	return _cgis;
+}
