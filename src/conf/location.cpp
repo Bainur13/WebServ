@@ -6,11 +6,12 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 21:19:36 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:15:32 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/location.hpp"
+#include "../../Includes/Cgi.hpp"
 
 Location::Location()
 {
@@ -104,14 +105,23 @@ void Location::set_method(const std::vector<std::string> &line_s)
 
 void Location::set_listing(const std::vector<std::string> &line_s)
 {
-    if (line_s.size() != 4)
+    if (line_s.size() != 3)
+	{
         error_exit("Error: invalid listing");
+	}
     if (line_s[1] == "on")
         _listing = true;
     else if (line_s[1] == "off")
         _listing = false;
     else
         error_exit("Error: invalid listing");
+}
+
+void Location::set_cgi(const std::vector<std::string> &line_s)
+{
+	if (line_s.size() != 4)
+		error_exit("Error: invalid cgi");
+	this->_cgi = Cgi(line_s[2], line_s[1]);
 }
 
 void Location::set_alias(const std::vector<std::string> &line_s)
@@ -136,9 +146,10 @@ std::string Location::get_index()
     return this->_index;
 }
 
-std::string Location::get_auto_index_cgi_path()
+void Location::get_cgi()
 {
-	return this->_auto_index_cgi_path;
+	std::cout << "CGI PATH =>" << this->_cgi.getPath() << std::endl;
+	std::cout << "CGI INTERPRETER PATH " << this->_cgi.getInterpreter() << std::endl;
 }
 
 std::string Location::get_error_page(short error_code)

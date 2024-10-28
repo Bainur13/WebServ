@@ -4,6 +4,7 @@ SRC =				./src/main.cpp \
 					./src/server/Server.cpp \
 					./src/utils/utils.cpp \
 					./src/utils/utils_treat.cpp \
+					./src/cgi/cgi.cpp \
 					./src/conf/location.cpp \
 					./src/format/Response.cpp \
 					./src/format/Request.cpp \

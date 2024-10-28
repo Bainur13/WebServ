@@ -1,4 +1,9 @@
-#include "Cgi.hpp"
+#include "../../Includes/Cgi.hpp"
+
+Cgi::Cgi()
+{
+	;
+}
 
 Cgi::Cgi(const Cgi &copy)
 {
@@ -64,9 +69,11 @@ bool Cgi::executeCgi(std::vector<std::string> argsToPass)
 	{
 		std::string output;
 		close(pipefd[1]);
-		while (bytesRead = read(pipefd[0], buffer, 1024) > 0)
+		bytesRead = read(pipefd[0], buffer, 1024);
+		while (bytesRead > 0)
 		{
 			output.append(buffer);
+			bytesRead = read(pipefd[0], buffer, 1024);
 		}
 		close(pipefd[0]);
 		waitpid(pid, &status, 0);

@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:11 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 18:37:21 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:07:07 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ class Server_conf
 	std::vector<std::string> get_method();
 	Server get_server();
 	std::vector<Location> get_locations();
-	std::vector<Cgi> get_cgis();
-	void addCgi(Cgi cgi);
 
 	void add_location(Location location);
 

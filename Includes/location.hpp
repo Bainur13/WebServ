@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:24:50 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 17:09:26 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:12:23 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <vector>
 #include "utils.hpp"
+#include "Cgi.hpp"
 
 class Location
 {
@@ -31,6 +32,7 @@ public:
     Location &operator=(const Location &copy);
     ~Location();
 
+	void get_cgi();
     void set_path(const std::vector<std::string> &line_s);
     void set_root(const std::vector<std::string> &line_s);
     void set_index(const std::vector<std::string> &line_s);
@@ -39,12 +41,12 @@ public:
     void set_method(const std::vector<std::string> &line_s);
     void set_listing(const std::vector<std::string> &line_s);
     void set_alias(const std::vector<std::string> &line_s);
+	void set_cgi(const std::vector<std::string> &line_s);
 
     std::string get_path();
     std::string get_root();
     std::string get_index();
     std::string get_alias();
-	std::string get_auto_index_cgi_path();
 
     std::string get_error_page(short error_code);
     std::pair<short, std::string> get_redirect();
@@ -56,10 +58,10 @@ private:
     std::string _root;
     std::string _index;
     std::string _alias;
-	std::string _auto_index_cgi_path;
     std::map<short, std::string> _error_page;
     std::pair<short, std::string> _redirect;
     std::vector<std::string> _method;
     bool _listing;
+	Cgi _cgi;
 };
 #endif

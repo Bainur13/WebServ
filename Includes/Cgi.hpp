@@ -1,3 +1,6 @@
+#ifndef CGI_HPP
+#define CGI_HPP
+
 #include <iostream>
 #include <string>
 #include <cstdio>
@@ -12,6 +15,7 @@ class Cgi
 	std::string _interpreterPath;
 
   public:
+	Cgi();
 	Cgi(const Cgi &copy);
 	Cgi &operator=(const Cgi &copy);
 	Cgi(std::string path, std::string interpreter);
@@ -22,3 +26,5 @@ class Cgi
 	bool executeCgi(std::vector<std::string> argsToPass);
 	~Cgi();
 };
+
+#endif
