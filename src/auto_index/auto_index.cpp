@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   auto_index.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:36:58 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/26 20:59:34 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/28 14:28:58 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ bool	auto_index(std::string path, Location &location, Server_conf &server_c,
 	res.set_line("Status", "200");
 	res.set_line("Reason", "OK");
 	res.set_header("Content-Type", "text/html");
-	res.set_header("Content-Length", res.get_body_size());
 	res.set_body(body);
+	res.set_header("Content-Length", res.get_body_size());
 	closedir(dir);
 	return (true);
 }
