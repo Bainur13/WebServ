@@ -31,7 +31,10 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			}
 			else if (location.get_listing())
 			{
-				auto_index(path, location, server_c, res);
+				if (auto_index(path, location, server_c, res) == false)
+					return (false);
+				else
+					return (true);
 			}
 			else
 			{

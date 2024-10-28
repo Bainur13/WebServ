@@ -23,6 +23,6 @@
 #include <unistd.h>
 
 
-void auto_index(std::string path, Location &location, Server_conf &server_c, Response &res);
+bool auto_index(std::string path, Location &location, Server_conf &server_c, Response &res);
 
 #endif
