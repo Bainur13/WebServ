@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 21:56:38 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:06:56 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ Server_conf &Server_conf::operator=(const Server_conf &copy)
         this->_method = copy._method;
         this->_server = copy._server;
         this->_locations = copy._locations;
-		this->_cgis = copy._cgis;
     }
     return *this;
 }
@@ -176,7 +175,10 @@ Server Server_conf::get_server()
     return _server;
 }
 
-std::vector<Location> Server_conf::get_locations()
-{
+std::vector<Location>& Server_conf::get_locations() {
+    return _locations;
+}
+
+const std::vector<Location>& Server_conf::get_locations() const {
     return _locations;
 }

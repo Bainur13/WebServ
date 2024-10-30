@@ -38,7 +38,7 @@ std::string Cgi::getInterpreter()
 {
 	return (this->_interpreterPath);
 }
-bool Cgi::executeCgi(std::vector<std::string> argsToPass)
+bool Cgi:: executeCgi(std::vector<std::string> argsToPass)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -58,8 +58,10 @@ bool Cgi::executeCgi(std::vector<std::string> argsToPass)
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
-		if (execve(this->_interpreterPath.c_str(), (char *const *)argsToPass.data(),
-				NULL) == -1)
+		std::string path = this->getPath();
+        const char* scriptPath = path.c_str();
+		const char* args[] = { scriptPath, NULL }; // Only the script path, followed by NULL
+		if (execve(scriptPath, const_cast<char* const*>(args), NULL) == -1)
 		{
 			perror("Erreur lors de l'exécution du script");
 			_exit(1);
@@ -77,7 +79,7 @@ bool Cgi::executeCgi(std::vector<std::string> argsToPass)
 		}
 		close(pipefd[0]);
 		waitpid(pid, &status, 0);
-		std::cout << "Sortie du script" << output << std::endl;
+		std::cout << "Sortie du script => " << output << std::endl;
 	}
 	return (1);
 }

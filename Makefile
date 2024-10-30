@@ -13,7 +13,7 @@ SRC =				./src/main.cpp \
 					./src/method/delete.cpp \
 					./src/auto_index/auto_index.cpp \
 
-C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g3
 
 NAME = WebServ
 

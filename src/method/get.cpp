@@ -15,6 +15,11 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			res.error_basic("Error 405 : Method Not Allowed", 405, server_c);
 			return (false);
 		}
+		if (location.get_cgi())
+		{
+			std::vector<std::string> args;
+			location.get_cgi()->executeCgi(args);
+		}
 		if (path.find_last_of("/") == path.size() - 1)
 		{
 			if (location.get_index() != "")

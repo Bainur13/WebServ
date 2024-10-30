@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 22:15:32 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:19:17 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ Location::Location()
     _redirect.first = 0;
     _redirect.second = "";
     _listing = false;
+	_cgi = NULL;
 }
 
 Location::Location(const Location &copy)
@@ -40,12 +41,17 @@ Location &Location::operator=(const Location &copy)
         this->_method = copy._method;
         this->_listing = copy._listing;
         this->_alias = copy._alias;
+		if (copy.get_cgi())
+			this->_cgi = new Cgi(*(copy._cgi));
+		else
+			this->_cgi = NULL;
     }
     return *this;
 }
 
 Location::~Location()
 {
+	;
 }
 
 void Location::set_path(const std::vector<std::string> &line_s)
@@ -121,7 +127,7 @@ void Location::set_cgi(const std::vector<std::string> &line_s)
 {
 	if (line_s.size() != 4)
 		error_exit("Error: invalid cgi");
-	this->_cgi = Cgi(line_s[2], line_s[1]);
+	this->_cgi = new Cgi(line_s[2], line_s[1]);
 }
 
 void Location::set_alias(const std::vector<std::string> &line_s)
@@ -146,10 +152,9 @@ std::string Location::get_index()
     return this->_index;
 }
 
-void Location::get_cgi()
+Cgi *Location::get_cgi() const
 {
-	std::cout << "CGI PATH =>" << this->_cgi.getPath() << std::endl;
-	std::cout << "CGI INTERPRETER PATH " << this->_cgi.getInterpreter() << std::endl;
+	return (this->_cgi);
 }
 
 std::string Location::get_error_page(short error_code)

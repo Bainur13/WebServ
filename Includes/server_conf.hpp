@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:11 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 22:07:07 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:07:01 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ class Server_conf
 	std::string get_index();
 	std::vector<std::string> get_method();
 	Server get_server();
-	std::vector<Location> get_locations();
+	const std::vector<Location>& get_locations() const;
+	std::vector<Location>& get_locations();
 
 	void add_location(Location location);
 
@@ -69,9 +70,7 @@ class Server_conf
 	std::map<short, std::string> _error_page;
 	std::vector<std::string> _method;
 	int _size_limit;
-
 	std::vector<Location> _locations;
-	std::vector<Cgi> _cgis;
 	Server _server;
 };
 
