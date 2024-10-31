@@ -21,11 +21,9 @@ Response &Response::operator=(Response const &src)
 	return (*this);
 }
 
-std::vector<std::string> parseCgiResponse(std::string cgiOuput)
+void Response::parseCgiResponse(std::string cgiOutput, Response &res)
 {
-	(void) cgiOuput;
-	std::vector<std::string> tamere;
-	return tamere;
+	
 }
 
 std::string Response::error_location(std::string error, short error_code, Location &location, Server_conf &server_c)
@@ -139,6 +137,11 @@ void Response::set_header(std::string key, std::string value)
 void Response::set_body(std::string body)
 {
 	_body = body;
+}
+
+std::string Response::get_body()
+{
+	return (_body);
 }
 
 std::string Response::get_body_size()

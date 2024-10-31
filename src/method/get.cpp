@@ -1,6 +1,4 @@
 #include "../../Includes/get.hpp"
-#include <assert.h>
-#include <cassert>
 
 bool	get_request(Request &req, Server_conf &server_c, Response &res)
 {
@@ -22,11 +20,11 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			std::cout << "Je rentre ici" << std::endl;
 			std::string cgiResponse;
 			location.get_cgi()->executeCgi(cgiResponse, req);
-			std::cout << cgiResponse << std::endl;
-			res.set_body(cgiResponse);
-			// res.parseCgiResponse(cgiResponse);
+			res.parseCgiResponse(cgiResponse, res);
 			if (res.get_body_size() == "0")
 			{
+				std::cout << "CONTENU DU BODY" << res.get_body() << std::endl;
+				abort();
 				res.error_basic("Error 404 : Not Found", 404, server_c);
 				return (false);
 			}

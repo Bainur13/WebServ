@@ -92,7 +92,7 @@ bool Cgi:: executeCgi(std::string &outputToReturn, Request &request)
 			_exit(1);
 		}
 	}
-	else
+	else if ( pid > 0)
 	{
 		std::string output;
 		close(pipefd[1]);
