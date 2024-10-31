@@ -21,6 +21,13 @@ Response &Response::operator=(Response const &src)
 	return (*this);
 }
 
+std::vector<std::string> parseCgiResponse(std::string cgiOuput)
+{
+	(void) cgiOuput;
+	std::vector<std::string> tamere;
+	return tamere;
+}
+
 std::string Response::error_location(std::string error, short error_code, Location &location, Server_conf &server_c)
 {
 	std::ostringstream oss;

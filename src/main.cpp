@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/27 19:33:47 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/31 15:01:04 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "../Includes/c-stacktrace.h"
 
 
 
@@ -161,7 +162,10 @@ int	main(int ac, char **av)
 	{
 		std::cerr << "Usage: ./webserver <port>" << std::endl;
 		return (1);
+
 	}
+
+	init_exceptions(av[0]);
 	Conf conf(av[1]);
 	init_servers(conf);
 	return (0);

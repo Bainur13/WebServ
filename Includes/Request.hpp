@@ -36,6 +36,7 @@ class Request
 	std::string get_request_header(std::string key);
 	std::string get_request_body();
 	std::string get_error();
+	std::string get_url_params(std::string path);
 	void print_request();
 };
 

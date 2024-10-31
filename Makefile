@@ -14,6 +14,7 @@ SRC =				./src/main.cpp \
 					./src/auto_index/auto_index.cpp \
 
 C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g3
+#  -fsanitize=memory -fsanitize=undefined
 
 NAME = WebServ
 

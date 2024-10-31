@@ -1,4 +1,6 @@
 #include "../../Includes/Cgi.hpp"
+#include <assert.h>
+#include <cassert>
 
 Cgi::Cgi()
 {
@@ -38,7 +40,34 @@ std::string Cgi::getInterpreter()
 {
 	return (this->_interpreterPath);
 }
-bool Cgi:: executeCgi(std::vector<std::string> argsToPass)
+
+std::vector<const char*> Cgi::build_env(Request &request)
+{
+	std::vector<std::string> env;
+	std::string method = request.get_request_line("Method");
+	env.push_back(this->_scriptPath);
+	env.push_back("SCRIPT_NAME=" + this->_scriptPath);
+	env.push_back("REQUEST_METHOD=" + method);
+	if (method == "GET")
+    	env.push_back("QUERY_STRING=" + request.get_url_params(request.get_request_line("Path")));
+	if (method == "POST")
+	{
+		env.push_back("CONTENT_TYPE=" + request.get_request_header("Content-type"));
+		env.push_back("CONTENT_LENGTH=" + request.get_request_header("Content-length"));
+	}
+    env.push_back("HTTP_USER_AGENT=" + request.get_request_header("User-Agent"));
+
+	std::vector<const char*> final_env;
+
+	for (std::vector<std::string>::iterator it = env.begin(); it != env.end(); it++)
+	{
+		final_env.push_back((*it).c_str());
+	}
+	final_env.push_back(NULL);
+	return (final_env);
+}
+
+bool Cgi:: executeCgi(std::string &outputToReturn, Request &request)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -51,17 +80,13 @@ bool Cgi:: executeCgi(std::vector<std::string> argsToPass)
 		perror("Erreur creating pipe");
 		return (0);
 	}
-	argsToPass.insert(argsToPass.begin(), this->_scriptPath);
 	pid = fork();
 	if (pid == 0)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
-		std::string path = this->getPath();
-        const char* scriptPath = path.c_str();
-		const char* args[] = { scriptPath, NULL }; // Only the script path, followed by NULL
-		if (execve(scriptPath, const_cast<char* const*>(args), NULL) == -1)
+		if (execve(this->getPath().c_str(), const_cast<char* const*>(build_env(request).data()), NULL) == -1)
 		{
 			perror("Erreur lors de l'exécution du script");
 			_exit(1);
@@ -79,9 +104,12 @@ bool Cgi:: executeCgi(std::vector<std::string> argsToPass)
 		}
 		close(pipefd[0]);
 		waitpid(pid, &status, 0);
-		std::cout << "Sortie du script => " << output << std::endl;
+		if (status == 1)
+			return (1);
+		std::cout << "Exit Status du CGI => " << status << std::endl;
+		outputToReturn.append(output);
 	}
-	return (1);
+	return (0);
 }
 Cgi::~Cgi()
 {

@@ -19,6 +19,7 @@
 #include <unistd.h>
 
 class Server_conf;
+class Location;
 
 class Response
 {
@@ -40,6 +41,7 @@ public:
 	void set_header(std::string key, std::string value);
 	void set_body(std::string body);
 	std::string get_body_size();
+	std::vector<std::string> parseCgiResponse(std::string cgiOuput);
 };
 
 #endif
