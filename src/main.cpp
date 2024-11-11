@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/31 15:01:04 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:11:41 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int	main(int ac, char **av)
 
 	}
 
-	init_exceptions(av[0]);
+	// init_exceptions(av[0]);
 	Conf conf(av[1]);
 	init_servers(conf);
 	return (0);

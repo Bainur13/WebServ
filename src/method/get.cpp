@@ -7,7 +7,9 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 
 	std::string path;
 	path = req.get_request_line("Path");
+	std::cout << "Path => " << path << std::endl;
 	location = search_location(path, server_c);
+	std::cout << "Location => " << location.get_path() << std::endl;
 	if (location.get_path() != "")
 	{
 		if (!check_method_right(location.get_method(), "GET"))
@@ -24,7 +26,6 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			if (res.get_body_size() == "0")
 			{
 				std::cout << "CONTENU DU BODY" << res.get_body() << std::endl;
-				abort();
 				res.error_basic("Error 404 : Not Found", 404, server_c);
 				return (false);
 			}

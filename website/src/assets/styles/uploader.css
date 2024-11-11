@@ -1,0 +1,29 @@
+#uploaderMain
+{
+	text-align: center;
+}
+
+#uploaderMain h1
+{
+	font-weight: 200;
+	margin-top: 5%;
+}
+
+#uploaderSubmitBtn
+{
+	font-weight: 200;
+	font-size: 120%;
+	background-color: black;
+	border: 1px solid white;
+	color: white;
+	padding: 5%;
+	margin-top: 30%;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+#uploaderSubmitBtn:hover
+{
+	background-color: white;
+	color: black;
+}

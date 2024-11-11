@@ -23,7 +23,8 @@ Response &Response::operator=(Response const &src)
 
 void Response::parseCgiResponse(std::string cgiOutput, Response &res)
 {
-	
+	(void)cgiOutput;
+	(void)res;
 }
 
 std::string Response::error_location(std::string error, short error_code, Location &location, Server_conf &server_c)
