@@ -23,6 +23,7 @@ Response &Response::operator=(Response const &src)
 
 void Response::parseCgiResponse(std::string cgiOutput, Response &res)
 {
+	// TODO PARSER LE RETOUR DU CGI ET CONSTRUIRE UNE REPONSE ADEQUAT;
 	(void)cgiOutput;
 	(void)res;
 }

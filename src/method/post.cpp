@@ -88,6 +88,8 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	std::string path;
 	bool exist = 0;
 
+	// ! IMPLEMENTER L'EXEC D'UN CGI SI IL Y EN A UN !
+
 	path = req.get_request_line("Path");
 	location = search_location(path, server_c);
 	if (location.get_path() != "")
