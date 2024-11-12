@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/11 12:11:41 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/12 16:11:38 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #include <string>
 #include <vector>
 #include "../Includes/c-stacktrace.h"
-
-
 
 Response	treat_request(Request req, Server_conf &server_c)
 {
