@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/12 16:11:38 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/16 09:27:49 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	}
 	else
 		res = treat_request(req, server_c);
+	// ? If (res.isCgiRes())
+	// ? 	return;
 	std::string response = res.final_response();
 	std::cout << "Response sent:" << std::endl;
 	std::cout << response << std::endl;
@@ -148,9 +150,34 @@ void	init_servers(Conf &conf)
 			{
 				if (events[i].events)
 					handle_client(events[i].data.fd, servers[server_conf]);
-				close(events[i].data.fd);
+				int cgi_status = 0;
+				if (servers[server_conf].get_cgi().size() > 0)
+					cgi_status = check_cgi_status(events[i].data.fd, servers[server_conf]);
+				if (!cgi_status)
+					close(events[i].data.fd);
 			}
 		}
+	}
+}
+
+int check_cgi_status(int client_fd, Server_conf &server_c)
+{
+	int pid;
+	int status;
+	static int timeout;
+
+	pid = waitpid(server_c.get_cgi()[0].getCgiPid(), &status, WNOHANG);
+
+	if (pid == 0)
+	{
+		timeout++;
+		if (timeout == 50)
+			// Envoyer une erreur dans la reponse au serveur;
+		return (0);
+	}
+	else
+	{
+		
 	}
 }
 
@@ -160,9 +187,7 @@ int	main(int ac, char **av)
 	{
 		std::cerr << "Usage: ./webserver <port>" << std::endl;
 		return (1);
-
 	}
-
 	// init_exceptions(av[0]);
 	Conf conf(av[1]);
 	init_servers(conf);

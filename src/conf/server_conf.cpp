@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/30 16:06:56 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/16 07:35:19 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,16 @@ void Server_conf::set_method(const std::vector<std::string> &line_s)
 void Server_conf::add_location(Location location)
 {
     _locations.push_back(location);
+}
+
+void Server_conf::add_cgi(const Cgi *cgi)
+{
+	_activeCgis.push_back(*cgi);
+}
+
+std::vector<Cgi> Server_conf::get_cgi()
+{
+	return _activeCgis;
 }
 
 std::string Server_conf::get_server_conf_name()

@@ -67,18 +67,16 @@ std::vector<const char*> Cgi::build_env(Request &request)
 	return (final_env);
 }
 
-bool Cgi:: executeCgi(std::string &outputToReturn, Request &request)
+bool Cgi:: executeCgi(Request &request)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	char buffer[1024];
-	ssize_t bytesRead;
 	int status;
 
 	if (pipe(pipefd) == -1)
 	{
 		perror("Erreur creating pipe");
-		return (0);
+		return (1);
 	}
 	pid = fork();
 	if (pid == 0)
@@ -96,21 +94,28 @@ bool Cgi:: executeCgi(std::string &outputToReturn, Request &request)
 	{
 		std::string output;
 		close(pipefd[1]);
-		bytesRead = read(pipefd[0], buffer, 1024);
-		while (bytesRead > 0)
-		{
-			output.append(buffer);
-			bytesRead = read(pipefd[0], buffer, 1024);
-		}
-		close(pipefd[0]);
-		waitpid(pid, &status, 0);
-		if (status == 1)
-			return (1);
-		std::cout << "Exit Status du CGI => " << status << std::endl;
-		outputToReturn.append(output);
+		this->_cgiFdToRead = pipefd[0];
+		// ! Ne pas oublier de close ce fd quand fini de handle le CGI !
+		this->_cgiPid = pid;
+		// bytesRead = read(pipefd[0], buffer, 1024);
+		// while (bytesRead > 0)
+		// {
+		// 	output.append(buffer);
+		// 	bytesRead = read(pipefd[0], buffer, 1024);
+		// }
 	}
 	return (0);
 }
+
+int Cgi::getCgiPid()
+{
+	return this->_cgiPid;
+}
+int Cgi::getCgiFd()
+{
+	return this->_cgiFdToRead;
+}
+
 Cgi::~Cgi()
 {
 	;

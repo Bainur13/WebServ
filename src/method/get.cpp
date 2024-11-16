@@ -21,14 +21,16 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 		{
 			std::cout << "Je rentre ici" << std::endl;
 			std::string cgiResponse;
-			location.get_cgi()->executeCgi(cgiResponse, req);
-			res.parseCgiResponse(cgiResponse, res);
-			if (res.get_body_size() == "0")
-			{
-				std::cout << "CONTENU DU BODY" << res.get_body() << std::endl;
-				res.error_basic("Error 404 : Not Found", 404, server_c);
-				return (false);
-			}
+			location.get_cgi()->setMethod("GET");
+			location.get_cgi()->executeCgi(req);
+			server_c.add_cgi(location.get_cgi());
+			// res.parseCgiResponse(cgiResponse, res);
+			// if (res.get_body_size() == "0")
+			// {
+			// 	std::cout << "CONTENU DU BODY" << res.get_body() << std::endl;
+			// 	res.error_basic("Error 404 : Not Found", 404, server_c);
+			// 	return (false);
+			// }
 			return (true);
 		}
 		else if (path.find_last_of("/") == path.size() - 1)

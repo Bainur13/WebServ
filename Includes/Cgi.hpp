@@ -14,19 +14,30 @@ class Cgi
   private:
 	std::string _scriptPath;
 	std::string _interpreterPath;
+	int _cgiPid;
+	int _cgiFdToRead;
+	std::string _cgiMethod;
 
   public:
 	Cgi();
-	Cgi(const Cgi &copy);
-	Cgi &operator=(const Cgi &copy);
-	Cgi(std::string path, std::string interpreter);
-	void setPath(std::string path);
-	std::string getPath();
-	void setInterpreter(std::string interpreter);
-	std::string getInterpreter();
-	bool executeCgi(std::string &cgiOutput, Request &request);
-	std::vector<const char*> build_env(Request &request);
 	~Cgi();
+	Cgi(const Cgi &copy);
+	Cgi(std::string path, std::string interpreter);
+
+	Cgi &operator=(const Cgi &copy);
+
+	void setPath(std::string path);
+	void setInterpreter(std::string interpreter);
+	void setMethod(std::string method);
+
+	std::string getPath();
+	std::string getMethod();
+	std::string getInterpreter();
+	int getCgiPid();
+	int getCgiFd();
+	std::vector<const char*> build_env(Request &request);
+
+	bool executeCgi(Request &request);
 };
 
 #include "Request.hpp"
