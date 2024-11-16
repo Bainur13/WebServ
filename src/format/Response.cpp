@@ -2,6 +2,7 @@
 
 Response::Response()
 {
+	_isCgiRes = false;
 }
 
 Response::Response(Response const &src)
@@ -13,6 +14,15 @@ Response::~Response()
 {
 }
 
+bool Response::isCgiRes()
+{
+	return _isCgiRes;
+}
+
+void Response::set_cgiRes(bool boolean)
+{
+	this->_isCgiRes = boolean;
+}
 Response &Response::operator=(Response const &src)
 {
 	_line = src._line;

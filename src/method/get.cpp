@@ -24,6 +24,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			location.get_cgi()->setMethod("GET");
 			location.get_cgi()->executeCgi(req);
 			server_c.add_cgi(location.get_cgi());
+			res.set_cgiRes(true);
 			// res.parseCgiResponse(cgiResponse, res);
 			// if (res.get_body_size() == "0")
 			// {

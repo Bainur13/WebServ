@@ -28,6 +28,17 @@ void Cgi::setPath(std::string path)
 {
 	this->_scriptPath = path;
 }
+
+void Cgi::setMethod(std::string method)
+{
+	_cgiMethod = method;
+}
+
+std::string Cgi::getMethod()
+{
+	return _cgiMethod;
+}
+
 std::string Cgi::getPath()
 {
 	return (_scriptPath);
@@ -71,7 +82,6 @@ bool Cgi:: executeCgi(Request &request)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	int status;
 
 	if (pipe(pipefd) == -1)
 	{
@@ -95,7 +105,6 @@ bool Cgi:: executeCgi(Request &request)
 		std::string output;
 		close(pipefd[1]);
 		this->_cgiFdToRead = pipefd[0];
-		// ! Ne pas oublier de close ce fd quand fini de handle le CGI !
 		this->_cgiPid = pid;
 		// bytesRead = read(pipefd[0], buffer, 1024);
 		// while (bytesRead > 0)
@@ -119,4 +128,44 @@ int Cgi::getCgiFd()
 Cgi::~Cgi()
 {
 	;
+}
+
+int check_cgi_status(int client_fd, Server_conf &server_c)
+{
+	int pid;
+	static int timeout;
+	int status;
+
+	pid = waitpid(server_c.get_cgi()[0].getCgiPid(), &status, WNOHANG); // Get the return of waitpid to know if CGI is done;
+
+	if (pid == 0) // if he's not done;
+	{
+		timeout++;
+		if (timeout == 50)
+		{
+			timeout = 0;
+			// TODO Envoyer une erreur dans la reponse si le CGI met trop de temps;
+			close(server_c.get_cgi()[0].getCgiFd());
+			close(client_fd);
+			return (0);
+		}
+		return (1);
+	}
+	else // if he is done;
+	{
+		timeout = 0;
+		// std::string cgiResponse;
+		// char buffer[1024];
+		// ssize_t bytesRead;
+		// ? SI le CGI a finit ce qu'il a a faire, construire la reponse avec l'output de celui-ci puis send la reponse au client.
+		// bytesRead = read(server_c.get_cgi()[0].getCgiFd(), buffer, 1024);
+		// while (bytesRead > 0)
+		// {
+		// 	cgiReponse.append(buffer);
+		// 	bytesRead = read(server_c.get_cgi()[0].getCgiFd(), buffer, 1024);
+		// }
+		close(server_c.get_cgi()[0].getCgiFd());
+		close(client_fd);
+	}
+	return (0);
 }
