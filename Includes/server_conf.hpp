@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:11 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/16 07:34:24 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:57:31 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ class Server_conf
 	void set_listen(const std::vector<std::string> &line_s);
 	void set_error_page(const std::vector<std::string> &line_s);
 	void set_method(const std::vector<std::string> &line_s);
-	void add_cgi(const Cgi *cgi);
+	void add_cgi(Cgi *cgi);
 
-	std::vector<Cgi> get_cgi();
+	std::vector<Cgi *> get_cgi();
 	std::string get_server_conf_name();
 	std::string get_root();
 	int get_sizelimit();
@@ -73,7 +73,7 @@ class Server_conf
 	std::vector<std::string> _method;
 	int _size_limit;
 	std::vector<Location> _locations;
-	std::vector<Cgi>_activeCgis;
+	std::vector<Cgi *>_activeCgis;
 	Server _server;
 };
 

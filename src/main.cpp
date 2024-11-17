@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/16 10:20:51 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/17 19:30:40 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 #include <vector>
 #include "../Includes/c-stacktrace.h"
 
+
 int check_cgi_status(int client_fd, Server_conf &server_c);
+Cgi *find_cgi_by_client_fd(int client_fd, std::vector<Cgi *> cgis);
 
 Response	treat_request(Request req, Server_conf &server_c)
 {
@@ -39,6 +41,7 @@ Response	treat_request(Request req, Server_conf &server_c)
 		if (!delete_request(req, server_c, res))
 			std::cerr << "Error deleting request" << std::endl;
 	}
+	std::cout << "RES BOOLEAN IN TREAT REQUEST IS AT => " << res.isCgiRes() << std::endl;
 	return (res);
 }
 
@@ -68,7 +71,10 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	else
 		res = treat_request(req, server_c);
 	if (res.isCgiRes() == true)
+	{
+		find_cgi_by_client_fd(0, server_c.get_cgi())->setClientFd(client_fd);
 	 	return;
+	}
 	std::string response = res.final_response();
 	std::cout << "Response sent:" << std::endl;
 	std::cout << response << std::endl;
@@ -110,7 +116,7 @@ void	init_servers(Conf &conf)
 	while (1)
 	{
 		std::cout << "Waiting for connection" << std::endl;
-		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
+		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, 1000);
 		std::cout << "ndfs: " << ndfs << std::endl;
 		if (ndfs == -1)
 		{
@@ -150,7 +156,7 @@ void	init_servers(Conf &conf)
 			}
 			if (!server_status)
 			{
-				if (events[i].events)
+				if (events[i].events & EPOLLIN)
 					handle_client(events[i].data.fd, servers[server_conf]);
 				int cgi_status = 0;
 				if (servers[server_conf].get_cgi().size() > 0)
@@ -166,7 +172,7 @@ int	main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cerr << "Usage: ./webserver <port>" << std::endl;
+		std::cerr << "Usage: ./webserver <file.conf>" << std::endl;
 		return (1);
 	}
 	// init_exceptions(av[0]);

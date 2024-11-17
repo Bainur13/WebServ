@@ -28,6 +28,7 @@ Response &Response::operator=(Response const &src)
 	_line = src._line;
 	_header = src._header;
 	_body = src._body;
+	_isCgiRes = src._isCgiRes;
 	return (*this);
 }
 
@@ -151,6 +152,11 @@ void Response::set_body(std::string body)
 	_body = body;
 }
 
+void Response::set_cgi(Cgi *cgi)
+{
+	_cgi = cgi;
+}
+
 std::string Response::get_body()
 {
 	return (_body);
@@ -166,4 +172,9 @@ std::string Response::get_body_size()
 	out << len;
 	size = out.str();
 	return (size);
+}
+
+Cgi *Response::get_cgi()
+{
+	return _cgi;
 }

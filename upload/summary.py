@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 
+import time
+
+# Envoi immédiat de l'entête HTTP
 print("Content-Type: text/html\n")
+
+# Simulation d'une exécution longue
+time.sleep(10)  # Attente de 10 secondes
+
+# Envoi de la réponse HTML
 print("""
 <!DOCTYPE html>
 <html>
@@ -13,3 +21,4 @@ print("""
 </body>
 </html>
 """)
+

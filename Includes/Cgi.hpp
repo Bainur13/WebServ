@@ -16,6 +16,7 @@ class Cgi
 	std::string _interpreterPath;
 	int _cgiPid;
 	int _cgiFdToRead;
+	int _clientFd;
 	std::string _cgiMethod;
 
   public:
@@ -29,15 +30,18 @@ class Cgi
 	void setPath(std::string path);
 	void setInterpreter(std::string interpreter);
 	void setMethod(std::string method);
+	void setClientFd(int client_fd);
 
 	std::string getPath();
 	std::string getMethod();
 	std::string getInterpreter();
 	int getCgiPid();
 	int getCgiFd();
+	int getClientFd();
 	std::vector<const char*> build_env(Request &request);
 
 	bool executeCgi(Request &request);
+	Cgi *clone();
 };
 
 #include "Request.hpp"
