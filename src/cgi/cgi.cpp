@@ -1,6 +1,9 @@
 #include "../../Includes/Cgi.hpp"
 #include <assert.h>
 #include <cassert>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 Cgi::Cgi()
 {
@@ -165,10 +168,21 @@ void send_timeout_error(int client_fd, Server_conf server_c)
 		return ;
 	}
 }
-void parse_cgi_res(std::string cgiResponse, Response res)
+
+void set_res_status(std::string line, Response &res)
 {
-	(void)res;
-	std::cout << cgiResponse << std::endl;
+	
+}
+void build_res(std::string cgiResponse, Response &res)
+{
+	std::istringstream tmp_file(cgiResponse);
+	std::string line;
+	int line_number = 1;
+	while (std::getline(tmp_file, line))
+	{
+		if (line_number == 1)
+			set_res_status(line, res);
+	}
 }
 
 void send_cgi_response(int client_fd, int cgi_fd)
@@ -185,7 +199,7 @@ void send_cgi_response(int client_fd, int cgi_fd)
 		bytesRead = read(cgi_fd, buffer, 1024);
 	}
 
-	parse_cgi_res(cgiResponse, res);
+	build_res(cgiResponse, res);
 
 	std::string response = res.final_response();
 
@@ -224,7 +238,6 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 	pid = waitpid(cgi->getCgiPid(), &status, WNOHANG); // Get the return of waitpid to know if CGI is done;
 	if (pid == 0) // if he's not done;
 	{
-		std::cout << "CGI IS NOT DONE\n";
 		timeout++;
 		if (timeout == 1000000)
 		{
@@ -238,7 +251,6 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 	}
 	else // if he is done;
 	{
-		std::cout << "CGI IS DONE\n";
 		timeout = 0;
 		send_cgi_response(client_fd, cgi->getCgiFd());
 		erase_cgi_from_vector(server_c, client_fd);
