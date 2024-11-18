@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 
 import time
+# Imprime la ligne de statut HTTP
+print("HTTP/1.1 200 OK")
 
-print("Content-Type: text/html\n")
+# Imprime les headers nécessaires
+print("Content-Type: text/html")
+print("Content-Length: 241")  # Longueur calculée du body
+print()  # Ligne vide pour séparer les headers du body
 
-
-
-time.sleep(10)
-
+time.sleep(5)
+# Imprime le contenu HTML
 print("""
 <!DOCTYPE html>
 <html>

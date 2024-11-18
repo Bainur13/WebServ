@@ -171,18 +171,65 @@ void send_timeout_error(int client_fd, Server_conf server_c)
 
 void set_res_status(std::string line, Response &res)
 {
-	
+	std::istringstream first_line(line);
+	std::string word;
+
+	if (first_line >> word)
+		res.set_line("Version", word);
+
+	if (first_line >> word)
+		res.set_line("Status", word);
+
+	std::string reason;
+
+	while (first_line >> word)
+	{
+		if (!reason.empty())
+			reason += " ";
+		reason += word;
+	}
+
+	res.set_line("Reason", reason);
 }
 void build_res(std::string cgiResponse, Response &res)
 {
 	std::istringstream tmp_file(cgiResponse);
 	std::string line;
 	int line_number = 1;
+	int is_body = 0;
+	std::string body;
 	while (std::getline(tmp_file, line))
 	{
+		if (line.empty())
+			is_body = 1;
 		if (line_number == 1)
+		{
 			set_res_status(line, res);
+			line_number++;
+			continue;
+		}
+		else if (!is_body)
+		{
+			std::size_t pos = line.find(":");
+			if (pos != std::string::npos)
+			{
+				std::string key = line.substr(0, pos);
+				std::string value = line.substr(pos + 1);
+
+				key.erase(0, key.find_first_not_of(" \t"));
+				key.erase(key.find_last_not_of(" \t") + 1);
+
+				value.erase(0, value.find_first_not_of(" \t"));
+				value.erase(value.find_last_not_of(" \t") + 1);
+
+				res.set_header(key, value);
+			}
+		}
+		else if (is_body)
+			body += line;
+		line_number++;
 	}
+	res.set_body(body);
 }
 
 void send_cgi_response(int client_fd, int cgi_fd)
@@ -202,6 +249,7 @@ void send_cgi_response(int client_fd, int cgi_fd)
 	build_res(cgiResponse, res);
 
 	std::string response = res.final_response();
+
 
 	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
 	{
