@@ -197,14 +197,19 @@ void send_cgi_response(int client_fd, int cgi_fd)
 	}
 }
 
-void erase_cgi_from_vector(Server_conf server_c, int client_fd)
+void erase_cgi_from_vector(Server_conf& server_c, int client_fd)
 {
-	std::vector<Cgi *> cgis = server_c.get_cgi();
-	for ( std::vector<Cgi *>::iterator it = cgis.begin(); it != cgis.end(); it++)
-	{
-		if ((*it)->getClientFd() == client_fd)
-			delete (*it);
-	}
+    std::vector<Cgi*>& cgis = server_c.get_cgi(); // Référence à la vector pour éviter la copie
+    for (std::vector<Cgi*>::iterator it = cgis.begin(); it != cgis.end();)
+    {
+        if ((*it)->getClientFd() == client_fd)
+        {
+            delete *it;          // Libération de la mémoire
+            it = cgis.erase(it); // Supprime l'élément du vecteur et avance l'itérateur
+        }
+        else
+            ++it;
+    }
 }
 
 int check_cgi_status(int client_fd, Server_conf &server_c)
@@ -216,16 +221,15 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 	Cgi *cgi = find_cgi_by_client_fd(client_fd, server_c.get_cgi());
 	if (!cgi)
 		return (1);
-
 	pid = waitpid(cgi->getCgiPid(), &status, WNOHANG); // Get the return of waitpid to know if CGI is done;
 	if (pid == 0) // if he's not done;
 	{
+		std::cout << "CGI IS NOT DONE\n";
 		timeout++;
 		if (timeout == 1000000)
 		{
 			timeout = 0;
 			send_timeout_error(client_fd, server_c);
-			// TODO Envoyer une erreur dans la reponse si le CGI met trop de temps;
 			close(cgi->getCgiFd());
 			close(client_fd);
 			return (0);
@@ -234,6 +238,7 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 	}
 	else // if he is done;
 	{
+		std::cout << "CGI IS DONE\n";
 		timeout = 0;
 		send_cgi_response(client_fd, cgi->getCgiFd());
 		erase_cgi_from_vector(server_c, client_fd);
