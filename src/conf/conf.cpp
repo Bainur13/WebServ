@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   conf.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/25 17:30:09 by bainur           ###   ########.fr       */
+/*   Updated: 2024/10/31 15:06:28 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,13 @@ Location Conf::parse_location(std::ifstream &file,
 			location.set_method(line_s);
 		else if (line_s[0] == "auto_index")
 			location.set_listing(line_s);
+		else if (line_s[0] == "cgi")
+			location.set_cgi(line_s);
 		else
+		{
+			std::cout << line_s[0] << std::endl;
 			error_exit("Error: invalid line in location");
+		}
 	}
 	return (location);
 }

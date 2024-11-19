@@ -2,12 +2,12 @@
 #define GET_HPP
 
 #include "server_conf.hpp"
-#include "Response.hpp"
-#include "Request.hpp"
 
 class Response;
-class Server_conf;
 class Request;
+class Server_conf;
 bool	get_request(Request &req, Server_conf &server_c, Response &res);
 
+#include "Request.hpp"
+#include "Response.hpp"
 #endif

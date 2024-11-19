@@ -4,6 +4,7 @@ SRC =				./src/main.cpp \
 					./src/server/Server.cpp \
 					./src/utils/utils.cpp \
 					./src/utils/utils_treat.cpp \
+					./src/cgi/cgi.cpp \
 					./src/conf/location.cpp \
 					./src/format/Response.cpp \
 					./src/format/Request.cpp \
@@ -12,7 +13,8 @@ SRC =				./src/main.cpp \
 					./src/method/delete.cpp \
 					./src/auto_index/auto_index.cpp \
 
-C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic
+C++FLAGS = -Wall -Wextra -Werror -std=c++98 -pedantic -g3
+#  -fsanitize=memory -fsanitize=undefined
 
 NAME = WebServ
 

@@ -6,11 +6,12 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 17:11:25 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:19:17 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../Includes/location.hpp"
+#include "../../Includes/Cgi.hpp"
 
 Location::Location()
 {
@@ -20,6 +21,7 @@ Location::Location()
     _redirect.first = 0;
     _redirect.second = "";
     _listing = false;
+	_cgi = NULL;
 }
 
 Location::Location(const Location &copy)
@@ -39,12 +41,17 @@ Location &Location::operator=(const Location &copy)
         this->_method = copy._method;
         this->_listing = copy._listing;
         this->_alias = copy._alias;
+		if (copy.get_cgi())
+			this->_cgi = new Cgi(*(copy._cgi));
+		else
+			this->_cgi = NULL;
     }
     return *this;
 }
 
 Location::~Location()
 {
+	;
 }
 
 void Location::set_path(const std::vector<std::string> &line_s)
@@ -104,16 +111,23 @@ void Location::set_method(const std::vector<std::string> &line_s)
 
 void Location::set_listing(const std::vector<std::string> &line_s)
 {
-    if (line_s.size() != 4)
+    if (line_s.size() != 3)
+	{
         error_exit("Error: invalid listing");
+	}
     if (line_s[1] == "on")
         _listing = true;
     else if (line_s[1] == "off")
         _listing = false;
-	else if (line_s[2] != "")
-		_auto_index_cgi_path = line_s[2];
     else
         error_exit("Error: invalid listing");
+}
+
+void Location::set_cgi(const std::vector<std::string> &line_s)
+{
+	if (line_s.size() != 4)
+		error_exit("Error: invalid cgi");
+	this->_cgi = new Cgi(line_s[2], line_s[1]);
 }
 
 void Location::set_alias(const std::vector<std::string> &line_s)
@@ -138,9 +152,9 @@ std::string Location::get_index()
     return this->_index;
 }
 
-std::string Location::get_auto_index_cgi_path()
+Cgi *Location::get_cgi() const
 {
-	return this->_auto_index_cgi_path;
+	return (this->_cgi);
 }
 
 std::string Location::get_error_page(short error_code)

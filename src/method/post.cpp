@@ -88,6 +88,8 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	std::string path;
 	bool exist = 0;
 
+	// ! IMPLEMENTER L'EXEC D'UN CGI SI IL Y EN A UN !
+
 	path = req.get_request_line("Path");
 	location = search_location(path, server_c);
 	if (location.get_path() != "")
@@ -107,6 +109,15 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 		}
 		if (server_c.get_root() != "")
 			path = server_c.get_root() + path;
+	}
+	if (location.get_cgi())
+	{
+		location.get_cgi()->setMethod("POST");
+		location.get_cgi()->executePostCgi(req);
+		server_c.add_cgi(location.get_cgi()->clone());
+		res.set_cgi(location.get_cgi());
+		res.set_cgiRes(true);
+		return (true);
 	}
 	std::string content_type = req.get_request_header("Content-Type");
 	std::cout << "content_type" << std::endl;

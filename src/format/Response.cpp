@@ -2,6 +2,7 @@
 
 Response::Response()
 {
+	_isCgiRes = false;
 }
 
 Response::Response(Response const &src)
@@ -13,12 +14,29 @@ Response::~Response()
 {
 }
 
+bool Response::isCgiRes()
+{
+	return _isCgiRes;
+}
+
+void Response::set_cgiRes(bool boolean)
+{
+	this->_isCgiRes = boolean;
+}
 Response &Response::operator=(Response const &src)
 {
 	_line = src._line;
 	_header = src._header;
 	_body = src._body;
+	_isCgiRes = src._isCgiRes;
 	return (*this);
+}
+
+void Response::parseCgiResponse(std::string cgiOutput, Response &res)
+{
+	// TODO PARSER LE RETOUR DU CGI ET CONSTRUIRE UNE REPONSE ADEQUAT;
+	(void)cgiOutput;
+	(void)res;
 }
 
 std::string Response::error_location(std::string error, short error_code, Location &location, Server_conf &server_c)
@@ -134,6 +152,16 @@ void Response::set_body(std::string body)
 	_body = body;
 }
 
+void Response::set_cgi(Cgi *cgi)
+{
+	_cgi = cgi;
+}
+
+std::string Response::get_body()
+{
+	return (_body);
+}
+
 std::string Response::get_body_size()
 {
 	size_t len;
@@ -144,4 +172,9 @@ std::string Response::get_body_size()
 	out << len;
 	size = out.str();
 	return (size);
+}
+
+Cgi *Response::get_cgi()
+{
+	return _cgi;
 }

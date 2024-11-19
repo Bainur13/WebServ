@@ -19,6 +19,7 @@
 #include <unistd.h>
 
 class Server_conf;
+class Location;
 
 class Response
 {
@@ -26,6 +27,8 @@ private:
 	std::map<std::string, std::string> _line;
 	std::map<std::string, std::string> _header;
 	std::string _body;
+	bool _isCgiRes;
+	Cgi *_cgi;
 
 public:
 	Response();
@@ -36,10 +39,19 @@ public:
 	std::string final_response();
 	std::string error_location(std::string error, short error_code, Location &location, Server_conf &server_c);
 	std::string error_basic(std::string error, short error_code,  Server_conf &server_c);
+
 	void set_line(std::string key, std::string value);
 	void set_header(std::string key, std::string value);
+	void set_cgiRes(bool boolean);
 	void set_body(std::string body);
+	void set_cgi(Cgi *cgi);
+
 	std::string get_body_size();
+	std::string get_body();
+	Cgi *get_cgi();
+
+	bool isCgiRes();
+	void parseCgiResponse(std::string cgiOutput, Response &res);
 };
 
 #endif

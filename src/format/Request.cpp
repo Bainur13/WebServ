@@ -1,4 +1,6 @@
 #include "../../Includes/Request.hpp"
+#include "assert.h"
+#include <cassert>
 
 Request::Request()
 {
@@ -112,6 +114,11 @@ void Request::parse_request(std::string request)
         _error = "Error 400 : POST request with wrong Content-Length";
     if (_request_line["Method"] == "POST" && _request_body == "")
         _error = "Error 400 : POST request without body";
+}
+
+std::string Request::get_url_params(std::string path)
+{
+	return path.substr(path.find_first_of('?') + 1, std::string::npos - 1);
 }
 
 std::string Request::get_request_line(std::string key)

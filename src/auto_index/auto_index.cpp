@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:36:58 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 18:18:12 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/10/28 22:20:43 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,7 @@ bool	auto_index(std::string path, Location &location, Server_conf &server_c,
 		res.error_location("Error 404 : Not Found", 404, location, server_c);
 		return (false);
 	}
-	if (location.get_auto_index_cgi_path() != "")
-	{
-		launch_auto_index_cgi(location, dir, res);
-		closedir(dir);
-		return (true);
-	}
+	std::cout << "LISTING BOOL =>" << location.get_listing() << std::endl;
 	path = soloslash(path);
 	std::string body = "<html>\n<head>\n<title>Index of " + path
 		+ "</title>\n</head>\n<body>\n<h1>Index of " + path + "</h1>\n<ul>\n";

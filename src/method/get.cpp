@@ -7,7 +7,9 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 
 	std::string path;
 	path = req.get_request_line("Path");
+	std::cout << "Path => " << path << std::endl;
 	location = search_location(path, server_c);
+	std::cout << "Location => " << location.get_path() << std::endl;
 	if (location.get_path() != "")
 	{
 		if (!check_method_right(location.get_method(), "GET"))
@@ -15,7 +17,16 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			res.error_basic("Error 405 : Method Not Allowed", 405, server_c);
 			return (false);
 		}
-		if (path.find_last_of("/") == path.size() - 1)
+		if (location.get_cgi())
+		{
+			location.get_cgi()->setMethod("GET");
+			location.get_cgi()->executeGetCgi(req);
+			server_c.add_cgi(location.get_cgi()->clone());
+			res.set_cgi(location.get_cgi());
+			res.set_cgiRes(true);
+			return (true);
+		}
+		else if (path.find_last_of("/") == path.size() - 1)
 		{
 			if (location.get_index() != "")
 			{

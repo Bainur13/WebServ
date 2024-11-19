@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/27 19:33:47 by bainur           ###   ########.fr       */
+/*   Updated: 2024/11/18 14:07:43 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <map>
+#include "../Includes/c-stacktrace.h"
 
 
+int check_cgi_status(int client_fd, Server_conf &server_c);
+Cgi *find_cgi_by_client_fd(int client_fd, std::vector<Cgi *> cgis);
 
 Response	treat_request(Request req, Server_conf &server_c)
 {
@@ -48,7 +52,6 @@ void	handle_client(int client_fd, Server_conf &server_c)
 
 	std::string request;
 	request = read_fd_to_end(client_fd);
-	std::cout << "Request received:" << std::endl;
 	if (request.empty())
 	{
 		close(client_fd);
@@ -66,6 +69,11 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	}
 	else
 		res = treat_request(req, server_c);
+	if (res.isCgiRes() == true)
+	{
+		find_cgi_by_client_fd(0, server_c.get_cgi())->setClientFd(client_fd);
+	 	return;
+	}
 	std::string response = res.final_response();
 	std::cout << "Response sent:" << std::endl;
 	std::cout << response << std::endl;
@@ -75,8 +83,25 @@ void	handle_client(int client_fd, Server_conf &server_c)
 		close(client_fd);
 		return ;
 	}
-	close(client_fd);
 }
+
+void display_map(const std::map<int, bool>& my_map)
+{
+    std::map<int, bool>::const_iterator it;
+    for (it = my_map.begin(); it != my_map.end(); ++it) {
+        std::cout << "Clé : " << it->first << " | Valeur : " << (it->second ? "true" : "false") << std::endl;
+    }
+}
+
+bool event_being_treated(int fd, std::map<int, bool> *cgi_in_progress)
+{
+    std::map<int, bool>::iterator it = cgi_in_progress->find(fd);
+    if (it != cgi_in_progress->end()) {
+        return it->second;
+    }
+    return false;
+}
+
 
 void	init_servers(Conf &conf)
 {
@@ -104,10 +129,11 @@ void	init_servers(Conf &conf)
 		}
 		std::cout << "Server " << servers[i].get_server_conf_name() << " started" << std::endl;
 	}
+	std::map<int, bool> cgi_in_progress;
 	while (1)
 	{
 		std::cout << "Waiting for connection" << std::endl;
-		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
+		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, 100);
 		std::cout << "ndfs: " << ndfs << std::endl;
 		if (ndfs == -1)
 		{
@@ -147,9 +173,19 @@ void	init_servers(Conf &conf)
 			}
 			if (!server_status)
 			{
-				if (events[i].events)
+				if ((events[i].events) && !event_being_treated(events[i].data.fd, &cgi_in_progress))
 					handle_client(events[i].data.fd, servers[server_conf]);
-				close(events[i].data.fd);
+				int cgi_status = 0;
+				if (servers[server_conf].get_cgi().size() > 0)
+				{
+					cgi_in_progress[events[i].data.fd] = true;
+					cgi_status = check_cgi_status(events[i].data.fd, servers[server_conf]);
+				}
+				if (!cgi_status)
+				{
+					cgi_in_progress.erase(events[i].data.fd);
+					close(events[i].data.fd);
+				}
 			}
 		}
 	}
@@ -159,9 +195,10 @@ int	main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cerr << "Usage: ./webserver <port>" << std::endl;
+		std::cerr << "Usage: ./webserver <file.conf>" << std::endl;
 		return (1);
 	}
+	// init_exceptions(av[0]);
 	Conf conf(av[1]);
 	init_servers(conf);
 	return (0);
