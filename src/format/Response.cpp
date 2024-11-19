@@ -32,13 +32,6 @@ Response &Response::operator=(Response const &src)
 	return (*this);
 }
 
-void Response::parseCgiResponse(std::string cgiOutput, Response &res)
-{
-	// TODO PARSER LE RETOUR DU CGI ET CONSTRUIRE UNE REPONSE ADEQUAT;
-	(void)cgiOutput;
-	(void)res;
-}
-
 std::string Response::error_location(std::string error, short error_code, Location &location, Server_conf &server_c)
 {
 	std::ostringstream oss;

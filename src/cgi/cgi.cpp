@@ -300,13 +300,13 @@ void send_cgi_response(int client_fd, int cgi_fd)
 
 void erase_cgi_from_vector(Server_conf& server_c, int client_fd)
 {
-    std::vector<Cgi*>& cgis = server_c.get_cgi(); // Référence à la vector pour éviter la copie
+    std::vector<Cgi*>& cgis = server_c.get_cgi();
     for (std::vector<Cgi*>::iterator it = cgis.begin(); it != cgis.end();)
     {
         if ((*it)->getClientFd() == client_fd)
         {
-            delete *it;          // Libération de la mémoire
-            it = cgis.erase(it); // Supprime l'élément du vecteur et avance l'itérateur
+            delete *it;
+            it = cgis.erase(it);
         }
         else
             ++it;
