@@ -20,7 +20,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 		if (location.get_cgi())
 		{
 			location.get_cgi()->setMethod("GET");
-			location.get_cgi()->executeCgi(req);
+			location.get_cgi()->executeGetCgi(req);
 			server_c.add_cgi(location.get_cgi()->clone());
 			res.set_cgi(location.get_cgi());
 			res.set_cgiRes(true);

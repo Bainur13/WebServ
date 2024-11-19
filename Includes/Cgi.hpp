@@ -40,7 +40,8 @@ class Cgi
 	int getClientFd();
 	std::vector<const char*> build_env(Request &request);
 
-	bool executeCgi(Request &request);
+	bool executeGetCgi(Request &request);
+	bool executePostCgi(Request &request);
 	Cgi *clone();
 };
 

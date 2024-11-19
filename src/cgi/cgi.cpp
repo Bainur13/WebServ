@@ -95,7 +95,7 @@ std::vector<const char*> Cgi::build_env(Request &request)
 	return (final_env);
 }
 
-bool Cgi:: executeCgi(Request &request)
+bool Cgi:: executeGetCgi(Request &request)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -108,8 +108,8 @@ bool Cgi:: executeCgi(Request &request)
 	pid = fork();
 	if (pid == 0)
 	{
-		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[0]);
 		close(pipefd[1]);
 		if (execve(this->getPath().c_str(), const_cast<char* const*>(build_env(request).data()), NULL) == -1)
 		{
@@ -121,6 +121,45 @@ bool Cgi:: executeCgi(Request &request)
 	{
 		close(pipefd[1]);
 		this->_cgiFdToRead = pipefd[0];
+		this->_cgiPid = pid;
+	}
+	return (0);
+}
+
+bool Cgi:: executePostCgi(Request &request)
+{
+	int		outpipe[2];
+	int		inpipe[2];
+	pid_t	pid;
+
+	if (pipe(outpipe) == -1 || pipe(inpipe) == -1)
+	{
+		perror("Erreur creating pipe");
+		return (1);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(outpipe[1], STDOUT_FILENO);
+		close(outpipe[0]);
+		close(outpipe[1]);
+		dup2(inpipe[1], STDIN_FILENO);
+		close(inpipe[1]);
+		close(inpipe[0]);
+		if (execve(this->getPath().c_str(), const_cast<char* const*>(build_env(request).data()), NULL) == -1)
+		{
+			perror("Erreur lors de l'exécution du script");
+			_exit(1);
+		}
+	}
+	else if ( pid > 0)
+	{
+
+		write(inpipe[1], request.get_request_body().c_str(), request.get_request_body().size());
+		close(inpipe[0]);
+		close(inpipe[1]);
+		close(outpipe[1]);
+		this->_cgiFdToRead = outpipe[0];
 		this->_cgiPid = pid;
 	}
 	return (0);
