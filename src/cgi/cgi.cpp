@@ -18,7 +18,6 @@ Cgi::Cgi(const Cgi &copy)
 Cgi &Cgi::operator=(const Cgi &copy)
 {
 	this->_scriptPath = copy._scriptPath;
-	this->_interpreterPath = copy._interpreterPath;
 	this->_cgiPid = copy._cgiPid;
 	this->_cgiFdToRead = copy._cgiFdToRead;
 	this->_cgiMethod = copy._cgiMethod;
@@ -26,10 +25,9 @@ Cgi &Cgi::operator=(const Cgi &copy)
 	return (*this);
 }
 
-Cgi::Cgi(std::string path, std::string interpreter)
+Cgi::Cgi(std::string path)
 {
 	this->_scriptPath = path;
-	this->_interpreterPath = interpreter;
 }
 void Cgi::setPath(std::string path)
 {
