@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/20 11:28:11 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/20 11:44:12 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,16 @@ void Location::set_root(const std::vector<std::string> &line_s)
 
 void Location::set_cookie(const std::vector<std::string> &line_s)
 {
-	for (std::vector<std::string>::const_iterator it = line_s.begin(); it != line_s.end(); it++)
+	for (std::vector<std::string>::const_iterator it = line_s.begin() + 1; it != line_s.end(); it++)
 	{
-		
+		this->_cookies.push_back(*it);
+	}
+
+	std::cout << "Cookies stockes :\n";
+	int i = 0;
+	for (std::vector<std::string>::const_iterator it = this->_cookies.begin(); it != this->_cookies.end(); it++ ; i++)
+	{
+		std::cout << "Cookie numero " << i << ": " <<  	
 	}
 }
 
