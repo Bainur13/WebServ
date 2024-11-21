@@ -18,4 +18,8 @@ Cgi Tasks:
 
 	☐ Build a cgi to build response with custom page about zodiac signs
 
-	☐ Build a cgi to render the auto_index directory page ? 
+	☐ Build a cgi to render the auto_index directory page ?
+
+Global Tasks:
+
+	☐ Run a correction to determine if the project is ready to push @critical
