@@ -18,18 +18,17 @@ Cgi::Cgi(const Cgi &copy)
 Cgi &Cgi::operator=(const Cgi &copy)
 {
 	this->_scriptPath = copy._scriptPath;
-	this->_interpreterPath = copy._interpreterPath;
 	this->_cgiPid = copy._cgiPid;
 	this->_cgiFdToRead = copy._cgiFdToRead;
 	this->_cgiMethod = copy._cgiMethod;
 	this->_clientFd = copy._clientFd;
+
 	return (*this);
 }
 
-Cgi::Cgi(std::string path, std::string interpreter)
+Cgi::Cgi(std::string path)
 {
 	this->_scriptPath = path;
-	this->_interpreterPath = interpreter;
 }
 void Cgi::setPath(std::string path)
 {
@@ -59,14 +58,6 @@ std::string Cgi::getMethod()
 std::string Cgi::getPath()
 {
 	return (_scriptPath);
-}
-void Cgi::setInterpreter(std::string interpreter)
-{
-	this->_interpreterPath = interpreter;
-}
-std::string Cgi::getInterpreter()
-{
-	return (this->_interpreterPath);
 }
 
 std::vector<const char*> Cgi::build_env(Request &request)
@@ -300,13 +291,13 @@ void send_cgi_response(int client_fd, int cgi_fd)
 
 void erase_cgi_from_vector(Server_conf& server_c, int client_fd)
 {
-    std::vector<Cgi*>& cgis = server_c.get_cgi(); // Référence à la vector pour éviter la copie
+    std::vector<Cgi*>& cgis = server_c.get_cgi();
     for (std::vector<Cgi*>::iterator it = cgis.begin(); it != cgis.end();)
     {
         if ((*it)->getClientFd() == client_fd)
         {
-            delete *it;          // Libération de la mémoire
-            it = cgis.erase(it); // Supprime l'élément du vecteur et avance l'itérateur
+            delete *it;
+            it = cgis.erase(it);
         }
         else
             ++it;
@@ -336,7 +327,7 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 		}
 		return (1);
 	}
-	else // if he is done;
+	else if (pid > 0)// if he is done;
 	{
 		timeout = 0;
 		send_cgi_response(client_fd, cgi->getCgiFd());

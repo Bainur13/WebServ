@@ -113,6 +113,27 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 		return (false);
 	}
 	res.set_line("Version", "HTTP/1.1");
+	if (location.get_cookies().size() != 0)
+	{
+		for (std::vector<std::string>::iterator it = location.get_cookies().begin(); it != location.get_cookies().end() ; it++)
+		{
+			std::cout << "COOKIE TO SEND >> " << (*it) << std::endl;
+			res.set_header("Set-Cookie", (*it));
+		}
+	}
+	if (location.get_redirect().first)
+	{
+		res.set_line("Status", "302");
+		res.set_line("Reason", "Found");
+		std::ostringstream oss;
+		oss << server_c.get_port();
+		std::string port = oss.str();
+		if (location.get_redirect().second == "form")
+			res.set_header("Location", "http://" + server_c.get_domain() + ":" + port + server_c.get_redirect_success_page());
+		else if (location.get_redirect().second == "default")
+			res.set_header("Location", "http://" + server_c.get_domain() + ":" + port + server_c.get_redirect_default_page());
+		return (true);
+	}
 	res.set_line("Status", "200");
 	res.set_line("Reason", "OK");
 	res.set_header("Content-Type", get_content_type(path));

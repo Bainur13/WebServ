@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/18 14:41:22 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 03:52:33 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ Server_conf &Server_conf::operator=(const Server_conf &copy)
         this->_method = copy._method;
         this->_server = copy._server;
         this->_locations = copy._locations;
+		this->_redirect_default_page = copy._redirect_default_page;
+		this->_redirect_fail_page = copy._redirect_fail_page;
+		this->_redirect_success_page = copy._redirect_success_page;
+		this->_domain = copy._domain;
     }
     return *this;
 }
@@ -49,7 +53,12 @@ void Server_conf::init_server()
 {
     _server.Init(*this);
 }
-
+void Server_conf::set_domain(const std::vector<std::string> domain_name)
+{
+	if (domain_name.size() != 3)
+		error_exit("Error: invalid domain name");
+	this->_domain = domain_name[1];
+}
 void Server_conf::set_server_conf_name(const std::vector <std::string> &line_s)
 {
     if (line_s.size() != 3)
@@ -62,6 +71,24 @@ void Server_conf::set_root(const std::vector <std::string> &line_s)
     if (line_s.size() != 3)
         error_exit("Error: invalid root");
     this->_root = line_s[1];
+}
+
+void Server_conf::set_redirect_default_page(std::vector<std::string> redirect_location)
+{
+	if (redirect_location.size() != 4)
+		error_exit("Error: invalid syntax for redirect default page");
+	this->_redirect_default_page = redirect_location[2];
+}
+void Server_conf::set_redirect_form_page(std::vector<std::string> redirect_location)
+{
+	if (redirect_location.size() != 4 && redirect_location.size() != 5)
+		error_exit("Error: invalid syntax for redirect success page");
+	if (redirect_location.size() == 4)
+	{
+		this->_redirect_success_page = redirect_location[2];
+		return;
+	}
+	this->_redirect_fail_page = redirect_location[3];
 }
 
 void Server_conf::set_sizelimit(const std::vector <std::string> &line_s)
@@ -137,6 +164,10 @@ std::vector<Cgi *> & Server_conf::get_cgi()
 {
 	return _activeCgis;
 }
+std::string Server_conf::get_domain()
+{
+	return _domain;
+}
 
 std::string Server_conf::get_server_conf_name()
 {
@@ -191,4 +222,18 @@ std::vector<Location>& Server_conf::get_locations() {
 
 const std::vector<Location>& Server_conf::get_locations() const {
     return _locations;
+}
+
+std::string Server_conf::get_redirect_default_page()
+{
+	return this->_redirect_default_page;
+}
+std::string Server_conf::get_redirect_success_page()
+{
+	return this->_redirect_success_page;
+}
+
+std::string Server_conf::get_redirect_fail_page()
+{
+	return this->_redirect_fail_page;
 }

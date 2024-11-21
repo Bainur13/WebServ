@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/30 16:19:17 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 06:44:56 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ Location &Location::operator=(const Location &copy)
         this->_method = copy._method;
         this->_listing = copy._listing;
         this->_alias = copy._alias;
+		this->_cookies = copy._cookies;
 		if (copy.get_cgi())
 			this->_cgi = new Cgi(*(copy._cgi));
 		else
@@ -66,6 +67,21 @@ void Location::set_root(const std::vector<std::string> &line_s)
     if (line_s.size() != 3)
         error_exit("Error: invalid location root");
     this->_root = line_s[1];
+}
+
+void Location::set_cookie(const std::vector<std::string> &line_s)
+{
+	if (line_s.size() != 3)
+		error_exit("Error: invalid cookie syntax");
+
+	this->_cookies.push_back(line_s[1]);
+
+	std::cout << "Cookies stockes :\n";
+	int i = 0;
+	for (std::vector<std::string>::const_iterator it = this->_cookies.begin(); it != this->_cookies.end(); it++, i++)
+	{
+		std::cout << "Cookie numero " << i << ": " << (*it) << std::endl;
+	}
 }
 
 void Location::set_index(const std::vector<std::string> &line_s)
@@ -125,9 +141,10 @@ void Location::set_listing(const std::vector<std::string> &line_s)
 
 void Location::set_cgi(const std::vector<std::string> &line_s)
 {
-	if (line_s.size() != 4)
+	if (line_s.size() != 3)
 		error_exit("Error: invalid cgi");
-	this->_cgi = new Cgi(line_s[2], line_s[1]);
+	std::cout << "Line_s[1] : " << line_s[1] << std::endl;
+	this->_cgi = new Cgi(line_s[1]);
 }
 
 void Location::set_alias(const std::vector<std::string> &line_s)
@@ -150,6 +167,11 @@ std::string Location::get_root()
 std::string Location::get_index()
 {
     return this->_index;
+}
+
+std::vector<std::string> &Location::get_cookies()
+{
+	return this->_cookies;
 }
 
 Cgi *Location::get_cgi() const

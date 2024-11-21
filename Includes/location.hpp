@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:24:50 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/30 15:51:28 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 06:37:38 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,15 @@ class Location
 	void set_listing(const std::vector<std::string> &line_s);
 	void set_alias(const std::vector<std::string> &line_s);
 	void set_cgi(const std::vector<std::string> &line_s);
+	void set_cookie(const std::vector<std::string> &line_s);
+
 
 	Cgi *get_cgi() const;
 	std::string get_path();
 	std::string get_root();
 	std::string get_index();
 	std::string get_alias();
-
+	std::vector<std::string> &get_cookies();
 	std::string get_error_page(short error_code);
 	std::pair<short, std::string> get_redirect();
 	std::vector<std::string> get_method();
@@ -58,6 +60,7 @@ class Location
 	std::string _root;
 	std::string _index;
 	std::string _alias;
+	std::vector<std::string> _cookies;
 	std::map<short, std::string> _error_page;
 	std::pair<short, std::string> _redirect;
 	std::vector<std::string> _method;

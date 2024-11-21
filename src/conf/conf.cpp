@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/31 15:06:28 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:03:59 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,25 @@ Server_conf Conf::parse_server(std::ifstream &file)
 			server.set_sizelimit(line_s);
 		else if (line_s[0] == "listen")
 			server.set_listen(line_s);
+		else if (line_s[0] == "domain")
+			server.set_domain(line_s);
 		else if (line_s[0] == "error_page")
 			server.set_error_page(line_s);
 		else if (line_s[0] == "index")
 			server.set_index(line_s);
 		else if (line_s[0] == "method")
 			server.set_method(line_s);
+		else if (line_s[0] == "redirect" && line_s[1] == "form")
+			server.set_redirect_form_page(line_s);
+		else if (line_s[0] == "redirect" && line_s[1] == "default")
+			server.set_redirect_default_page(line_s);
 		else if (is_location(line, file))
 			server.add_location(parse_location(file, line_s));
 		else
+		{
+			std::cout << line << std::endl;
 			error_exit("Error: invalid line in server");
+		}
 	}
 	if (!unique_symbol(line_s, "}"))
 		error_exit("Error: invalid server");
@@ -107,6 +116,8 @@ Location Conf::parse_location(std::ifstream &file,
 			location.set_listing(line_s);
 		else if (line_s[0] == "cgi")
 			location.set_cgi(line_s);
+		else if (line_s[0] == "Set-Cookie")
+			location.set_cookie(line_s);
 		else
 		{
 			std::cout << line_s[0] << std::endl;
