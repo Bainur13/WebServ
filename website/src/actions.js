@@ -77,7 +77,7 @@ function CardText({ hoveredAction }) {
         '404': 'This displays a 404 error page by accessing a bad URL.',
         'Upload File': 'This lets you upload a file to the server.',
         'Delete file': 'This lets you delete a file from the server.',
-        'Change Theme': 'Chose dark or light theme'
+        'Change Theme': 'Use cookies to choose dark or light theme'
     };
 
     // Afficher le message correspondant à l'action hoverée
