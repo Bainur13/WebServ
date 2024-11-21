@@ -149,6 +149,13 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 		res.error_basic("Error 400 : Bad Request", 400, server_c);
 		return (false);
 	}
+	if (location.get_cookies().size() != 0)
+	{
+		for (std::vector<std::string>::iterator it = location.get_cookies().begin(); it != location.get_cookies().end() ; it++)
+		{
+			res.set_header("Set-Cookie", (*it));
+		}
+	}
 	if (exist)
 		res.set_line("Status", "200");
 	else

@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:24:50 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/21 04:00:23 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 06:37:38 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Location
 	std::string get_root();
 	std::string get_index();
 	std::string get_alias();
-	std::vector<std::string> get_cookies();
+	std::vector<std::string> &get_cookies();
 	std::string get_error_page(short error_code);
 	std::pair<short, std::string> get_redirect();
 	std::vector<std::string> get_method();

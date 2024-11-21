@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/21 04:02:18 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 06:44:56 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ void Location::set_root(const std::vector<std::string> &line_s)
 
 void Location::set_cookie(const std::vector<std::string> &line_s)
 {
-	for (std::vector<std::string>::const_iterator it = line_s.begin() + 1; it != line_s.end(); it++)
-	{
-		this->_cookies.push_back(*it);
-	}
+	if (line_s.size() != 3)
+		error_exit("Error: invalid cookie syntax");
+
+	this->_cookies.push_back(line_s[1]);
 
 	std::cout << "Cookies stockes :\n";
 	int i = 0;
@@ -169,7 +169,7 @@ std::string Location::get_index()
     return this->_index;
 }
 
-std::vector<std::string> Location::get_cookies()
+std::vector<std::string> &Location::get_cookies()
 {
 	return this->_cookies;
 }
