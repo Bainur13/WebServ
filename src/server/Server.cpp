@@ -38,30 +38,30 @@ void Server::Init(Server_conf sconf)
 		std::cerr << strerror(errno) << std::endl;
 		exit(EXIT_FAILURE);
 	}
-    opt = 1;
-    if (setsockopt(_server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-    {
-        std::cerr << strerror(errno) << std::endl;
-        close(_server_fd); 
-    }
-    _address.sin_family = AF_INET;
-    _address.sin_port = htons(sconf.get_port());
-    _address.sin_addr.s_addr = sconf.get_host();
-    if (bind(_server_fd, (struct sockaddr *)&_address, sizeof(_address)) < 0)
-    {
-        std::cerr << strerror(errno) << std::endl;
-        close(_server_fd);
-        exit(EXIT_FAILURE);
-    }
-    _addrlen = sizeof(_address);
-    _listen_fd = listen(_server_fd, MAX_EVENTS);
-    if (_listen_fd < 0)
-    {
-        close(_server_fd);
-        close(_listen_fd);
-        std::cerr << strerror(errno) << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	opt = 1;
+	if (setsockopt(_server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+	{
+		std::cerr << strerror(errno) << std::endl;
+		close(_server_fd);
+	}
+	_address.sin_family = AF_INET;
+	_address.sin_port = htons(sconf.get_port());
+	_address.sin_addr.s_addr = sconf.get_host();
+	if (bind(_server_fd, (struct sockaddr *)&_address, sizeof(_address)) < 0)
+	{
+		std::cerr << strerror(errno) << std::endl;
+		close(_server_fd);
+		exit(EXIT_FAILURE);
+	}
+	_addrlen = sizeof(_address);
+	_listen_fd = listen(_server_fd, MAX_EVENTS);
+	if (_listen_fd < 0)
+	{
+		close(_server_fd);
+		close(_listen_fd);
+		std::cerr << strerror(errno) << std::endl;
+		exit(EXIT_FAILURE);
+	}
 }
 
 void Server::set_server_fd(int fd)

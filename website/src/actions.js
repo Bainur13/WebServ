@@ -9,6 +9,8 @@ export function Actions()
 {
 	const [hoveredAction, setHoveredAction] = useState('');
 
+	const cookies = document.cookie;
+	console.log(cookies);
 	return (
 		<>
 		<NavBar />
@@ -25,7 +27,7 @@ export function Actions()
 }
 function Cards( {setHoveredAction} )
 {
-	let actions = ['Custom Page', 'Bad request', '404', 'Upload File', 'Delete file', 'Calculations'];
+	let actions = ['Custom Page', 'Bad request', '404', 'Upload File', 'Delete file', 'Change Theme'];
 	return (
 		<>
 		{actions.map( action => (
@@ -62,7 +64,7 @@ function definePath(action)
         '404': '/action/coucousalut',
         'Upload File': '/action/uploader',
         'Delete file': '/action/delete_file',
-        'Calculations': '/action/calulations'
+        'Change Theme': '/action/choose_theme'
 	}
 	return paths[action];
 }
@@ -75,7 +77,7 @@ function CardText({ hoveredAction }) {
         '404': 'This displays a 404 error page by accessing a bad URL.',
         'Upload File': 'This lets you upload a file to the server.',
         'Delete file': 'This lets you delete a file from the server.',
-        'Calculations': 'Perform some calculations here.'
+        'Change Theme': 'Chose dark or light theme'
     };
 
     // Afficher le message correspondant à l'action hoverée

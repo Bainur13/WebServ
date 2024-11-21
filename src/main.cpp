@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/18 14:07:43 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 02:50:50 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	handle_client(int client_fd, Server_conf &server_c)
 		res = treat_request(req, server_c);
 	if (res.isCgiRes() == true)
 	{
-		find_cgi_by_client_fd(0, server_c.get_cgi())->setClientFd(client_fd);
+		server_c.get_cgi()[server_c.get_cgi().size() - 1]->setClientFd(client_fd);
 	 	return;
 	}
 	std::string response = res.final_response();
@@ -198,7 +198,7 @@ int	main(int ac, char **av)
 		std::cerr << "Usage: ./webserver <file.conf>" << std::endl;
 		return (1);
 	}
-	// init_exceptions(av[0]);
+	init_exceptions(av[0]);
 	Conf conf(av[1]);
 	init_servers(conf);
 	return (0);

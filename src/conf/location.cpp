@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/20 11:44:12 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/21 04:02:18 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ Location::Location()
     _redirect.second = "";
     _listing = false;
 	_cgi = NULL;
-	_cookie = "";
 }
 
 Location::Location(const Location &copy)
@@ -42,7 +41,7 @@ Location &Location::operator=(const Location &copy)
         this->_method = copy._method;
         this->_listing = copy._listing;
         this->_alias = copy._alias;
-		this->_cookie = copy._cookie;
+		this->_cookies = copy._cookies;
 		if (copy.get_cgi())
 			this->_cgi = new Cgi(*(copy._cgi));
 		else
@@ -79,9 +78,9 @@ void Location::set_cookie(const std::vector<std::string> &line_s)
 
 	std::cout << "Cookies stockes :\n";
 	int i = 0;
-	for (std::vector<std::string>::const_iterator it = this->_cookies.begin(); it != this->_cookies.end(); it++ ; i++)
+	for (std::vector<std::string>::const_iterator it = this->_cookies.begin(); it != this->_cookies.end(); it++, i++)
 	{
-		std::cout << "Cookie numero " << i << ": " <<  	
+		std::cout << "Cookie numero " << i << ": " << (*it) << std::endl;
 	}
 }
 
@@ -144,6 +143,7 @@ void Location::set_cgi(const std::vector<std::string> &line_s)
 {
 	if (line_s.size() != 3)
 		error_exit("Error: invalid cgi");
+	std::cout << "Line_s[1] : " << line_s[1] << std::endl;
 	this->_cgi = new Cgi(line_s[1]);
 }
 
@@ -167,6 +167,11 @@ std::string Location::get_root()
 std::string Location::get_index()
 {
     return this->_index;
+}
+
+std::vector<std::string> Location::get_cookies()
+{
+	return this->_cookies;
 }
 
 Cgi *Location::get_cgi() const

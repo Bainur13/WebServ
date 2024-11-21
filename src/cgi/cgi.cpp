@@ -22,6 +22,7 @@ Cgi &Cgi::operator=(const Cgi &copy)
 	this->_cgiFdToRead = copy._cgiFdToRead;
 	this->_cgiMethod = copy._cgiMethod;
 	this->_clientFd = copy._clientFd;
+
 	return (*this);
 }
 
@@ -57,14 +58,6 @@ std::string Cgi::getMethod()
 std::string Cgi::getPath()
 {
 	return (_scriptPath);
-}
-void Cgi::setInterpreter(std::string interpreter)
-{
-	this->_interpreterPath = interpreter;
-}
-std::string Cgi::getInterpreter()
-{
-	return (this->_interpreterPath);
 }
 
 std::vector<const char*> Cgi::build_env(Request &request)
@@ -334,7 +327,7 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 		}
 		return (1);
 	}
-	else // if he is done;
+	else if (pid > 0)// if he is done;
 	{
 		timeout = 0;
 		send_cgi_response(client_fd, cgi->getCgiFd());

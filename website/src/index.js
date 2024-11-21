@@ -7,6 +7,7 @@ import { Error404 } from './404.js';
 import { CustomPage } from './customPage.js';
 import { Uploader } from './uploader.js'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ChooseTheme } from './choose_theme.js';
 
 function App()
 {
@@ -17,6 +18,7 @@ function App()
 				<Route path='/actions' element={ <Actions /> }/>
 				<Route path='/action/custom_page' element={ <CustomPage /> }/>
 				<Route path='/action/uploader' element={ <Uploader />}/>
+				<Route path='/action/choose_theme' element={ <ChooseTheme />}/>
 				<Route path='*' element={ <Error404 /> }/>
 			</Routes>
 		</Router>

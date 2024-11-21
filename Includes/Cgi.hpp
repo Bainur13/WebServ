@@ -27,13 +27,11 @@ class Cgi
 	Cgi &operator=(const Cgi &copy);
 
 	void setPath(std::string path);
-	void setInterpreter(std::string interpreter);
 	void setMethod(std::string method);
 	void setClientFd(int client_fd);
 
 	std::string getPath();
 	std::string getMethod();
-	std::string getInterpreter();
 	int getCgiPid();
 	int getCgiFd();
 	int getClientFd();

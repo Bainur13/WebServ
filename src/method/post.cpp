@@ -154,6 +154,19 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	else
 		res.set_line("Status", "201");
 	res.set_line("Version", "HTTP/1.1");
+	if (location.get_redirect().first)
+	{
+		res.set_line("Status", "302");
+		res.set_line("Reason", "Found");
+		std::ostringstream oss;
+		oss << server_c.get_port();
+		std::string port = oss.str();
+		if (location.get_redirect().second == "form")
+			res.set_header("Location", "http://" + server_c.get_domain() + ":" + port + server_c.get_redirect_success_page());
+		else if (location.get_redirect().second == "default")
+			res.set_header("Location", "http://" + server_c.get_domain() + ":" + port + server_c.get_redirect_default_page());
+		return (true);
+	}
 	res.set_line("Reason", "OK");
 	res.set_header("Content-Type", "text/html");
 	res.set_header("Content-Length", res.get_body_size());
