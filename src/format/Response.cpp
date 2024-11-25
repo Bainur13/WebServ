@@ -25,10 +25,14 @@ void Response::set_cgiRes(bool boolean)
 }
 Response &Response::operator=(Response const &src)
 {
-	_line = src._line;
-	_header = src._header;
-	_body = src._body;
-	_isCgiRes = src._isCgiRes;
+	if (this != &src) 
+    {
+        _line = src._line;
+        _header = src._header;
+        _body = src._body;
+        _isCgiRes = src._isCgiRes;
+        _cookies = src._cookies;
+    }
 	return (*this);
 }
 
@@ -118,14 +122,25 @@ std::string Response::error_basic(std::string error, short error_code, Server_co
 	return (response);
 }
 
+void Response::add_cookie(std::string cookie)
+{
+	this->_cookies.push_back(cookie);
+}
+
+std::vector<std::string> &Response::get_cookies()
+{
+	return this->_cookies;
+}
+
 std::string Response::final_response()
 {
 	std::string response;
 	response += _line["Version"] + " " + _line["Status"] + " " + _line["Reason"] + "\r\n";
-	for (std::map<std::string,
-				  std::string>::iterator it = _header.begin();
-		 it != _header.end(); it++)
+	for (std::map<std::string, std::string>::iterator it = _header.begin(); it != _header.end(); it++)
 		response += it->first + ": " + it->second + "\r\n";
+	std::cout << "TAILLE DE COOKIES DANS RES => " << _cookies.size() << std::endl;
+	for (std::vector<std::string>::iterator it = _cookies.begin(); it != _cookies.end(); it++)
+		response += "Set-Cookie: " + (*it) + "\r\n";
 	response += "\r\n" + _body;
 	return (response);
 }
@@ -137,7 +152,12 @@ void Response::set_line(std::string key, std::string value)
 
 void Response::set_header(std::string key, std::string value)
 {
-	_header[key] = value;
+	if (key == "Set-Cookie" && _header[key] != "")
+	{
+		_header[key] += ";" + value;
+	}
+	else
+		_header[key] = value;
 }
 
 void Response::set_body(std::string body)

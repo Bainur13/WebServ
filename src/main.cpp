@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/21 02:50:50 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/24 23:59:59 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,14 @@ void	handle_client(int client_fd, Server_conf &server_c)
 		res.error_basic(req.get_error(), 400, server_c);
 	}
 	else
+	{
 		res = treat_request(req, server_c);
+		std::cout << "COOKIES LA SORTIE DE TREAT REQUETES => " << std::endl;
+		for (std::vector<std::string>::iterator it = res.get_cookies().begin(); it != res.get_cookies().end() ; it++)
+		{
+			std::cout << (*it) << std::endl;
+		}
+	}
 	if (res.isCgiRes() == true)
 	{
 		server_c.get_cgi()[server_c.get_cgi().size() - 1]->setClientFd(client_fd);

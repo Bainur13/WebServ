@@ -5,19 +5,21 @@ import ReactDOM from 'react-dom/client';
 import './assets/styles/choose_theme.css'
 
 
-const isThemeSet = () =>
+export function isThemeSet()
 {
 	const cookies = document.cookie;
 	return cookies.split(';').some(el => el.trim() === "theme=light");
 }
+
+const isLightTheme = isThemeSet();
 
 export function ChooseTheme()
 {
 	return (
 		<>
 		<NavBar />
-		<main id='themeMain'>
-			{isThemeSet() ? <DarkTheme /> : <LightTheme /> }
+		<main id={isLightTheme ? 'themeMainLight' : 'themeMain'}>
+			{isLightTheme ?  <DarkTheme /> : <LightTheme />}
 		</main>
 		<Footer />
 		</>
@@ -41,11 +43,11 @@ function DarkTheme()
 {
 	return (
 		<>
-		<form className='themeForm' action='/themedark' method="post">
+		<form className='themeFormLight' action='/themedark' method="post">
 			<button className='themeSubmitBtn' type="submit">Switch to Dark theme</button>
 			<input type="hidden" name="theme" value="dark" />
 		</form>
-		<p className='themeText'>Enter the dark side... 👨‍💻 </p>
+		<p className='themeTextLight'>Enter the dark side... 👨‍💻 </p>
 		</>
 	)
 }

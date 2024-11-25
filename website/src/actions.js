@@ -4,17 +4,18 @@ import { useState } from 'react';
 import { NavBar } from './navbar.js';
 import { Footer } from './footer.js';
 import './assets/styles/actions.css';
+import { isThemeSet } from './choose_theme.js';
+
+const isLightTheme = isThemeSet();
 
 export function Actions()
 {
 	const [hoveredAction, setHoveredAction] = useState('');
 
-	const cookies = document.cookie;
-	console.log(cookies);
 	return (
 		<>
 		<NavBar />
-		<main>
+		<main id={isLightTheme ? 'actionMainLight' : 'actionMain'}>
 			<p id='mainTextActions'>Try one of the following actions</p>
 			<div id='cardsSection'>
 				<Cards setHoveredAction={setHoveredAction}/>
@@ -45,10 +46,10 @@ function Card({ action, setHoveredAction })
 {
 	return (
 		<Link
-			className='cards'
+			className={isLightTheme ? 'cardsLight' : 'cards'}
 			to={definePath(action)}
-			onMouseEnter={() => setHoveredAction(action)}  // Definir l'action survolee
-			onMouseLeave={() => setHoveredAction('')} // Reinitialiser le contenu quand l'action n'est plus survolee
+			onMouseEnter={() => setHoveredAction(action)}  
+			onMouseLeave={() => setHoveredAction('')}
 		>
 			{action}
 		</Link>
@@ -70,7 +71,7 @@ function definePath(action)
 }
 
 function CardText({ hoveredAction }) {
-    // Messages à afficher pour chaque carte
+
     const messages = {
         'Custom Page': 'This will create a custom page by asking you personal information.',
         'Bad request': 'This simulates a bad request.',
@@ -80,7 +81,6 @@ function CardText({ hoveredAction }) {
         'Change Theme': 'Chose dark or light theme'
     };
 
-    // Afficher le message correspondant à l'action hoverée
 	let animated = hoveredAction ? 'cardsText' : ''
     return (
         <p id={animated}>{hoveredAction ? messages[hoveredAction] : ''}</p>
