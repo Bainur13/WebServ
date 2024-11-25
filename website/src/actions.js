@@ -48,7 +48,7 @@ function Card({ action, setHoveredAction })
 		<Link
 			className={isLightTheme ? 'cardsLight' : 'cards'}
 			to={definePath(action)}
-			onMouseEnter={() => setHoveredAction(action)}  
+			onMouseEnter={() => setHoveredAction(action)}
 			onMouseLeave={() => setHoveredAction('')}
 		>
 			{action}
@@ -74,7 +74,7 @@ function CardText({ hoveredAction }) {
 
     const messages = {
         'Custom Page': 'This will create a custom page by asking you personal information.',
-        'Bad request': 'This simulates a bad request.',
+        'Bad request': 'This simulates a bad request. (GET request without body)',
         '404': 'This displays a 404 error page by accessing a bad URL.',
         'Upload File': 'This lets you upload a file to the server.',
         'Delete file': 'This lets you delete a file from the server.',

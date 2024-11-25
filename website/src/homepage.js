@@ -4,14 +4,20 @@ import './assets/styles/homepage.css';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import logo42 from './assets/images/logo-42.png';
+import {isThemeSet} from './choose_theme';
+import darklogo42 from './assets/images/42-dark-logo.png';
+
+
+
+const isLightTheme = isThemeSet();
 
 export function Homepage()
 {
 	return (
-		<div id='mainContainer'>
+		<div id={ isLightTheme ? 'mainContainerLight' : 'mainContainer'}>
 			<header id='topSide'>
 				<h1 id='homePageTitle'>Web Serv</h1>
-				<img id='logo42' src={logo42} alt='logo-42'></img>
+				<img id='logo42' src={isLightTheme ? darklogo42 : logo42} alt='logo-42'></img>
 			</header>
 			<main>
 				<div id='mainText'>
@@ -36,7 +42,7 @@ export function MainBtn() {
     }, []);
 
     return (
-		<button id="mainButton" className={isActive ? 'active' : ''}>
+		<button id={isLightTheme ? "mainButtonLight" : "mainButton"} className={isActive ? 'active' : ''}>
 				<Link to="/actions">
 				Explore Now
 				</Link>
