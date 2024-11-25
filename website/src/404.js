@@ -13,7 +13,7 @@ export function Error404()
 		<NavBar />
 		<main id={isThemeSet() ? 'errorMainLight' : 'errorMain'}>
 			<h1>404 Error, you lost ?</h1>
-			<a id='backLink' href="javascript:history.back()">Go back</a>
+			<a id={isThemeSet() ? 'backLinkLight' : 'backLink'} href="javascript:history.back()">Go back</a>
 		</main>
 		<Footer />
 		</>

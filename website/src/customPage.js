@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { NavBar } from "./navbar";
 import { Footer } from "./footer";
 import './assets/styles/custompage.css'
+import {isThemeSet} from './choose_theme';
+
+
+const isLightTheme = isThemeSet();
 
 export function CustomPage()
 {
 	return (
 		<>
 			<NavBar />
-			<main>
+			<main id={isLightTheme ? 'customPageMainLight' : 'customPageMain'}>
 			<CustomPageForm />
 			</main>
 			<Footer />

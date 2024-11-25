@@ -44,7 +44,7 @@ function DarkTheme()
 	return (
 		<>
 		<form className='themeFormLight' action='/themedark' method="post">
-			<button className='themeSubmitBtn' type="submit">Switch to Dark theme</button>
+			<button className='themeSubmitBtnLight' type="submit">Switch to Dark theme</button>
 			<input type="hidden" name="theme" value="dark" />
 		</form>
 		<p className='themeTextLight'>Enter the dark side... 👨‍💻 </p>
