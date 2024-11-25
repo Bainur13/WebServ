@@ -79,7 +79,7 @@
 	border: none;
 	color: white;
 }
-	
+
 #returnBtnLight
 {
 	cursor: pointer;
@@ -122,11 +122,27 @@ main h2
 	margin-top: 12px;
 }
 
+#formInputsLight
+{
+	display: flex;
+	flex-direction: column;
+	margin-top: 12px;
+}
+
 #formInputs input
 {
 
 	font-size: 150%;
 	margin-bottom: 10%;
+}
+
+#formInputsLight input
+{
+	color: black;
+	background-color: white;
+	font-size: 150%;
+	margin-bottom: 10%;
+	border: 1px solid black;
 }
 
 .customPageForms label
@@ -177,9 +193,27 @@ border-bottom: 1px solid white;
 	transition: all 0.5s ease;
 }
 
+#formSubmitBtnLight
+{
+	cursor: pointer;
+	font-weight: 300;
+	background-color: white;
+	color: black;
+	border: 1px solid black;
+	font-size: 120%;
+	padding: 1.5%;
+	transition: all 0.5s ease;
+}
+
 /* TODO */
 #formSubmitBtn:hover
 {
 	background-color: white;
 	color: black;
+}
+
+#formSubmitBtnLight:hover
+{
+	background-color: black;
+	color: white;
 }
