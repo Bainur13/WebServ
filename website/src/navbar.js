@@ -15,7 +15,6 @@ export function NavBar()
 			<Link to="/actions">
 				<div>Webserv</div>
 			</Link>
-			<main></main>
 			<Link to="https://42.fr/en/homepage/">
 				<img id='navLogo' src={isLightTheme ? darklogo42 : logo42} alt='logo-42'></img>
 			</Link>
