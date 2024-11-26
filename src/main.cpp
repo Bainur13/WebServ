@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/24 23:59:59 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/26 04:06:31 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <vector>
 #include <map>
 #include "../Includes/c-stacktrace.h"
+
+int g_sig;
 
 
 int check_cgi_status(int client_fd, Server_conf &server_c);
@@ -70,7 +72,6 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	else
 	{
 		res = treat_request(req, server_c);
-		std::cout << "COOKIES LA SORTIE DE TREAT REQUETES => " << std::endl;
 		for (std::vector<std::string>::iterator it = res.get_cookies().begin(); it != res.get_cookies().end() ; it++)
 		{
 			std::cout << (*it) << std::endl;
@@ -139,6 +140,8 @@ void	init_servers(Conf &conf)
 	std::map<int, bool> cgi_in_progress;
 	while (1)
 	{
+		if (g_sig)
+			break;
 		std::cout << "Waiting for connection" << std::endl;
 		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, 100);
 		std::cout << "ndfs: " << ndfs << std::endl;
@@ -198,6 +201,13 @@ void	init_servers(Conf &conf)
 	}
 }
 
+void exit_server(int signal)
+{
+	std::cout << "Signal: " << signal << std::endl;
+	std::cout << "CTRL-C pressed, exiting server." << std::endl;
+	g_sig = 1;
+}
+
 int	main(int ac, char **av)
 {
 	if (ac != 2)
@@ -206,6 +216,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	init_exceptions(av[0]);
+	signal(SIGINT, exit_server);
 	Conf conf(av[1]);
 	init_servers(conf);
 	return (0);
