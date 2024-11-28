@@ -31,7 +31,6 @@ db = load_database()
 
 # Gérer les cookies
 cookie = SimpleCookie(os.environ.get("HTTP_COOKIE", ""))
-session_id = cookie.get("session_id")
 
 if session_id:
     session_id = session_id.value
@@ -61,16 +60,46 @@ save_database(db)
 print("HTTP/1.1 302 Found")
 print("Content-Type: text/html")
 print(cookie.output())  # Ajouter le cookie à la réponse
-print("Location:http://" + )
+
+CONF_FILE = "../file.conf"
+
+def parse_conf(file_path):
+    with open(file_path, 'r') as f:
+        lines = f.readlines()
+
+    config = {
+        "domain": None,
+        "redirects": {}
+    }
+
+    current_redirect_form = None
+
+    # Lire chaque ligne
+    for line in lines:
+        line = line.strip()
+
+        # Trouver le domaine
+        if line.startswith("domain"):
+            config["domain"] = line.split()[1]
+
+        # Trouver les redirections
+        if line.startswith("redirect form"):
+            success_form = line.split()[2]  # Recupere "/success"
+			fail_form = line.split()[3] # Recupere "/fail"
+            config["redirects"]["sucess form"] = success_form
+			config["redirects"]["fail form"] = fail_form
+
+    return config
+
+config = parse_conf(CONF_FILE)
+
+domain = config.get("domain")
+
+if db["sessions"][session_id]["user"]:
+	print("Location:http://" + domain + config["redirects"].get("success form"))
+else:
+    print("Location:http://" + domain + config["redirects"].get("fail form"))
 print()
 print("<html><body>")
-print("<h1>Bienvenue sur votre app CGI</h1>")
-if db["sessions"][session_id]["user"]:
-    user = db["sessions"][session_id]["user"]
-    print(f"<p>Vous êtes connecté en tant que {db['users'][user]['name']}.</p>")
-else:
-    print('<form method="POST">')
-    print('Nom d\'utilisateur: <input type="text" name="username">')
-    print('<button type="submit">Se connecter</button>')
-    print('</form>')
+print("<h1> Redirecting to form treatment </h1>")
 print("</body></html>")

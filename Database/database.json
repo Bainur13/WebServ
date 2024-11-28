@@ -1,7 +1,7 @@
 {
     "users": {
-        "user1": {"name": "Alice", "age": 25},
-        "user2": {"name": "Bob", "age": 30}
+        "user1": {"password": "Alice"},
+        "user2": {"name": "Bob"}
     },
-    "sessions": {}
+    "sessions": {"session_id" : "Username"}
 }
