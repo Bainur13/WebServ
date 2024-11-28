@@ -25,7 +25,7 @@ void Response::set_cgiRes(bool boolean)
 }
 Response &Response::operator=(Response const &src)
 {
-	if (this != &src) 
+	if (this != &src)
     {
         _line = src._line;
         _header = src._header;
