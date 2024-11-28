@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/21 03:52:33 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:05:02 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,9 @@ void Server_conf::set_redirect_default_page(std::vector<std::string> redirect_lo
 }
 void Server_conf::set_redirect_form_page(std::vector<std::string> redirect_location)
 {
-	if (redirect_location.size() != 4 && redirect_location.size() != 5)
+	if (redirect_location.size() != 5)
 		error_exit("Error: invalid syntax for redirect success page");
-	if (redirect_location.size() == 4)
-	{
-		this->_redirect_success_page = redirect_location[2];
-		return;
-	}
+	this->_redirect_success_page = redirect_location[2];
 	this->_redirect_fail_page = redirect_location[3];
 }
 

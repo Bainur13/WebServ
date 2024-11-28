@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import { NavBar } from "./navbar";
 import { Footer } from "./footer";
 import './assets/styles/custompage.css'
+import {isThemeSet} from './choose_theme';
+
+
+const isLightTheme = isThemeSet();
 
 export function CustomPage()
 {
 	return (
 		<>
 			<NavBar />
-			<main>
+			<main id={isLightTheme ? 'customPageMainLight' : 'customPageMain'}>
 			<CustomPageForm />
 			</main>
 			<Footer />
@@ -30,15 +34,15 @@ export function CustomPageForm()
 			<>
 				<h1 id='choiceTitle'>Choose a form</h1>
 				<div id='choices'>
-					<button className='choiceBtn' onClick={() => setActiveForm('Get form')}>Get Method Form</button>
-					<button className='choiceBtn' onClick={() => setActiveForm('Post form')}>Post Method Form</button>
+					<button className={ isLightTheme ? 'choiceBtnLight' : 'choiceBtn'} onClick={() => setActiveForm('Get form')}>Get Method Form</button>
+					<button className={ isLightTheme ? 'choiceBtnLight' : 'choiceBtn'} onClick={() => setActiveForm('Post form')}>Post Method Form</button>
 				</div>
 			</>
 			)}
 
 			{activeForm && (
 			<div id="returnBtnDiv">
-				<button id='returnBtn' onClick={handleRetour}> &#x2190; Go back </button>
+				<button id={isLightTheme ? 'returnBtnLight' : 'returnBtn'} onClick={handleRetour}> &#x2190; Go back </button>
 			</div>
 			)}
 
@@ -67,13 +71,13 @@ function CustomForm( {activeForm} )
 							Date of birth :
 						</label>
 					</div>
-					<div id="formInputs">
+					<div id={ isLightTheme ? 'formInputsLight' : 'formInputs'}>
 						<input type="text" name="firstName" required/>
 						<input type="text" name="lastName" required/>
 						<input type="date" name="birthday" required/>
 					</div>
 				</div>
-				<button id='formSubmitBtn' type="submitBtn">Create custom page</button>
+				<button id={ isLightTheme ? 'formSubmitBtnLight' : 'formSubmitBtn'} type="submitBtn">Create custom page</button>
 			</form>
 			</>
 	)

@@ -1,5 +1,13 @@
-main
+#actionMain
 {
+	flex: 1;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#actionMainLight
+{
+	background-color: white;
+	color: black;
 	flex: 1;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -32,10 +40,29 @@ main
 	transition: all 1s ease;
 }
 
+.cardsLight
+{
+	cursor: pointer;
+	text-align: center;
+	text-wrap: nowrap;
+	border: 1px solid black;
+	padding: 1.5%;
+	color: black;
+	margin-right: 3%;
+	justify-content: center;
+	transition: all 1s ease;
+}
+
 .cards:hover
 {
 	background-color: white;
 	color: black;
+}
+
+.cardsLight:hover
+{
+	background-color: black;
+	color: white;
 }
 
 #cardsText

@@ -1,0 +1,7 @@
+{
+    "users": {
+        "user1": {"password": "Alice"},
+        "user2": {"name": "Bob"}
+    },
+    "sessions": {"session_id" : "Username"}
+}

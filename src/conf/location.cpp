@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/21 06:44:56 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/24 22:31:01 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,15 @@ void Location::set_cookie(const std::vector<std::string> &line_s)
 {
 	if (line_s.size() != 3)
 		error_exit("Error: invalid cookie syntax");
-
-	this->_cookies.push_back(line_s[1]);
+	
+	if (line_s[1].length() >= 2 && line_s[1][0] == '"' && line_s[1][line_s[1].length() - 1] == '"')
+	{
+        this->_cookies.push_back(line_s[1].substr(1, line_s[1].length() - 2));
+    }
+	else
+	{
+		error_exit("Error: Bad syntax for cookies");
+	}
 
 	std::cout << "Cookies stockes :\n";
 	int i = 0;

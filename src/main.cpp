@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/21 02:50:50 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:56:37 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <vector>
 #include <map>
 #include "../Includes/c-stacktrace.h"
+
+int g_sig;
 
 
 int check_cgi_status(int client_fd, Server_conf &server_c);
@@ -52,14 +54,15 @@ void	handle_client(int client_fd, Server_conf &server_c)
 
 	std::string request;
 	request = read_fd_to_end(client_fd);
+	std::cout << "CLIENT FD => " << client_fd << std::endl;
 	if (request.empty())
 	{
 		close(client_fd);
 		return ;
 	}
 	req.parse_request(request);
-	std::cout << "Request received:" << std::endl;
-	std::cout << request << std::endl;
+	// std::cout << "Request received:" << std::endl;
+	// std::cout << request << std::endl;
 	if (req.get_request_body().size() > (uint)server_c.get_sizelimit())
 		res.error_basic("Error 413 : Payload Too Large", 413, server_c);
 	if (req.get_error() != "")
@@ -68,15 +71,21 @@ void	handle_client(int client_fd, Server_conf &server_c)
 		res.error_basic(req.get_error(), 400, server_c);
 	}
 	else
+	{
 		res = treat_request(req, server_c);
+		for (std::vector<std::string>::iterator it = res.get_cookies().begin(); it != res.get_cookies().end() ; it++)
+		{
+			std::cout << (*it) << std::endl;
+		}
+	}
 	if (res.isCgiRes() == true)
 	{
 		server_c.get_cgi()[server_c.get_cgi().size() - 1]->setClientFd(client_fd);
 	 	return;
 	}
 	std::string response = res.final_response();
-	std::cout << "Response sent:" << std::endl;
-	std::cout << response << std::endl;
+	// std::cout << "Response sent:" << std::endl;
+	// std::cout << response << std::endl;
 	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
 	{
 		std::cerr << strerror(errno) << std::endl;
@@ -132,6 +141,8 @@ void	init_servers(Conf &conf)
 	std::map<int, bool> cgi_in_progress;
 	while (1)
 	{
+		if (g_sig)
+			break;
 		std::cout << "Waiting for connection" << std::endl;
 		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, 100);
 		std::cout << "ndfs: " << ndfs << std::endl;
@@ -191,6 +202,13 @@ void	init_servers(Conf &conf)
 	}
 }
 
+void exit_server(int signal)
+{
+	std::cout << "Signal: " << signal << std::endl;
+	std::cout << "CTRL-C pressed, exiting server." << std::endl;
+	g_sig = 1;
+}
+
 int	main(int ac, char **av)
 {
 	if (ac != 2)
@@ -199,6 +217,7 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	init_exceptions(av[0]);
+	signal(SIGINT, exit_server);
 	Conf conf(av[1]);
 	init_servers(conf);
 	return (0);

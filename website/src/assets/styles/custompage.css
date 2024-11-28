@@ -1,3 +1,17 @@
+#customPageMainLight
+{
+	background-color: white;
+	color: black;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-weight: 200;
+}
+
+#customPageMain
+{
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-weight: 200;
+}
+
 #choiceTitle
 {
 	margin-top: 5%;
@@ -25,10 +39,28 @@
 	transition: all 0.5s ease;
 }
 
+.choiceBtnLight
+{
+	margin: 0 5%;
+	padding: 5%;
+	font-size: 100%;
+	border: 1px solid black;
+	background-color: white;
+	color: black;
+	cursor: pointer;
+	transition: all 0.5s ease;
+}
+
 .choiceBtn:hover
 {
 	background-color: white;
 	color: black;
+}
+
+.choiceBtnLight:hover
+{
+	background-color: black;
+	color: white;
 }
 
 #returnBtnDiv
@@ -46,6 +78,18 @@
 	background-color: black;
 	border: none;
 	color: white;
+}
+
+#returnBtnLight
+{
+	cursor: pointer;
+	margin-top: 2%;
+	margin-left: 2%;
+	font-weight: 200;
+	font-size: 150%;
+	background-color: white;
+	border: none;
+	color: black;
 }
 
 .customPageForms
@@ -78,11 +122,27 @@ main h2
 	margin-top: 12px;
 }
 
+#formInputsLight
+{
+	display: flex;
+	flex-direction: column;
+	margin-top: 12px;
+}
+
 #formInputs input
 {
 
 	font-size: 150%;
 	margin-bottom: 10%;
+}
+
+#formInputsLight input
+{
+	color: black;
+	background-color: white;
+	font-size: 150%;
+	margin-bottom: 10%;
+	border: 1px solid black;
 }
 
 .customPageForms label
@@ -102,6 +162,8 @@ main h2
 	margin-bottom: 5%;
 }
 
+/* TODO */
+
 .customPageForms input {
 	font-weight: 200;
 	color: white;
@@ -110,11 +172,15 @@ main h2
 	border-bottom: 1px solid white;
   }
 
+
+/* TODO */
+
 .customPageForms input:focus {
 outline: none;
 border-bottom: 1px solid white;
 }
 
+/* TODO */
 #formSubmitBtn
 {
 	cursor: pointer;
@@ -127,8 +193,27 @@ border-bottom: 1px solid white;
 	transition: all 0.5s ease;
 }
 
+#formSubmitBtnLight
+{
+	cursor: pointer;
+	font-weight: 300;
+	background-color: white;
+	color: black;
+	border: 1px solid black;
+	font-size: 120%;
+	padding: 1.5%;
+	transition: all 0.5s ease;
+}
+
+/* TODO */
 #formSubmitBtn:hover
 {
 	background-color: white;
 	color: black;
+}
+
+#formSubmitBtnLight:hover
+{
+	background-color: black;
+	color: white;
 }

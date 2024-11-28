@@ -74,6 +74,7 @@ std::vector<const char*> Cgi::build_env(Request &request)
 		env.push_back("CONTENT_TYPE=" + request.get_request_header("Content-type"));
 		env.push_back("CONTENT_LENGTH=" + request.get_request_header("Content-length"));
 	}
+	env.push_back("HTTP_COOKIE=" + request.get_request_header("Cookies"));
     env.push_back("HTTP_USER_AGENT=" + request.get_request_header("User-Agent"));
 
 	std::vector<const char*> final_env;
