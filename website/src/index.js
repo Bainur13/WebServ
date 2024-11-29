@@ -9,6 +9,9 @@ import { Uploader } from './uploader.js'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ChooseTheme } from './choose_theme.js';
 import { Success } from './success.js';
+import { Fail } from './fail.js'
+import { Login } from './login.js'
+import { CreateAccount } from './create_account.js';
 
 function App()
 {
@@ -22,8 +25,8 @@ function App()
 				<Route path='/action/choose_theme' element={ <ChooseTheme /> }/>
 				<Route path='/success' element={ <Success /> }/>
 				<Route path='/fail' element={ <Fail /> }/>
-				<Route path='/signin' element={ <SignIn />}/>
-				<Route path='/createaccount' element= {<CreateAcc />} />
+				<Route path='/login' element={ <Login />}/>
+				<Route path='/createaccount' element= {<CreateAccount />} />
 				<Route path='*' element={ <Error404 /> }/>
 			</Routes>
 		</Router>

@@ -35,7 +35,7 @@ class Cgi
 	int getCgiPid();
 	int getCgiFd();
 	int getClientFd();
-	std::vector<const char*> build_env(Request &request);
+	char **build_env(Request &request);
 
 	bool executeGetCgi(Request &request);
 	bool executePostCgi(Request &request);

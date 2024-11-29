@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/28 12:56:37 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/29 11:31:00 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	 	return;
 	}
 	std::string response = res.final_response();
-	// std::cout << "Response sent:" << std::endl;
-	// std::cout << response << std::endl;
+	std::cout << "Response sent:" << std::endl;
+	std::cout << response << std::endl;
 	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
 	{
 		std::cerr << strerror(errno) << std::endl;

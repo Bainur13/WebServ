@@ -1,8 +1,8 @@
-import React from "react";
+import {React, useEffect} from "react";
 import { NavBar } from './navbar.js';
 import { Footer } from './footer.js';
 import './assets/styles/success.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import {isThemeSet} from './choose_theme';
 
 

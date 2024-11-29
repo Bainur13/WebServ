@@ -60,63 +60,103 @@ std::string Cgi::getPath()
 	return (_scriptPath);
 }
 
-std::vector<const char*> Cgi::build_env(Request &request)
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unistd.h>
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unistd.h>
+
+#include <vector>
+#include <string>
+#include <cstdlib> // Pour malloc, free, et strdup
+#include <cstring> // Pour strdup
+
+char **Cgi::build_env(Request &request)
 {
-	std::vector<std::string> env;
-	std::string method = request.get_request_line("Method");
-	env.push_back(this->_scriptPath);
-	env.push_back("SCRIPT_NAME=" + this->_scriptPath);
-	env.push_back("REQUEST_METHOD=" + method);
-	if (method == "GET")
-    	env.push_back("QUERY_STRING=" + request.get_url_params(request.get_request_line("Path")));
-	if (method == "POST")
-	{
-		env.push_back("CONTENT_TYPE=" + request.get_request_header("Content-type"));
-		env.push_back("CONTENT_LENGTH=" + request.get_request_header("Content-length"));
-	}
-	env.push_back("HTTP_COOKIE=" + request.get_request_header("Cookies"));
+    std::vector<std::string> env;
+    std::string method = request.get_request_line("Method");
+
+    env.push_back(this->_scriptPath);
+    env.push_back("SCRIPT_NAME=" + this->_scriptPath);
+    env.push_back("REQUEST_METHOD=" + method);
+
+    if (method == "GET")
+        env.push_back("QUERY_STRING=" + request.get_url_params(request.get_request_line("Path")));
+    if (method == "POST")
+    {
+        env.push_back("CONTENT_TYPE=" + request.get_request_header("Content-Type"));
+        env.push_back("CONTENT_LENGTH=" + request.get_request_header("Content-Length"));
+    }
+    env.push_back("HTTP_COOKIE=" + request.get_request_header("Cookies"));
     env.push_back("HTTP_USER_AGENT=" + request.get_request_header("User-Agent"));
 
-	std::vector<const char*> final_env;
+    // Allocation de l'environnement final (+1 pour le pointeur NULL)
+    char **final_env = (char **)malloc((env.size() + 1) * sizeof(char *));
+    if (!final_env)
+    {
+        throw std::bad_alloc(); // Gestion d'erreur si malloc échoue
+    }
 
-	for (std::vector<std::string>::iterator it = env.begin(); it != env.end(); it++)
-	{
-		final_env.push_back((*it).c_str());
-	}
-	final_env.push_back(NULL);
-	return (final_env);
+    int i = 0;
+    for (std::vector<std::string>::iterator it = env.begin(); it != env.end(); ++it)
+    {
+        final_env[i] = strdup(it->c_str());
+        if (!final_env[i])
+        {
+            for (int j = 0; j < i; ++j)
+                free(final_env[j]);
+            free(final_env);
+            throw std::bad_alloc();
+        }
+        i++;
+    }
+    final_env[i] = NULL;
+    return final_env;
 }
 
-bool Cgi:: executeGetCgi(Request &request)
+
+bool Cgi::executeGetCgi(Request &request)
 {
-	int		pipefd[2];
-	pid_t	pid;
+    int pipefd[2];
+    pid_t pid;
 
-	if (pipe(pipefd) == -1)
-	{
-		perror("Erreur creating pipe");
-		return (1);
-	}
-	pid = fork();
-	if (pid == 0)
-	{
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		if (execve(this->getPath().c_str(), const_cast<char* const*>(build_env(request).data()), NULL) == -1)
-		{
-			perror("Erreur lors de l'exécution du script");
-			_exit(1);
-		}
-	}
-	else if ( pid > 0)
-	{
-		close(pipefd[1]);
-		this->_cgiFdToRead = pipefd[0];
-		this->_cgiPid = pid;
-	}
-	return (0);
+    if (pipe(pipefd) == -1)
+    {
+        perror("Erreur creating pipe");
+        return (1);
+    }
+
+    pid = fork();
+    if (pid == 0)
+    {
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[0]);
+        close(pipefd[1]);
+        std::vector<const char*> argv;
+        argv.push_back(this->_scriptPath.c_str());
+        argv.push_back(NULL);
+        char **envp = build_env(request);
+        if (execve(this->getPath().c_str(), const_cast<char* const*>(argv.data()), const_cast<char* const*>(envp)) == -1)
+        {
+            perror("Erreur lors de l'exécution du script");
+            _exit(1);
+        }
+    }
+    else if (pid > 0)
+    {
+        close(pipefd[1]);
+        this->_cgiFdToRead = pipefd[0];
+        this->_cgiPid = pid;
+    }
+    return (0);
 }
+
+
+
 
 bool Cgi:: executePostCgi(Request &request)
 {
@@ -135,10 +175,14 @@ bool Cgi:: executePostCgi(Request &request)
 		dup2(outpipe[1], STDOUT_FILENO);
 		close(outpipe[0]);
 		close(outpipe[1]);
-		dup2(inpipe[1], STDIN_FILENO);
+		dup2(inpipe[0], STDIN_FILENO);
 		close(inpipe[1]);
 		close(inpipe[0]);
-		if (execve(this->getPath().c_str(), const_cast<char* const*>(build_env(request).data()), NULL) == -1)
+		std::vector<const char*> argv;
+        argv.push_back(this->_scriptPath.c_str());
+        argv.push_back(NULL);
+		char **envp = build_env(request);
+		if (execve(this->getPath().c_str(), const_cast<char* const*>(argv.data()), const_cast<char* const*>(envp)) == -1)
 		{
 			perror("Erreur lors de l'exécution du script");
 			_exit(1);
@@ -146,7 +190,7 @@ bool Cgi:: executePostCgi(Request &request)
 	}
 	else if ( pid > 0)
 	{
-
+		std::cout << "CONTENU DU BODY" << request.get_request_body() << std::endl;
 		write(inpipe[1], request.get_request_body().c_str(), request.get_request_body().size());
 		close(inpipe[0]);
 		close(inpipe[1]);
@@ -281,7 +325,7 @@ void send_cgi_response(int client_fd, int cgi_fd)
 
 	std::string response = res.final_response();
 
-
+	std::cout << "RESPONSE CONTENT => " << response << std::endl;
 	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
 	{
 		std::cerr << strerror(errno) << std::endl;
