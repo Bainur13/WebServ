@@ -1,4 +1,6 @@
 {
-    "users": {"vk1337" : "coucou"},
+    "users": {"vK1337" : {
+		"password" : "coucou"
+	}},
     "sessions": {}
 }

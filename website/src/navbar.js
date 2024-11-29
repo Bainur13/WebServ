@@ -10,6 +10,8 @@ import {isLogged} from './login';
 const isLightTheme = isThemeSet();
 const userName = isLogged();
 
+console.log(userName);
+
 export function NavBar()
 {
 	return (
@@ -18,6 +20,7 @@ export function NavBar()
 				<div>Webserv</div>
 			</Link>
 			<LoginLink />
+			{userName ? <LogOut /> : ""}
 			<Link to="https://42.fr/en/homepage/">
 				<img id='navLogo' src={isLightTheme ? darklogo42 : logo42} alt='logo-42'></img>
 			</Link>
@@ -46,4 +49,16 @@ function LoginLink()
 		</>
 	)
   }
+}
+
+function LogOut()
+{
+	return (
+		<>
+		<form method="POST" action='/logout'>
+			<input type="hidden" name="unset-cookie" value="session-id" />
+			<button type="submit">Log out</button>
+		</form>
+		</>
+	)
 }

@@ -36,7 +36,7 @@ function LoginForm()
 					<label for="username"> Password </label>
 					<input type="password" name="password" required></input>
 				</div>
-				<button id={isLightTheme ? "creationSubmitBtnLight" : "creationSubmitBtn"} type="submit">Create</button>
+				<button id={isLightTheme ? "creationSubmitBtnLight" : "creationSubmitBtn"} type="submit">Login</button>
 			</form>
 		</>
 	)

@@ -158,6 +158,14 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 			res.add_cookie(*it);
 		}
 	}
+	std::cout << location.get_unsetcookies().size() << std::endl;
+	if (location.get_unsetcookies().size() != 0)
+	{
+		for (std::vector<std::string>::iterator it = location.get_unsetcookies().begin(); it != location.get_unsetcookies().end() ; it++)
+		{
+			res.add_cookietounset(*it);
+		}
+	}
 	if (exist)
 		res.set_line("Status", "200");
 	else

@@ -32,6 +32,7 @@ Response &Response::operator=(Response const &src)
         _body = src._body;
         _isCgiRes = src._isCgiRes;
         _cookies = src._cookies;
+		_unsetcookies = src._unsetcookies;
     }
 	return (*this);
 }
@@ -127,9 +128,19 @@ void Response::add_cookie(std::string cookie)
 	this->_cookies.push_back(cookie);
 }
 
+void Response::add_cookietounset(std::string cookie_to_unset)
+{
+	this->_unsetcookies.push_back(cookie_to_unset);
+}
+
 std::vector<std::string> &Response::get_cookies()
 {
 	return this->_cookies;
+}
+
+std::vector<std::string> &Response::get_unsetcookies()
+{
+	return this->_unsetcookies;
 }
 
 std::string Response::final_response()
@@ -141,6 +152,9 @@ std::string Response::final_response()
 	std::cout << "TAILLE DE COOKIES DANS RES => " << _cookies.size() << std::endl;
 	for (std::vector<std::string>::iterator it = _cookies.begin(); it != _cookies.end(); it++)
 		response += "Set-Cookie: " + (*it) + "\r\n";
+	std::cout << "TAILLE DE UNSETCOOKIES DANS RES => " << _unsetcookies.size() << std::endl;
+	for (std::vector<std::string>::iterator it = _unsetcookies.begin(); it != _unsetcookies.end(); it++)
+		response += "Set-Cookie: " + (*it) + "=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; " + "Path=/;" + "Domain=localhost" + "\r\n";
 	response += "\r\n" + _body;
 	return (response);
 }

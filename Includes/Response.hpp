@@ -27,6 +27,7 @@ private:
 	std::map<std::string, std::string> _line;
 	std::map<std::string, std::string> _header;
 	std::vector<std::string> _cookies;
+	std::vector<std::string> _unsetcookies;
 	std::string _body;
 	bool _isCgiRes;
 	Cgi *_cgi;
@@ -47,14 +48,15 @@ public:
 	void set_body(std::string body);
 	void set_cgi(Cgi *cgi);
 	void add_cookie(std::string);
+	void add_cookietounset(std::string);
 
 	std::string get_body_size();
 	std::vector<std::string> &get_cookies();
+	std::vector<std::string> &get_unsetcookies();
 	std::string get_body();
 	Cgi *get_cgi();
 
 	bool isCgiRes();
-	void parseCgiResponse(std::string cgiOutput, Response &res);
 };
 
 #endif

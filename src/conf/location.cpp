@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/24 22:31:01 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/29 14:23:17 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ Location &Location::operator=(const Location &copy)
         this->_listing = copy._listing;
         this->_alias = copy._alias;
 		this->_cookies = copy._cookies;
+		this->_unsetcookies = copy._unsetcookies;
 		if (copy.get_cgi())
 			this->_cgi = new Cgi(*(copy._cgi));
 		else
@@ -73,7 +74,7 @@ void Location::set_cookie(const std::vector<std::string> &line_s)
 {
 	if (line_s.size() != 3)
 		error_exit("Error: invalid cookie syntax");
-	
+
 	if (line_s[1].length() >= 2 && line_s[1][0] == '"' && line_s[1][line_s[1].length() - 1] == '"')
 	{
         this->_cookies.push_back(line_s[1].substr(1, line_s[1].length() - 2));
@@ -82,12 +83,20 @@ void Location::set_cookie(const std::vector<std::string> &line_s)
 	{
 		error_exit("Error: Bad syntax for cookies");
 	}
+}
 
-	std::cout << "Cookies stockes :\n";
-	int i = 0;
-	for (std::vector<std::string>::const_iterator it = this->_cookies.begin(); it != this->_cookies.end(); it++, i++)
+void Location::set_unsetcookies(const std::vector<std::string> &line_s)
+{
+	if (line_s.size() != 3)
+		error_exit("Error: invalid Unset-cookies syntax");
+
+	if (line_s[1].length() >= 2 && line_s[1][0] == '"' && line_s[1][line_s[1].length() - 1] == '"')
 	{
-		std::cout << "Cookie numero " << i << ": " << (*it) << std::endl;
+        this->_unsetcookies.push_back(line_s[1].substr(1, line_s[1].length() - 2));
+    }
+	else
+	{
+		error_exit("Error: Bad syntax for Unset-cookies");
 	}
 }
 
@@ -179,6 +188,10 @@ std::string Location::get_index()
 std::vector<std::string> &Location::get_cookies()
 {
 	return this->_cookies;
+}
+std::vector<std::string> &Location::get_unsetcookies()
+{
+	return this->_unsetcookies;
 }
 
 Cgi *Location::get_cgi() const

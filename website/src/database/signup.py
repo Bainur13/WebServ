@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import sys
 import os
 import json
 import uuid
@@ -7,7 +7,7 @@ from http.cookies import SimpleCookie
 from urllib.parse import parse_qs
 
 # Chemin vers la base de données JSON
-DB_FILE = "database.json"
+DB_FILE = "/tmp/Webserv/website/src/database.json"
 
 # Fonction pour lire la base de données
 def load_database():
@@ -40,7 +40,7 @@ created = 0
 # Lire les données de l'entrée standard pour les requêtes POST
 if os.environ.get("REQUEST_METHOD", "") == "POST":
 	content_length = int(os.environ.get("CONTENT_LENGTH", 0))
-	post_data = os.stdin.read(content_length)  # Lecture depuis stdin
+	post_data = sys.stdin.read(content_length)  # Lecture depuis stdin
 	params = parse_qs(post_data)
 	username = params.get("username", [None])[0]
 	password = params.get("password", [None])[0]
@@ -77,29 +77,29 @@ def parse_conf(file_path):
 		if line.startswith("redirect form"):
 			success_form = line.split()[2]  # Recupere "/success"
 			fail_form = line.split()[3] # Recupere "/fail"
-			config["redirects"]["sucess form"] = success_form
+			config["redirects"]["success form"] = success_form
 			config["redirects"]["fail form"] = fail_form
 		if line.startswith("listen"):
 			config["port"] = line.split()[1]
 	return config
 
 config = parse_conf(CONF_FILE)
-
 domain = config.get("domain")
-
 port = config.get("port")
 
 print("HTTP/1.1 302 Found")
 print("Content-Type: text/html")
-print(cookie.output())  # Ajouter le cookie à la réponse
+
 if created == 1:
 	print("Location:http://" + domain + ":" + port + config["redirects"].get("success form"))
+	print(cookie.output())  # Ajouter le cookie à la réponse
 	print()
 	print("<html><body>")
 	print("<h1> Account created, redirecting</h1>")
 	print("</body></html>")
 else:
 	print("Location:http://" + domain + ":" + port + config["redirects"].get("fail form"))
+	print(cookie.output())  # Ajouter le cookie à la réponse
 	print()
 	print("<html><body>")
 	print("<h1> Account creation failed, redirecting</h1>")

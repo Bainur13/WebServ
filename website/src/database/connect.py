@@ -8,7 +8,7 @@ from http.cookies import SimpleCookie
 from urllib.parse import parse_qs
 
 # Chemin vers la base de données JSON
-DB_FILE = "../database.json"
+DB_FILE = "/tmp/Webserv/website/src/database.json"
 
 # Fonction pour lire la base de données
 def load_database():
@@ -34,7 +34,7 @@ MATCH = 0
 if os.environ.get("REQUEST_METHOD", "") == "POST":
 	content_length_str = os.environ.get("CONTENT_LENGTH", "0")
 	content_length = int(content_length_str)
-	post_data = sys.stdin.read(content_length)  # Lecture depuis stdin
+	post_data = sys.stdin.read(content_length)
 	params = parse_qs(post_data)
 	username = params.get("username", [None])[0]
 	password = params.get("password", [None])[0]
@@ -81,6 +81,7 @@ if MATCH == 1:
 	cookie["session_id"] = db["users"][username].get("session_id")
 	print("Location: http://" + domain + ":" + port + config["redirects"].get("success form"))
 	print(cookie.output())
+	print()
 	print("<html><body>")
 	print("<h1> Connexion success, redirecting </h1>")
 	print("</body></html>")
@@ -89,6 +90,7 @@ else:
 	print("Content-Type: text/html")
 	print("Location: http://" + domain + ":" + port + config["redirects"].get("fail form"))
 	print(cookie.output())
+	print()
 	print("<html><body>")
 	print("<h1> Connexion failed, redirecting </h1>")
 	print("</body></html>")
