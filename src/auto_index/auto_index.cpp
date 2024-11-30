@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:36:58 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/28 22:20:43 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/30 05:49:41 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ bool	auto_index(std::string path, Location &location, Server_conf &server_c,
 		res.error_location("Error 404 : Not Found", 404, location, server_c);
 		return (false);
 	}
-	std::cout << "LISTING BOOL =>" << location.get_listing() << std::endl;
 	path = soloslash(path);
 	std::string body = "<html>\n<head>\n<title>Index of " + path
 		+ "</title>\n</head>\n<body>\n<h1>Index of " + path + "</h1>\n<ul>\n";
@@ -50,13 +49,14 @@ bool	auto_index(std::string path, Location &location, Server_conf &server_c,
 		std::cout << "entry->d_name" << path << entry->d_name << std::endl;
 		struct stat buffer;
 		std::string file_path = path + entry->d_name;
+		std::cout << "PATH" << path << std::endl;
+		std::cout << "FILE PATH => " << file_path.substr(2) << std::endl;
 		if (stat(file_path.c_str(), &buffer) == 0)
 		{
 			if (S_ISDIR(buffer.st_mode))
 				body += "<li><a href=\"./" + (std::string)entry->d_name + "/\">" + entry->d_name + "</a></li>\n";
 			else if (S_ISREG(buffer.st_mode))
-				body += "<li><a href=\"./" + (std::string)entry->d_name + "\">" + entry->d_name + "</a></li>\n";
-		}
+				body += "<li><a href=\"./" + (std::string)entry->d_name + "\">" + entry->d_name + "</a></li>\n";		}
 	}
 	body += "</ul>\n</body>\n</html>";
 	res.set_line("Version", "HTTP/1.1");

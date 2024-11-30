@@ -12,6 +12,7 @@ import { Success } from './success.js';
 import { Fail } from './fail.js'
 import { Login } from './login.js'
 import { CreateAccount } from './create_account.js';
+import { FetchAndDeleteFiles } from './delete_file.js';
 
 function App()
 {
@@ -27,6 +28,7 @@ function App()
 				<Route path='/fail' element={ <Fail /> }/>
 				<Route path='/login' element={ <Login />}/>
 				<Route path='/createaccount' element= {<CreateAccount />} />
+				<Route path='/action/delete_file' element= {<FetchAndDeleteFiles />} />
 				<Route path='*' element={ <Error404 /> }/>
 			</Routes>
 		</Router>
