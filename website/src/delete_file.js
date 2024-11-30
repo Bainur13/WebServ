@@ -117,7 +117,7 @@ export function FetchAndDeleteFiles() {
                 <ul>
                     {links.map((link, index) => (
                         <li key={index}>
-                            <a href={`http://${config.domain}:${config.port}/` + link.href} target="_blank" rel="noopener noreferrer">
+                            <a href={`http://${config.domain}:${config.port}/` + link.href.substr(2)} target="_blank" rel="noopener noreferrer">
                                 {link.name}
                             </a>
                             <button onClick={() => handleDelete(link.href)}>
