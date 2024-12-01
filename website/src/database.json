@@ -1,0 +1,16 @@
+{
+    "users": {
+        "Alice": {
+            "password": "password1",
+            "session_id": "123e4567-e89b-12d3-a456-426614174000"
+        },
+        "vK1337": {
+            "password": "coucou",
+            "session_id": "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000"
+        }
+    },
+    "sessions": {
+        "123e4567-e89b-12d3-a456-426614174000": "Alice",
+        "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000": "vK1337"
+    }
+}

@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/28 12:56:37 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/11/29 13:54:20 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	handle_client(int client_fd, Server_conf &server_c)
 		return ;
 	}
 	req.parse_request(request);
-	// std::cout << "Request received:" << std::endl;
-	// std::cout << request << std::endl;
+	std::cout << "Request received:" << std::endl;
+	std::cout << request << std::endl;
 	if (req.get_request_body().size() > (uint)server_c.get_sizelimit())
 		res.error_basic("Error 413 : Payload Too Large", 413, server_c);
 	if (req.get_error() != "")
@@ -84,8 +84,8 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	 	return;
 	}
 	std::string response = res.final_response();
-	// std::cout << "Response sent:" << std::endl;
-	// std::cout << response << std::endl;
+	std::cout << "Response sent:" << std::endl;
+	std::cout << response << std::endl;
 	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
 	{
 		std::cerr << strerror(errno) << std::endl;

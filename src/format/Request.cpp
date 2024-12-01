@@ -59,7 +59,7 @@ bool Request::parse_request_line(std::string line)
     }
 	line = line.substr(line.find(" ") + 1);
 	_request_line["Version"] = line;
-    if (_request_line["Method"] != "GET" && _request_line["Method"] != "POST")
+    if (_request_line["Method"] != "GET" && _request_line["Method"] != "POST" && _request_line["Method"] != "DELETE")
     {
         _error =  "Error 400 : Method is incorrect";
         return false;
