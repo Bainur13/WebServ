@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delete.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bainur <bainur@student.42.fr>              +#+  +:+       +#+        */
+/*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 19:32:24 by bainur            #+#    #+#             */
-/*   Updated: 2024/10/27 19:49:33 by bainur           ###   ########.fr       */
+/*   Updated: 2024/12/01 22:29:38 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ bool delete_request(Request &req, Server_conf &server_c, Response &res)
             return (false);
         }
         std::string command = "rm -rf " + path;
+		std::cout << "COMMAND => " << command << std::endl;
         if ((result = std::system(command.c_str())) == -1)
         {
             res.error_basic("Error 500 : Internal Server Error", 500, server_c);

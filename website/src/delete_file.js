@@ -82,12 +82,11 @@ export function FetchAndDeleteFiles() {
         setDeleting(true);
 
         try {
-            const response = await fetch(`http://${config.domain}:${config.port}/delete`, {
+            const response = await fetch(`http://${config.domain}:${config.port}/delete/${path}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: path, // Passer le chemin du fichier ou du dossier
             });
 
             if (!response.ok) {
