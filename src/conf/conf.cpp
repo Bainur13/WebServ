@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/29 14:16:40 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:34:03 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,4 +166,6 @@ std::vector<Server_conf> Conf::getServers() const
 
 Conf::~Conf()
 {
+	_servers_conf.clear();
+	std::cout << "Destruction du vecteur server conf" << std::endl;
 }

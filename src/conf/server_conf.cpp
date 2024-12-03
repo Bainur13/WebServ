@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:26:00 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/28 17:05:02 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:48:01 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ Server_conf &Server_conf::operator=(const Server_conf &copy)
 
 Server_conf::~Server_conf()
 {
+	;
 }
 
 void Server_conf::init_server()

@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/29 13:54:20 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:38:12 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,15 +141,13 @@ void	init_servers(Conf &conf)
 	std::map<int, bool> cgi_in_progress;
 	while (1)
 	{
-		if (g_sig)
-			break;
 		std::cout << "Waiting for connection" << std::endl;
 		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, 100);
 		std::cout << "ndfs: " << ndfs << std::endl;
 		if (ndfs == -1)
 		{
 			std::cerr << strerror(errno) << std::endl;
-			exit(EXIT_FAILURE);
+			break;
 		}
 		for (int i = 0; i < ndfs; i++)
 		{
@@ -220,5 +218,6 @@ int	main(int ac, char **av)
 	signal(SIGINT, exit_server);
 	Conf conf(av[1]);
 	init_servers(conf);
+	std::cout << "JE PASSE ICI AVANT DE QUITTER" << std::endl;
 	return (0);
 }

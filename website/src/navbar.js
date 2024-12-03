@@ -8,9 +8,8 @@ import {isLogged} from './login';
 
 
 const isLightTheme = isThemeSet();
-const userName = isLogged();
 
-console.log(userName);
+const userName = isLogged();
 
 export function NavBar()
 {
@@ -20,7 +19,6 @@ export function NavBar()
 				<div>Webserv</div>
 			</Link>
 			<LoginLink />
-			{userName ? <LogOut /> : ""}
 			<Link to="https://42.fr/en/homepage/">
 				<img id='navLogo' src={isLightTheme ? darklogo42 : logo42} alt='logo-42'></img>
 			</Link>
@@ -46,6 +44,7 @@ function LoginLink()
 	return (
 		<>
 			<div>Hello {userName}</div>
+			<LogOut />
 		</>
 	)
   }

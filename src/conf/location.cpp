@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/29 14:23:17 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:18:47 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ Location &Location::operator=(const Location &copy)
 
 Location::~Location()
 {
-	;
+	if (this->get_cgi())
+		delete _cgi;
 }
 
 void Location::set_path(const std::vector<std::string> &line_s)
