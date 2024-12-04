@@ -2,25 +2,29 @@ Website Tasks:
 
 	☐ Need to finish style on the file uploader
 
-	☐ Need to finish style on theme selection (dark/light)
+	✔ Need to finish style on theme selection (dark/light) @done(24-12-04 09:41)
 
-	☐ Do the css to adapt site by the cookie @critical
+	✔ Do the css to adapt site by the cookie @critical @done(24-12-04 09:41)
 
-	☐ Build page to delete files from server @critical
+	✔ Build page to delete files from server @critical @done(24-12-04 09:41)
+
+	☐ Finish style of all pages
 
 Server Tasks:
 
 	☐ Rerun test with siege to test everything is ok @critical
 
-	☐ Check the logic around DELETE methods
+	☐ Add implementation of data base by API location
 
-	☐ Add signals to quit clean when CTRL-C is hit ignore CTRL-\
+	✔ Check the logic around DELETE methods @done(24-12-04 09:41)
+
+	✔ Add signals to quit clean when CTRL-C is hit ignore CTRL-\ @done(24-12-04 09:41)
 
 Cgi Tasks:
 
 	☐ Build a cgi to build response with custom page about zodiac signs
 
-	☐ Build a cgi to render the auto_index directory page ?
+	✔ Build a cgi to render the auto_index directory page ? @done(24-12-04 09:41)
 
 Global Tasks:
 
