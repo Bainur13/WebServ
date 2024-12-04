@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:48 by bainur            #+#    #+#             */
-/*   Updated: 2024/12/03 15:34:03 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/04 10:19:59 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ Location Conf::parse_location(std::ifstream &file,
 			location.set_cookie(line_s);
 		else if (line_s[0] == "Unset-Cookie")
 			location.set_unsetcookies(line_s);
+		else if (line_s[0] == "database")
+			location.set_database(line_s);
 		else
 		{
 			std::cout << line_s[0] << std::endl;

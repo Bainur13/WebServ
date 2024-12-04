@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/12/03 15:18:47 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/04 10:37:32 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,26 @@ void Location::set_cookie(const std::vector<std::string> &line_s)
 	{
 		error_exit("Error: Bad syntax for cookies");
 	}
+}
+
+void Location::set_database(const std::vector<std::string> &line_s)
+{
+	if (line_s.size() != 4)
+		error_exit("Error: invalid database syntax");
+
+	std::string extension = ".json";
+
+	if (line_s[1].size() > extension.size() && line_s[1].compare(line_s[1].size() - extension.size(), extension.size(), extension) == 0)
+	{
+		std::ifstream file(line_s[1].c_str());
+		if (!file.is_open())
+			error_exit("Error: can't open database file");
+	}
+	else
+		error_exit("Error: invalid file name for database");
+	_isDatabase = true;
+	_databasePath = line_s[1];
+	_databasePassword = line_s[2];
 }
 
 void Location::set_unsetcookies(const std::vector<std::string> &line_s)
