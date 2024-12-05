@@ -33,8 +33,6 @@ db = load_database()
 cookie = SimpleCookie(os.environ.get("HTTP_COOKIE", ""))
 
 session_id = generate_session_id()
-cookie["session_id"] = session_id
-cookie["session_id"]["path"] = "/"
 
 created = 0
 # Lire les données de l'entrée standard pour les requêtes POST

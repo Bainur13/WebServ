@@ -149,10 +149,8 @@ std::string Response::final_response()
 	response += _line["Version"] + " " + _line["Status"] + " " + _line["Reason"] + "\r\n";
 	for (std::map<std::string, std::string>::iterator it = _header.begin(); it != _header.end(); it++)
 		response += it->first + ": " + it->second + "\r\n";
-	std::cout << "TAILLE DE COOKIES DANS RES => " << _cookies.size() << std::endl;
 	for (std::vector<std::string>::iterator it = _cookies.begin(); it != _cookies.end(); it++)
 		response += "Set-Cookie: " + (*it) + "\r\n";
-	std::cout << "TAILLE DE UNSETCOOKIES DANS RES => " << _unsetcookies.size() << std::endl;
 	for (std::vector<std::string>::iterator it = _unsetcookies.begin(); it != _unsetcookies.end(); it++)
 		response += "Set-Cookie: " + (*it) + "=; Expires=Thu, 01 Jan 1970 00:00:00 GMT; " + "Path=/;" + "Domain=localhost" + "\r\n";
 	response += "\r\n" + _body;

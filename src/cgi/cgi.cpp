@@ -325,7 +325,6 @@ void send_cgi_response(int client_fd, int cgi_fd)
 
 	std::string response = res.final_response();
 
-	std::cout << "RESPONSE CONTENT => " << response << std::endl;
 	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
 	{
 		std::cerr << strerror(errno) << std::endl;

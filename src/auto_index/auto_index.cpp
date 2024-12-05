@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 20:36:58 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/30 05:49:41 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/05 01:14:31 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ bool	auto_index(std::string path, Location &location, Server_conf &server_c,
 		std::cout << "entry->d_name" << path << entry->d_name << std::endl;
 		struct stat buffer;
 		std::string file_path = path + entry->d_name;
-		std::cout << "PATH" << path << std::endl;
-		std::cout << "FILE PATH => " << file_path.substr(2) << std::endl;
 		if (stat(file_path.c_str(), &buffer) == 0)
 		{
 			if (S_ISDIR(buffer.st_mode))
