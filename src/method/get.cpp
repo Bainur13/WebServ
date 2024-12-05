@@ -15,6 +15,52 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 			res.error_basic("Error 405 : Method Not Allowed", 405, server_c);
 			return (false);
 		}
+		if (location.isdblocation())
+		{
+			std::ifstream db(location.getdbpath().c_str());
+			if (!db.is_open())
+			{
+				if (errno == ENOENT)
+				{
+					res.error_basic("Error 404 : Not found", 404, server_c);
+					std::cout << "Erreur: " << errno << std::endl;
+				}
+				else if (errno == EACCES)
+				{
+					res.error_basic("Error 403 : Forbidden", 403, server_c);
+					std::cout << "Erreur: " << errno << std::endl;
+				}
+				else
+				{
+					res.error_basic("Error 403 : Internal error", 500, server_c);
+					std::cout << "Erreur: " << errno << std::endl;
+				}
+				return (false);
+			}
+			if (req.get_request_header("Cookie") == "")
+			{
+				std::cout << req.get_request_header("Cookie") << std::endl;
+				res.error_basic("Error 403 : Forbidden", 403, server_c);
+				return (false);
+			}
+			else
+			{
+				std::string password = req.parse_db_password();
+				if (password != location.getdbpassword() || password == "")
+				{
+					res.error_basic("Error 403 : Forbidden", 403, server_c);
+					return (false);
+				}
+			}
+			res.set_line("Version", "HTTP/1.1");
+			res.set_line("Status", "200");
+			res.set_line("Reason", "OK");
+			std::string content((std::istreambuf_iterator<char>(db)), std::istreambuf_iterator<char>());
+			res.set_body(content);
+			res.set_header("Content-Type", "application/json");
+			res.set_header("Content-Length", res.get_body_size());
+			return (true);
+		}
 		if (location.get_cgi())
 		{
 			location.get_cgi()->setMethod("GET");

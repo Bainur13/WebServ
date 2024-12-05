@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:24:50 by bainur            #+#    #+#             */
-/*   Updated: 2024/12/04 10:38:03 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:13:59 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,14 @@ class Location
 	std::string get_error_page(short error_code);
 	std::pair<short, std::string> get_redirect();
 	std::vector<std::string> get_method();
+	std::string getdbpath();
+	std::string getdbpassword();
+	bool isdblocation();
 	bool get_listing();
 
   private:
+	std::string _databasePath;
+	std::string _databasePassword;
 	std::string _path;
 	std::string _root;
 	std::string _index;
@@ -67,6 +72,7 @@ class Location
 	std::map<short, std::string> _error_page;
 	std::pair<short, std::string> _redirect;
 	std::vector<std::string> _method;
+	bool _isDatabase;
 	bool _listing;
 	Cgi *_cgi;
 };

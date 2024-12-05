@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/12/03 15:38:12 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/05 01:14:35 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	handle_client(int client_fd, Server_conf &server_c)
 
 	std::string request;
 	request = read_fd_to_end(client_fd);
-	std::cout << "CLIENT FD => " << client_fd << std::endl;
 	if (request.empty())
 	{
 		close(client_fd);
@@ -218,6 +217,5 @@ int	main(int ac, char **av)
 	signal(SIGINT, exit_server);
 	Conf conf(av[1]);
 	init_servers(conf);
-	std::cout << "JE PASSE ICI AVANT DE QUITTER" << std::endl;
 	return (0);
 }

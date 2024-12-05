@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/12/04 10:37:32 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/05 01:15:34 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ Location::Location()
     _redirect.second = "";
     _listing = false;
 	_cgi = NULL;
+	_isDatabase = false;
 }
 
 Location::Location(const Location &copy)
@@ -47,6 +48,9 @@ Location &Location::operator=(const Location &copy)
 			this->_cgi = new Cgi(*(copy._cgi));
 		else
 			this->_cgi = NULL;
+		this->_databasePath = copy._databasePath;
+		this->_databasePassword = copy._databasePassword;
+		this->_isDatabase = copy._isDatabase;
     }
     return *this;
 }
@@ -180,7 +184,6 @@ void Location::set_cgi(const std::vector<std::string> &line_s)
 {
 	if (line_s.size() != 3)
 		error_exit("Error: invalid cgi");
-	std::cout << "Line_s[1] : " << line_s[1] << std::endl;
 	this->_cgi = new Cgi(line_s[1]);
 }
 
@@ -189,6 +192,19 @@ void Location::set_alias(const std::vector<std::string> &line_s)
     if (line_s.size() != 3)
         error_exit("Error: invalid alias");
     _alias = line_s[1];
+}
+
+std::string Location::getdbpath()
+{
+	return this->_databasePath;
+}
+std::string Location::getdbpassword()
+{
+	return this->_databasePassword;
+}
+bool Location::isdblocation()
+{
+	return this->_isDatabase;
 }
 
 std::string Location::get_path()
