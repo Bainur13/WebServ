@@ -2,7 +2,6 @@ import React from "react";
 import { NavBar } from './navbar.js';
 import { Footer } from './footer.js';
 import './assets/styles/404.css';
-import { Link } from 'react-router-dom';
 import {isThemeSet} from './choose_theme';
 
 const isLightTheme = isThemeSet();

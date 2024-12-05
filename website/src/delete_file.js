@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { NavBar } from './navbar.js';
+import { Footer } from './footer.js';
+import './assets/styles/delete_file.css'
 
 export function FetchAndDeleteFiles() {
     const [config, setConfig] = useState({ domain: '', port: '' });
-    const [htmlResponse, setHtmlResponse] = useState(null);
     const [links, setLinks] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -47,7 +49,6 @@ export function FetchAndDeleteFiles() {
                 }
 
                 const htmlContent = await response.text();
-                setHtmlResponse(htmlContent);
 
                 // Analyser le HTML pour extraire les liens
                 const linksArray = extractLinksFromHTML(htmlContent);
@@ -104,28 +105,54 @@ export function FetchAndDeleteFiles() {
         }
     };
 
-    if (error) return <p>Erreur : {error}</p>;
-    if (loading) return <p>Chargement des fichiers...</p>;
+    if (error)
+	{
+		return (
+			<>
+			<NavBar />
+			<main id='deleteFileMain'>
+				<p>Erreur : {error}</p>
+			</main>
+			<Footer />
+			</>
+		)
+	}
+    if (loading)
+	{
+		return (
+			<>
+			<NavBar />
+			<main id='deleteFileMain'>
+				<p>Chargement des fichiers...</p>;
+			</main>
+			<Footer />
+			</>
+		)
+	}
 
     return (
-        <div>
-            <h1>Liste des fichiers et répertoires</h1>
-            {links.length === 0 ? (
-                <p>Aucun fichier ou répertoire trouvé.</p>
-            ) : (
-                <ul>
-                    {links.map((link, index) => (
-                        <li key={index}>
-                            <a href={`http://${config.domain}:${config.port}/` + link.href.substr(2)} target="_blank" rel="noopener noreferrer">
-                                {link.name}
-                            </a>
-                            <button onClick={() => handleDelete(link.href)}>
-                                Supprimer
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+		<>
+		<NavBar />
+		<main id='deleteFileMain'>
+			<h1>Liste des fichiers et répertoires</h1>
+			{links.length === 0 ? (
+				<p>Aucun fichier ou répertoire trouvé.</p>
+			) : (
+				<div>
+				{links.map((link, index) => (
+						<div className='fileCard'>
+							<a href={`http://${config.domain}:${config.port}/` + link.href.substr(2)} target="_blank" rel="noopener noreferrer">
+								{link.name}
+							</a>
+							<button className='deleteBtn' onClick={() => handleDelete(link.href)}>
+								Supprimer
+							</button>
+						</div>
+				))}
+				</div>
+			)}
+		</main>
+		<Footer />
+		</>
     );
 }

@@ -3,7 +3,6 @@ import { NavBar } from './navbar.js';
 import { Footer } from './footer.js';
 import './assets/styles/success.css';
 import { Link, useNavigate} from 'react-router-dom';
-import {isThemeSet} from './choose_theme';
 
 
 export function Fail() {

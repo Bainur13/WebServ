@@ -81,7 +81,7 @@ export function NavBar()
 
 function LoginLink()
 {
-	const { sessionData, loading, error } = useIsLogged();
+	const { sessionData } = useIsLogged();
 	if (!sessionData)
 	{
 		return (
