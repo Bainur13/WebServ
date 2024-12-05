@@ -37,20 +37,12 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 				}
 				return (false);
 			}
-			if (req.get_request_header("Cookie") == "")
+			std::string password = req.get_request_header("db_password");
+			std::cout << "PASSWORD RECUP DANS LE HEADER" << password << std::endl;
+			if (password != location.getdbpassword() || password == "")
 			{
-				std::cout << req.get_request_header("Cookie") << std::endl;
 				res.error_basic("Error 403 : Forbidden", 403, server_c);
 				return (false);
-			}
-			else
-			{
-				std::string password = req.parse_db_password();
-				if (password != location.getdbpassword() || password == "")
-				{
-					res.error_basic("Error 403 : Forbidden", 403, server_c);
-					return (false);
-				}
 			}
 			res.set_line("Version", "HTTP/1.1");
 			res.set_line("Status", "200");

@@ -7,10 +7,40 @@
         "vK1337": {
             "password": "coucou",
             "session_id": "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000"
+        },
+        "Salut": {
+            "password": "cava",
+            "session_id": "4e424a53-e358-46fa-be72-712a5b4928df"
+        },
+        "friteuse": {
+            "password": "friteuse",
+            "session_id": "c88bbf84-c600-47c7-9dce-add165cce0d0"
+        },
+        "bobo": {
+            "password": "baba",
+            "session_id": "0182bdc7-71a0-44bc-a670-14a20d30626b"
+        },
+        "imene": {
+            "password": "atek",
+            "session_id": "163c66c6-3e19-4486-a55f-a370b79d1958"
+        },
+        "salut": {
+            "password": "mec",
+            "session_id": "e082e096-dd83-4941-97d2-c0b3fdd55110"
+        },
+        "boubou": {
+            "password": "baba",
+            "session_id": "2a95c80a-db73-4ca1-81af-3f7bf9b86ab3"
         }
     },
     "sessions": {
         "123e4567-e89b-12d3-a456-426614174000": "Alice",
-        "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000": "vK1337"
+        "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000": "vK1337",
+        "4e424a53-e358-46fa-be72-712a5b4928df": "Salut",
+        "c88bbf84-c600-47c7-9dce-add165cce0d0": "friteuse",
+        "0182bdc7-71a0-44bc-a670-14a20d30626b": "bobo",
+        "163c66c6-3e19-4486-a55f-a370b79d1958": "imene",
+        "e082e096-dd83-4941-97d2-c0b3fdd55110": "salut",
+        "2a95c80a-db73-4ca1-81af-3f7bf9b86ab3": "boubou"
     }
 }

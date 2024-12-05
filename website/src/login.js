@@ -4,7 +4,6 @@ import { Footer } from './footer.js';
 import './assets/styles/404.css';
 import { Link } from 'react-router-dom';
 import {isThemeSet} from './choose_theme';
-import database from './database.json';
 
 const isLightTheme = isThemeSet();
 
@@ -40,14 +39,4 @@ function LoginForm()
 			</form>
 		</>
 	)
-}
-
-export function isLogged()
-{
-	const cookies = document.cookie;
- 	let cookieFound = cookies.split(';').find(el => el.trim().split('=')[0] === "session_id");
-	let session_id;
-	if (cookieFound)
-		session_id = cookieFound.split("=")[1];
-	return database["sessions"][session_id];
 }
