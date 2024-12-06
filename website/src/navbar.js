@@ -87,7 +87,7 @@ function LoginLink()
 		return (
 			<>
 				<Link to="/login">
-					<div>Sign in</div>
+					<div id='signInDiv'>Sign in</div>
 				</Link>
 			</>
 		)
@@ -109,7 +109,7 @@ function LogOut()
 		<>
 		<form method="POST" action='/logout'>
 			<input type="hidden" name="unset-cookie" value="session-id" />
-			<button type="submit">Log out</button>
+			<button id={isLightTheme ? 'logOutBtnLight' : 'logOutBtn'} type="submit">Log out</button>
 		</form>
 		</>
 	)

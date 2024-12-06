@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/12/05 01:14:35 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:52:27 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,8 @@ void	init_servers(Conf &conf)
 			std::cerr << strerror(errno) << std::endl;
 			break;
 		}
+		if (g_sig == 1)
+			break;
 		for (int i = 0; i < ndfs; i++)
 		{
 			int server_conf;

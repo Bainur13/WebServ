@@ -14,7 +14,7 @@ export function Uploader()
 		<NavBar />
 		<main id={ isLightTheme ? 'uploaderMainLight' : "uploaderMain"}>
 			<h1>Upload a file</h1>
-			<UploaderForm />
+			<UploaderForm isLightTheme={isLightTheme ? true : false} />
 		</main>
 		<Footer />
 		</>
@@ -53,7 +53,7 @@ function UploaderForm({ isLightTheme }) {
                         onChange={handleFileChange} // Mettre à jour l'état au changement
                         required
                     />
-                    <span id="fileNameDisplay" className={isLightTheme ? 'fileNameLight' : 'fileName'}>
+                    <span className={isLightTheme ? 'fileNameLight' : 'fileName'}>
                         {selectedFileName}
                     </span>
                 </div>
