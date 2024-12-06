@@ -18,29 +18,48 @@
 	font-weight: 200;
 }
 
+.switchLinks
+{
+	margin-top: 2%;
+}
+
+.switchLinksLight
+{
+	color: black;
+	margin-top: 2%;
+}
+
 #accCreationMainLight h1
 {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	font-weight: 200;
 }
 
-#accCreationForm label
+.accCreationForm label
 {
 	font-weight: 200;
 	white-space: nowrap;
 	display: inline-block;
 	font-size: 170%;
 	width: 100%;
-	margin-bottom: 3%;
-	margin-top: 7%;
+	margin-bottom: 10%;
 }
 
-#accCreationForm input {
+.accCreationForm input {
 	font-weight: 200;
 	color: white;
 	background-color: black;
 	border: none;
 	border-bottom: 1px solid white;
+}
+
+.accCreationForm
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 #accCreationTitle
