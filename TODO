@@ -14,7 +14,7 @@ Server Tasks:
 
 	☐ Rerun test with siege to test everything is ok @critical
 
-	☐ Add implementation of data base by API location
+	✔ Add implementation of data base by API location @done(24-12-05 13:35)
 
 	✔ Check the logic around DELETE methods @done(24-12-04 09:41)
 

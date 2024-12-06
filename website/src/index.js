@@ -11,7 +11,7 @@ import { ChooseTheme } from './choose_theme.js';
 import { Success } from './success.js';
 import { Fail } from './fail.js'
 import { Login } from './login.js'
-import { CreateAccount } from './create_account.js';
+import { CreateAccount } from './signup.js';
 import { FetchAndDeleteFiles } from './delete_file.js';
 
 function App()

@@ -4,6 +4,9 @@ import { Footer } from './footer.js';
 import './assets/styles/404.css';
 import { Link } from 'react-router-dom';
 import {isThemeSet} from './choose_theme';
+import './assets/styles/login.css';
+import './assets/styles/custompage.css';
+
 
 const isLightTheme = isThemeSet();
 
@@ -13,9 +16,9 @@ export function Login()
 		<>
 		<NavBar />
 		<main id={isLightTheme ? 'loginMainLight' : 'loginMain'}>
-			<h1>Login</h1>
+			<h1 id='loginTitle'>Login</h1>
 			<LoginForm />
-			<Link to="/createaccount">
+			<Link className={isLightTheme ? 'switchLinksLight' : 'switchLinks'} to="/createaccount">
 				<div>Don't have an account yet? Sign Up</div>
 			</Link>
 		</main>
@@ -28,14 +31,18 @@ function LoginForm()
 {
 	return (
 		<>
-			<form id={ isLightTheme ? 'loginFormLight' : "loginForm"} action="/connect" method="POST">
-				<div>
-					<label for="username"> Username </label>
-					<input type="text" name="username" required></input>
-					<label for="username"> Password </label>
-					<input type="password" name="password" required></input>
+			<form className='loginForm' action="/connect" method="POST">
+				<div id='internFormDiv'>
+					<div id='formLabels'>
+						<label> Username </label>
+						<label> Password </label>
+					</div>
+					<div id={ isLightTheme ? 'formInputsLight' : 'formInputs'}>
+						<input type="text" name="username" required></input>
+						<input type="password" name="password" required></input>
+					</div>
 				</div>
-				<button id={isLightTheme ? "creationSubmitBtnLight" : "creationSubmitBtn"} type="submit">Login</button>
+				<button id={isLightTheme ? "formSubmitBtnLight" : "formSubmitBtn"} type="submit">Login</button>
 			</form>
 		</>
 	)
