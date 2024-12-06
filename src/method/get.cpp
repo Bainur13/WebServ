@@ -38,8 +38,7 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 				return (false);
 			}
 			std::string password = req.get_request_header("db_password");
-			std::cout << "PASSWORD RECUP DANS LE HEADER" << password << std::endl;
-			if (password != location.getdbpassword() || password == "")
+				if (password != location.getdbpassword() || password == "")
 			{
 				res.error_basic("Error 403 : Forbidden", 403, server_c);
 				return (false);
@@ -92,7 +91,6 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 		else
 		{
 			std::cout << "PATH: " << path << std::endl;
-			std::cout << path << std::endl;
 			fd = open(path.c_str(), O_RDONLY);
 			if (fd < 0)
 			{

@@ -1,10 +1,12 @@
 #uploaderMain
 {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	text-align: center;
 }
 
 #uploaderMain h1
 {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	font-weight: 200;
 	margin-top: 5%;
 }
@@ -38,6 +40,7 @@
 
 #uploaderMainLight h1
 {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	font-weight: 200;
 	margin-top: 5%;
 }
@@ -59,4 +62,63 @@
 {
 	background-color: black;
 	color: white;
+}
+
+#uploaderForm
+{
+	color: white;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-weight: 200;
+}
+
+#uploaderFormLight
+{
+	color: black;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-weight: 200;
+}
+
+#customFileLabel {
+    display: inline-block;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: 1px solid white;
+    cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+#customFileLabel:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+#customFileLabelLight {
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid black;
+    cursor: pointer;
+	transition: all 0.5s ease;
+}
+
+#customFileLabelLight:hover {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+}
+
+/* Style pour le texte affichant le nom du fichier */
+.fileName {
+    margin-left: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+.fileNameLight {
+    margin-left: 10px;
+    font-size: 20px;
+    color: black;
 }

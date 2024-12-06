@@ -111,7 +111,7 @@ export function FetchAndDeleteFiles() {
 			<>
 			<NavBar />
 			<main id='deleteFileMain'>
-				<p>Erreur : {error}</p>
+				<p>Error : {error}</p>
 			</main>
 			<Footer />
 			</>
@@ -123,7 +123,7 @@ export function FetchAndDeleteFiles() {
 			<>
 			<NavBar />
 			<main id='deleteFileMain'>
-				<p>Chargement des fichiers...</p>;
+				<p>Loading files...</p>;
 			</main>
 			<Footer />
 			</>
@@ -134,18 +134,16 @@ export function FetchAndDeleteFiles() {
 		<>
 		<NavBar />
 		<main id='deleteFileMain'>
-			<h1>Liste des fichiers et répertoires</h1>
+			<h1>Files and directory list</h1>
 			{links.length === 0 ? (
-				<p>Aucun fichier ou répertoire trouvé.</p>
+				<p>No file or directory found</p>
 			) : (
 				<div>
 				{links.map((link, index) => (
 						<div className='fileCard'>
-							<a href={`http://${config.domain}:${config.port}/` + link.href.substr(2)} target="_blank" rel="noopener noreferrer">
-								{link.name}
-							</a>
+							<p>{link.name}</p>
 							<button className='deleteBtn' onClick={() => handleDelete(link.href)}>
-								Supprimer
+								Delete
 							</button>
 						</div>
 				))}

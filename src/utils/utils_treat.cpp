@@ -74,7 +74,8 @@ std::string get_content_type(const std::string &path)
 	type_map[".jpeg"] = "image/jpeg";
 	type_map[".png"] = "image/png";
 	type_map[".gif"] = "image/gif";
-	dot_pos = path.rfind('.');
+	type_map[".json"] = "application/json";
+ 	dot_pos = path.rfind('.');
 	if (dot_pos != std::string::npos)
 	{
 		std::string extension = path.substr(dot_pos);
