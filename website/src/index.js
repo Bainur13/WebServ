@@ -17,6 +17,7 @@ import { FetchAndDeleteFiles } from './delete_file.js';
 function App()
 {
 	return (
+		<>
 		<Router>
 			<Routes>
 				<Route path='/' element={ <Homepage /> }/>
@@ -32,6 +33,7 @@ function App()
 				<Route path='*' element={ <Error404 /> }/>
 			</Routes>
 		</Router>
+		</>
 	);
 }
 

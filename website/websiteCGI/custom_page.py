@@ -1,88 +1,87 @@
 #!/usr/bin/env python3
-
+import os
 import cgi
-import cgitb
+from datetime import datetime
 
-# Activer le mode de débogage pour les erreurs CGI
-cgitb.enable()
+# Fonction pour déterminer le signe astrologique
+def get_astrological_sign(day, month):
+    signs = [
+        ("Capricorn", 12, 22, 1, 19),
+        ("Aquarius", 1, 20, 2, 18),
+        ("Pisces", 2, 19, 3, 20),
+        ("Aries", 3, 21, 4, 19),
+        ("Taurus", 4, 20, 5, 20),
+        ("Gemini", 5, 21, 6, 20),
+        ("Cancer", 6, 21, 7, 22),
+        ("Leo", 7, 23, 8, 22),
+        ("Virgo", 8, 23, 9, 22),
+        ("Libra", 9, 23, 10, 22),
+        ("Scorpio", 10, 23, 11, 21),
+        ("Sagittarius", 11, 22, 12, 21),
+    ]
+    for sign, start_month, start_day, end_month, end_day in signs:
+        if (month == start_month and day >= start_day) or (month == end_month and day <= end_day):
+            return sign
+    return "Capricorne"
 
-def generate_html(parameters):
-    """Génère une page HTML dynamique à partir des paramètres fournis."""
-    html = """
+# Fonction pour générer la page HTML
+def generate_html(first_name, last_name, sign):
+    descriptions = {
+        "Capricorn": "Ambitious and determined.",
+        "Aquarius": "Creative and independent.",
+        "Pisces": "Emotional and intuitive.",
+        "Aries": "Energetic and courageous.",
+        "Taurus": "Reliable and patient.",
+        "Gemini": "Curious and communicative.",
+        "Cancer": "Protective and empathetic.",
+        "Leo": "Charismatic and confident.",
+        "Virgo": "Analytical and perfectionist.",
+        "Libra": "Diplomatic and charming.",
+        "Scorpio": "Passionate and intense.",
+        "Sagittarius": "Optimistic and adventurous.",
+    }
+    description = descriptions.get(sign, "Description indisponible.")
+    return f"""
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Page Dynamique CGI</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-                padding: 20px;
-                background-color: #f4f4f9;
-                color: #333;
-            }
-            table {
-                border-collapse: collapse;
-                width: 50%;
-                margin-top: 20px;
-            }
-            table, th, td {
-                border: 1px solid #ccc;
-            }
-            th, td {
-                padding: 10px;
-                text-align: left;
-            }
-            th {
-                background-color: #f9f9f9;
-            }
-        </style>
+        <title>Astro CGI</title>
     </head>
     <body>
-        <h1>Résultats des paramètres CGI</h1>
-        <p>Les informations passées en paramètres sont :</p>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Valeur</th>
-                </tr>
-            </thead>
-            <tbody>
-    """
-    for key, value in parameters.items():
-        html += f"""
-                <tr>
-                    <td>{cgi.escape(key)}</td>
-                    <td>{cgi.escape(value)}</td>
-                </tr>
-        """
-    html += """
-            </tbody>
-        </table>
-        <p><em>Cette page a été générée dynamiquement par un script CGI en Python.</em></p>
+        <h1>Hello, {first_name} {last_name}!</h1>
+        <h2>Your astrological sign is: {sign}</h2>
+        <p>{description}</p>
+        <a href="javascript:history.back()">Go back</a>
     </body>
     </html>
     """
-    return html
 
-# Récupérer les données passées en paramètres (GET ou POST)
+# Récupérer les données de la requête
 form = cgi.FieldStorage()
 
-# Transformer les données du formulaire en dictionnaire
-parameters = {key: form.getvalue(key) for key in form.keys()}
+# Extraire les champs
+first_name = form.getvalue("firstName", "Inconnu")
+last_name = form.getvalue("lastName", "Inconnu")
+birth_date = form.getvalue("birthday", "2000-01-01")
 
-# Générer le contenu HTML
-html_content = generate_html(parameters)
+# Calculer le signe astrologique
+try:
+    birth_date = datetime.strptime(birth_date, "%Y-%d-%m")
+    sign = get_astrological_sign(birth_date.day, birth_date.month)
+except ValueError:
+    sign = "Inconnu"
 
-# Calculer la longueur du contenu HTML
-content_length = len(html_content.encode('utf-8'))  # Encodage en UTF-8 pour un calcul correct
+# Générer la page HTML
+html_content = generate_html(first_name, last_name, sign)
 
-# Générer les en-têtes HTTP avec Content-Length
+# Encode the HTML content in UTF-8 and calculate the content length
+html_content_utf8 = html_content.encode('utf-8')
+content_length = len(html_content_utf8)
+
+# Print the HTTP headers and content
 print("HTTP/1.1 200 OK")
-print("Content-Type: text/html")
-print(f"Content-Length: {content_length}")
+print("Content-Type: text/html; charset=UTF-8")
+print(f"Content-Length: {content_length - 2}")
 print()
-print(html_content)
+print(html_content)  # Decode it back to a string to print
