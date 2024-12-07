@@ -13,6 +13,7 @@ import { Fail } from './fail.js'
 import { Login } from './login.js'
 import { CreateAccount } from './signup.js';
 import { FetchAndDeleteFiles } from './delete_file.js';
+import { BadRequest } from './bad_request.js';
 
 function App()
 {
@@ -22,14 +23,15 @@ function App()
 			<Routes>
 				<Route path='/' element={ <Homepage /> }/>
 				<Route path='/actions' element={ <Actions /> }/>
-				<Route path='/action/custom_page' element={ <CustomPage /> }/>
-				<Route path='/action/uploader' element={ <Uploader /> }/>
+				<Route path='/action/bad_request' element={ <BadRequest /> }/>
 				<Route path='/action/choose_theme' element={ <ChooseTheme /> }/>
-				<Route path='/success' element={ <Success /> }/>
+				<Route path='/action/custom_page' element={ <CustomPage /> }/>
+				<Route path='/action/delete_file' element= {<FetchAndDeleteFiles />} />
+				<Route path='/action/uploader' element={ <Uploader /> }/>
+				<Route path='/createaccount' element= {<CreateAccount />} />
 				<Route path='/fail' element={ <Fail /> }/>
 				<Route path='/login' element={ <Login />}/>
-				<Route path='/createaccount' element= {<CreateAccount />} />
-				<Route path='/action/delete_file' element= {<FetchAndDeleteFiles />} />
+				<Route path='/success' element={ <Success /> }/>
 				<Route path='*' element={ <Error404 /> }/>
 			</Routes>
 		</Router>

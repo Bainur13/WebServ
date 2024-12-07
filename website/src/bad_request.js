@@ -6,12 +6,18 @@ import { Footer } from './footer.js';
 import './assets/styles/actions.css';
 import { isThemeSet } from './choose_theme.js';
 
-function BadRequest()
+const isLightTheme = isThemeSet();
+
+export function BadRequest()
 {
 	return (
 		<>
 		<NavBar />
-		<main></main>
+		<main id={isLightTheme ? 'themeMainLight' : 'themeMain'}>
+			<form className='themeForm' method="post">
+				<button className={isLightTheme ? 'themeSubmitBtnLight' : 'themeSubmitBtn'} type="submit">Send a POST request without body</button>
+			</form>
+		</main>
 		<Footer />
 		</>
 	)
