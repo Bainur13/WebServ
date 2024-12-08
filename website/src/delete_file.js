@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { NavBar } from './navbar.js';
+import { Footer } from './footer.js';
+import './assets/styles/delete_file.css'
+import {isThemeSet} from './choose_theme';
+
+
+const isLightTheme = isThemeSet();
 
 export function FetchAndDeleteFiles() {
     const [config, setConfig] = useState({ domain: '', port: '' });
-    const [htmlResponse, setHtmlResponse] = useState(null);
     const [links, setLinks] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -47,7 +53,6 @@ export function FetchAndDeleteFiles() {
                 }
 
                 const htmlContent = await response.text();
-                setHtmlResponse(htmlContent);
 
                 const linksArray = extractLinksFromHTML(htmlContent);
                 setLinks(linksArray);
@@ -66,8 +71,6 @@ export function FetchAndDeleteFiles() {
         const doc = parser.parseFromString(htmlContent, 'text/html');
         const links = doc.querySelectorAll('a');
 
-		console.log("LINKS = ");
-		console.log(links);
         return Array.from(links)
             .filter(link => link.getAttribute('href'))
             .map(link => ({
@@ -77,7 +80,7 @@ export function FetchAndDeleteFiles() {
     };
 
     const handleDelete = async (path) => {
-        if (deleting) return; // éviter les suppressions multiples en parallèle
+        if (deleting) return;
         setDeleting(true);
 
         try {
@@ -101,28 +104,56 @@ export function FetchAndDeleteFiles() {
         }
     };
 
-    if (error) return <p>Erreur : {error}</p>;
-    if (loading) return <p>Chargement des fichiers...</p>;
+    if (error)
+	{
+		return (
+			<>
+			<NavBar />
+			<main id='deleteFileMain'>
+				<p>Error : {error}</p>
+			</main>
+			<Footer />
+			</>
+		)
+	}
+    if (loading)
+	{
+		return (
+			<>
+			<NavBar />
+			<main id='deleteFileMain'>
+				<p>Loading files...</p>;
+			</main>
+			<Footer />
+			</>
+		)
+	}
 
     return (
-        <div>
-            <h1>Liste des fichiers et répertoires</h1>
-            {links.length === 0 ? (
-                <p>Aucun fichier ou répertoire trouvé.</p>
-            ) : (
-                <ul>
-                    {links.map((link, index) => (
-                        <li key={index}>
-                            <a href={`http://${config.domain}:${config.port}/` + link.href.substr(2)} target="_blank" rel="noopener noreferrer">
-                                {link.name}
-                            </a>
-                            <button onClick={() => handleDelete(link.href)}>
-                                Supprimer
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+		<>
+		<NavBar />
+		<main id={isLightTheme ? 'deleteFileMainLight' : 'deleteFileMain'}>
+			<h1>Files and directory list</h1>
+			{links.length === 0 ? (
+				<p>No file or directory found</p>
+			) : (
+				<div>
+				{links.map((link, index) => (
+						<div className='fileCard'>
+							<div>
+								<p className='fetchedFileName'>{link.name}</p>
+							</div>
+							<div>
+								<button className={isLightTheme ? 'deleteBtnLight' : 'deleteBtn'} onClick={() => handleDelete(link.href)}>
+									Delete
+								</button>
+							</div>
+						</div>
+				))}
+				</div>
+			)}
+		</main>
+		<Footer />
+		</>
     );
 }

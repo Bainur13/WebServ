@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:25:57 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/29 13:54:20 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/06 17:52:27 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	handle_client(int client_fd, Server_conf &server_c)
 
 	std::string request;
 	request = read_fd_to_end(client_fd);
-	std::cout << "CLIENT FD => " << client_fd << std::endl;
 	if (request.empty())
 	{
 		close(client_fd);
@@ -141,16 +140,16 @@ void	init_servers(Conf &conf)
 	std::map<int, bool> cgi_in_progress;
 	while (1)
 	{
-		if (g_sig)
-			break;
 		std::cout << "Waiting for connection" << std::endl;
 		ndfs = epoll_wait(epoll_fd, events, MAX_EVENTS, 100);
 		std::cout << "ndfs: " << ndfs << std::endl;
 		if (ndfs == -1)
 		{
 			std::cerr << strerror(errno) << std::endl;
-			exit(EXIT_FAILURE);
+			break;
 		}
+		if (g_sig == 1)
+			break;
 		for (int i = 0; i < ndfs; i++)
 		{
 			int server_conf;

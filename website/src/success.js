@@ -2,6 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { NavBar } from './navbar';
 import { Footer } from './footer';
 import { Link, useNavigate } from 'react-router-dom';
+import './assets/styles/form_redir.css';
+import {isThemeSet} from './choose_theme';
+
+
+const isLightTheme = isThemeSet();
 
 export function Success() {
   const [countdown, setCountdown] = useState(3);
@@ -22,8 +27,8 @@ export function Success() {
   return (
     <>
       <NavBar />
-      <main>
-        <p>Form has been successfully treated, you will be redirected in {countdown} seconds.</p>
+	  <main className={isLightTheme ? 'redirMainLight' : 'redirMain'}>
+	  	<p>Form has been successfully treated, you will be redirected in {countdown} seconds.</p>
         <Link to='/actions'>Go back to the action page</Link>
       </main>
       <Footer />

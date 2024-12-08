@@ -151,8 +151,7 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	}
 	if (location.get_cookies().size() != 0)
 	{
-		std::cout << "TAILLE DE MON GROS VECTEUR DE COOKIE => " << location.get_cookies().size() << std::endl;
-		for (std::vector<std::string>::iterator it = location.get_cookies().begin(); it != location.get_cookies().end() ; it++)
+ 		for (std::vector<std::string>::iterator it = location.get_cookies().begin(); it != location.get_cookies().end() ; it++)
 		{
 			std::cout << "COOKIE TO SEND >> " << (*it) << std::endl;
 			res.add_cookie(*it);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavBar } from './navbar';
 import { Footer } from './footer';
-import ReactDOM from 'react-dom/client';
 import './assets/styles/choose_theme.css'
 
 

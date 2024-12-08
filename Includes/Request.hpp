@@ -38,6 +38,7 @@ class Request
 	std::string get_error();
 	std::string get_url_params(std::string path);
 	void print_request();
+	std::string parse_db_password();
 };
 
 #endif

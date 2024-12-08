@@ -6,7 +6,7 @@
 /*   By: vda-conc <vda-conc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 15:50:25 by bainur            #+#    #+#             */
-/*   Updated: 2024/11/29 14:23:17 by vda-conc         ###   ########.fr       */
+/*   Updated: 2024/12/05 01:15:34 by vda-conc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ Location::Location()
     _redirect.second = "";
     _listing = false;
 	_cgi = NULL;
+	_isDatabase = false;
 }
 
 Location::Location(const Location &copy)
@@ -47,13 +48,17 @@ Location &Location::operator=(const Location &copy)
 			this->_cgi = new Cgi(*(copy._cgi));
 		else
 			this->_cgi = NULL;
+		this->_databasePath = copy._databasePath;
+		this->_databasePassword = copy._databasePassword;
+		this->_isDatabase = copy._isDatabase;
     }
     return *this;
 }
 
 Location::~Location()
 {
-	;
+	if (this->get_cgi())
+		delete _cgi;
 }
 
 void Location::set_path(const std::vector<std::string> &line_s)
@@ -83,6 +88,26 @@ void Location::set_cookie(const std::vector<std::string> &line_s)
 	{
 		error_exit("Error: Bad syntax for cookies");
 	}
+}
+
+void Location::set_database(const std::vector<std::string> &line_s)
+{
+	if (line_s.size() != 4)
+		error_exit("Error: invalid database syntax");
+
+	std::string extension = ".json";
+
+	if (line_s[1].size() > extension.size() && line_s[1].compare(line_s[1].size() - extension.size(), extension.size(), extension) == 0)
+	{
+		std::ifstream file(line_s[1].c_str());
+		if (!file.is_open())
+			error_exit("Error: can't open database file");
+	}
+	else
+		error_exit("Error: invalid file name for database");
+	_isDatabase = true;
+	_databasePath = line_s[1];
+	_databasePassword = line_s[2];
 }
 
 void Location::set_unsetcookies(const std::vector<std::string> &line_s)
@@ -159,7 +184,6 @@ void Location::set_cgi(const std::vector<std::string> &line_s)
 {
 	if (line_s.size() != 3)
 		error_exit("Error: invalid cgi");
-	std::cout << "Line_s[1] : " << line_s[1] << std::endl;
 	this->_cgi = new Cgi(line_s[1]);
 }
 
@@ -168,6 +192,19 @@ void Location::set_alias(const std::vector<std::string> &line_s)
     if (line_s.size() != 3)
         error_exit("Error: invalid alias");
     _alias = line_s[1];
+}
+
+std::string Location::getdbpath()
+{
+	return this->_databasePath;
+}
+std::string Location::getdbpassword()
+{
+	return this->_databasePassword;
+}
+bool Location::isdblocation()
+{
+	return this->_isDatabase;
 }
 
 std::string Location::get_path()

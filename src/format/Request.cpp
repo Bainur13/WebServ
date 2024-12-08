@@ -8,7 +8,6 @@ Request::Request()
     _request_line["Path"] = "";
     _request_line["Version"] = "";
     _request_body = "";
-
     _error = "";
 }
 
@@ -145,6 +144,30 @@ void Request::print_request()
     for (it = _request_header.begin(); it != _request_header.end(); it++)
         std::cout << it->first << ": " << it->second << std::endl;
     std::cout << _request_body << std::endl;
+}
+
+std::string Request::parse_db_password()
+{
+	std::string cookies = get_request_header("Cookie");
+	std::vector<std::string> split_cookies;
+	std::stringstream ss(cookies);
+	std::string cookie;
+
+	while (std::getline(ss, cookie , ';'))
+		split_cookies.push_back(cookie);
+	if (!split_cookies.size())
+		return ("");
+	for (std::vector<std::string>::iterator it = split_cookies.begin(); it != split_cookies.end() ; it++)
+	{
+		size_t equal = (*it).find('=');
+		if (equal != std::string::npos)
+		{
+			std::string cookie_name = (*it).substr(0, equal);
+			if (cookie_name == "db_password")
+				return ((*it).substr(equal + 1));
+		}
+	}
+	return ("");
 }
 
 std::string Request::get_error()
