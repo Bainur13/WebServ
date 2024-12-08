@@ -33,7 +33,10 @@ Conf::Conf(const std::string &filename)
 		else if (is_server(line, file))
 			_servers_conf.push_back(parse_server(file));
 		else
+		{
 			error_exit("Error: invalid line in file");
+			return ;
+		}
 	}
 	check_servers();
 	file.close();
@@ -81,7 +84,10 @@ Server_conf Conf::parse_server(std::ifstream &file)
 		}
 	}
 	if (!unique_symbol(line_s, "}"))
+	{
 		error_exit("Error: invalid server");
+		return (server);
+	}
 	return (server);
 }
 
@@ -126,6 +132,7 @@ Location Conf::parse_location(std::ifstream &file,
 		{
 			std::cout << line_s[0] << std::endl;
 			error_exit("Error: invalid line in location");
+			return (location);
 		}
 	}
 	return (location);
@@ -134,7 +141,10 @@ Location Conf::parse_location(std::ifstream &file,
 void Conf::check_servers()
 {
 	if (_servers_conf.size() == 0)
+	{
 		error_exit("Error: no server");
+		return ;
+	}
 	for (size_t i = 0; i < _servers_conf.size(); i++)
 	{
 		for (size_t j = i + 1; j < _servers_conf.size(); j++)
@@ -143,7 +153,10 @@ void Conf::check_servers()
 				&& _servers_conf[i].get_port() == _servers_conf[j].get_port())
 				_servers_conf.erase(_servers_conf.begin() + j);
 			if (_servers_conf[i].get_server_conf_name() == _servers_conf[j].get_server_conf_name())
+			{
 				error_exit("Error: duplicate server name");
+				return ;
+			}
 		}
 	}
 }

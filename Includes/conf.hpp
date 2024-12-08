@@ -13,6 +13,8 @@
 #ifndef CONF_HPP
 # define CONF_HPP
 
+extern int g_status;
+
 # include "Request.hpp"
 # include "Response.hpp"
 # include "get.hpp"
@@ -35,6 +37,8 @@
 
 class	Server_conf;
 class	Location;
+
+
 
 class Conf
 {

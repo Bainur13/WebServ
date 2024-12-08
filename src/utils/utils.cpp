@@ -15,7 +15,7 @@
 void	error_exit(const std::string &error)
 {
 	std::cerr << error << std::endl;
-	exit(EXIT_FAILURE);
+	g_status = 1;
 }
 
 bool	isDigits(const std::string &line)

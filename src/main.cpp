@@ -20,6 +20,7 @@
 #include "../Includes/c-stacktrace.h"
 
 int g_sig;
+int g_status;
 
 
 int check_cgi_status(int client_fd, Server_conf &server_c);
@@ -215,6 +216,9 @@ int	main(int ac, char **av)
 	init_exceptions(av[0]);
 	signal(SIGINT, exit_server);
 	Conf conf(av[1]);
+	if (g_status == 1)
+		return (1);
+
 	init_servers(conf);
 	return (0);
 }
