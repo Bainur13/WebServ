@@ -136,7 +136,13 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 		content_type = content_type.substr(0, pos);
 	std::cout << "content_type" << std::endl;
 	std::cout << content_type << std::endl;
-	if (content_type == "application/x-www-form-urlencoded")
+	if (content_type == "multipart/form-data")
+	{
+		std::cout << "multipart" << std::endl;
+		if (!handle_multipart(req, res, server_c, path, location, exist))
+			return (false);
+	}
+	else
 	{
 		if (stat(path.c_str(), &info) == 0)
 			exist = 1;
@@ -152,17 +158,6 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 			return false;
 		}
 		close(fd);
-	}
-	else if (content_type == "multipart/form-data")
-	{
-		std::cout << "multipart" << std::endl;
-		if (!handle_multipart(req, res, server_c, path, location, exist))
-			return (false);
-	}
-	else
-	{
-		res.error_basic("Error 400 : Bad Request", 400, server_c);
-		return (false);
 	}
 	if (location.get_cookies().size() != 0)
 	{

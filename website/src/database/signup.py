@@ -7,7 +7,7 @@ from http.cookies import SimpleCookie
 from urllib.parse import parse_qs
 
 # Chemin vers la base de données JSON
-DB_FILE = "/tmp/Webserv/website/src/database.json"
+DB_FILE = "./website/src/database.json"
 
 # Fonction pour lire la base de données
 def load_database():
@@ -55,7 +55,7 @@ save_database(db)
 
 # Générer la réponse HTTP
 
-CONF_FILE = "/tmp/Webserv/file.conf"
+CONF_FILE = "./file.conf"
 
 def parse_conf(file_path):
 	with open(file_path, 'r') as f:

@@ -73,6 +73,11 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 					return (false);
 				}
 				res.set_body(read_fd_to_end(fd));
+				if (res.get_body().empty())
+				{
+					res.error_location("Error 500 : Internal Server Error", 500, location, server_c);
+					return (false);
+				}
 				close(fd);
 			}
 			else if (location.get_listing())
@@ -98,6 +103,11 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 				return (false);
 			}
 			res.set_body(read_fd_to_end(fd));
+			if (res.get_body().empty())
+			{
+				res.error_location("Error 500 : Internal Server Error", 500, location, server_c);
+				return (false);
+			}
 			close(fd);
 		}
 	}
@@ -121,6 +131,11 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 					return (false);
 				}
 				res.set_body(read_fd_to_end(fd));
+				if (res.get_body().empty())
+				{
+					res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+					return (false);
+				}
 				close(fd);
 			}
 			else
@@ -138,6 +153,11 @@ bool	get_request(Request &req, Server_conf &server_c, Response &res)
 				return (false);
 			}
 			res.set_body(read_fd_to_end(fd));
+			if (res.get_body().empty())
+			{
+				res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+				return (false);
+			}
 			close(fd);
 		}
 	}

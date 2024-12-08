@@ -28,11 +28,11 @@ bool	isDigits(const std::string &line)
 	return (true);
 }
 
-int	ft_atoi_s(std::string str)
+long	ft_atoi_s(std::string str)
 {
 	int	i;
 	int	sign;
-	int	res;
+	long	res;
 
 	i = 0;
 	sign = 1;
@@ -218,7 +218,7 @@ std::string read_fd_to_end(int fd)
     return result;
 }
 
-void send_check(int fd, std::string response)
+int send_check(int fd, std::string response)
 {
 	int send_status; 
 
@@ -227,7 +227,7 @@ void send_check(int fd, std::string response)
 	{
 		std::cerr << "Error of send" << std::endl;
 		close(fd);
-		return ;
+		return (1);
 	}
 	else 
 	{
@@ -235,7 +235,8 @@ void send_check(int fd, std::string response)
 		{
 			std::cerr << "Error of send" << std::endl;
 			close(fd);
-			return ;
+			return (1);
 		}
 	}
+	return (0);
 }

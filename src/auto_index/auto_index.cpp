@@ -42,8 +42,13 @@ bool	auto_index(std::string path, Location &location, Server_conf &server_c,
 	path = soloslash(path);
 	std::string body = "<html>\n<head>\n<title>Index of " + path
 		+ "</title>\n</head>\n<body>\n<h1>Index of " + path + "</h1>\n<ul>\n";
-	while ((entry = readdir(dir)) != NULL)
+	while ((entry = readdir(dir)))
 	{
+		if (entry == NULL)
+		{
+			res.error_location("Error 500 : Internal Server Error", 500, location, server_c);
+			return (false);
+		}
 		if (entry->d_name[0] == '.')
 			continue ;
 		std::cout << "entry->d_name" << path << entry->d_name << std::endl;

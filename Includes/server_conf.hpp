@@ -82,7 +82,7 @@ class Server_conf
 	std::string _redirect_fail_page;
 	std::map<short, std::string> _error_page;
 	std::vector<std::string> _method;
-	int _size_limit;
+	long _size_limit;
 	std::vector<Location> _locations;
 	std::vector<Cgi *>_activeCgis;
 	Server _server;

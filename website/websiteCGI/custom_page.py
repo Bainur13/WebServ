@@ -67,7 +67,7 @@ birth_date = form.getvalue("birthday", "2000-01-01")
 
 # Calculer le signe astrologique
 try:
-    birth_date = datetime.strptime(birth_date, "%Y-%d-%m")
+    birth_date = datetime.strptime(birth_date, "%Y-%m-%d")
     sign = get_astrological_sign(birth_date.day, birth_date.month)
 except ValueError:
     sign = "Inconnu"

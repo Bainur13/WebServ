@@ -65,6 +65,11 @@ std::string Response::error_location(std::string error, short error_code, Locati
 				return (response);
 			}
 			_body += read_fd_to_end(fd);
+			if (_body.empty())
+			{
+				error_location("Error 500 : Internal Server Error", 500, location, server_c);
+				return (response);
+			}
 			close(fd);
 			_header["Content-Length"] = get_body_size();
 			return (response);
@@ -83,6 +88,11 @@ std::string Response::error_location(std::string error, short error_code, Locati
 			return (response);
 		}
 		_body += read_fd_to_end(fd);
+		if (_body.empty())
+		{
+			error_location("Error 500 : Internal Server Error", 500, location, server_c);
+			return (response);
+		}
 		close(fd);
 	}
 	else
@@ -110,11 +120,16 @@ std::string Response::error_basic(std::string error, short error_code, Server_co
 		int fd = open(error_page.c_str(), O_RDONLY);
 		if (fd == -1)
 		{
-			error_basic("00 : Internal Server Error", 500, serv);
+			error_basic("500 : Internal Server Error", 500, serv);
 			_header["Content-Length"] = get_body_size();
 			return (response);
 		}
 		_body += read_fd_to_end(fd);
+		if (_body.empty())
+		{
+			error_basic("500 : Internal Server Error", 500, serv);
+			return (response);
+		}
 		close(fd);
 	}
 	else
@@ -173,7 +188,7 @@ void Response::set_header(std::string key, std::string value)
 }
 
 void Response::set_body(std::string body)
-{
+{	
 	_body = body;
 }
 

@@ -62,12 +62,13 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	req.parse_request(request);
 	std::cout << "Request received:" << std::endl;
 	std::cout << request << std::endl;
+	
 	if (req.get_request_body().size() > (uint)server_c.get_sizelimit())
-		res.error_basic("Error 413 : Payload Too Large", 413, server_c);
-	if (req.get_error() != "")
+			res.error_basic("Error 413 : Payload Too Large", 413, server_c);
+	else if (req.get_error() != "")
 	{
-		std::cerr << req.get_error() << std::endl;
 		res.error_basic(req.get_error(), 400, server_c);
+		std::cerr << req.get_error() << std::endl;
 	}
 	else
 	{
@@ -77,6 +78,7 @@ void	handle_client(int client_fd, Server_conf &server_c)
 			std::cout << (*it) << std::endl;
 		}
 	}
+	
 	if (res.isCgiRes() == true)
 	{
 		server_c.get_cgi()[server_c.get_cgi().size() - 1]->setClientFd(client_fd);

@@ -357,8 +357,8 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 		close(cgi->getCgiFd());
 		Response res;
 		res.error_basic("Error 500 : Internal Server Error", 500, server_c);
-		send_check(client_fd, res.final_response());
-		close(client_fd);
+		if (send_check(client_fd, res.final_response()) == -1)
+			close(client_fd);
 		return (0);
 	}
 	else
