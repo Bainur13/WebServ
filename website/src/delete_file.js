@@ -109,7 +109,7 @@ export function FetchAndDeleteFiles() {
 		return (
 			<>
 			<NavBar />
-			<main id='deleteFileMain'>
+			<main id={isLightTheme ? 'deleteFileMainLight' : 'deleteFileMain'}>
 				<p>Error : {error}</p>
 			</main>
 			<Footer />
@@ -121,7 +121,7 @@ export function FetchAndDeleteFiles() {
 		return (
 			<>
 			<NavBar />
-			<main id='deleteFileMain'>
+			<main id={isLightTheme ? 'deleteFileMainLight' : 'deleteFileMain'}>
 				<p>Loading files...</p>;
 			</main>
 			<Footer />

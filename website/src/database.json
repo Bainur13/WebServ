@@ -3,9 +3,14 @@
         "vK1337": {
             "password": "coucou",
             "session_id": "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000"
+        },
+        "salut": {
+            "password": "cava",
+            "session_id": "c63707a6-6509-42b0-856c-2fbaf2ae1e2c"
         }
     },
     "sessions": {
-        "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000": "vK1337"
+        "e6b1ea7c-8a6f-4460-9912-e5e6d76bc000": "vK1337",
+        "c63707a6-6509-42b0-856c-2fbaf2ae1e2c": "salut"
     }
 }
