@@ -49,7 +49,6 @@ export function FetchAndDeleteFiles() {
                 const htmlContent = await response.text();
                 setHtmlResponse(htmlContent);
 
-                // Analyser le HTML pour extraire les liens
                 const linksArray = extractLinksFromHTML(htmlContent);
                 setLinks(linksArray);
             } catch (err) {
@@ -93,9 +92,7 @@ export function FetchAndDeleteFiles() {
                 throw new Error('Erreur lors de la suppression du fichier.');
             }
 
-            // Rafraîchir la liste après suppression
             alert('Fichier ou dossier supprimé avec succès');
-            // Refaites le fetch des fichiers après suppression si nécessaire
             setLinks(links.filter(link => link.href !== path));
         } catch (err) {
             setError(err.message);

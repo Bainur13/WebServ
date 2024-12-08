@@ -18,11 +18,11 @@ int main(void)
     }
 
     pid = fork();
-    if (pid == 0) // Processus enfant
+    if (pid == 0)
     {
-        dup2(pipefd[1], STDOUT_FILENO); // Redirige stdout vers l'écriture du pipe
-        close(pipefd[0]);              // Ferme l'extrémité lecture dans le processus enfant
-        close(pipefd[1]);              // Ferme l'extrémité écriture après duplication
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[0]);
+        close(pipefd[1]);
 
         std::vector<const char*> argv;
         argv.push_back("/home/vda-conc/env.py");
@@ -35,32 +35,28 @@ int main(void)
             _exit(1);
         }
     }
-    else if (pid > 0) // Processus parent
+    else if (pid > 0)
     {
-        close(pipefd[1]); // Ferme l'extrémité écriture dans le parent
+        close(pipefd[1]);
 
         char buffer[1024];
         ssize_t bytesRead;
 
         std::string output;
 
-        // Lire la sortie du script depuis le pipe
         while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
         {
-            buffer[bytesRead] = '\0'; // Terminer la chaîne
-            output += buffer;        // Ajouter au résultat
+            buffer[bytesRead] = '\0';
+            output += buffer;
         }
 
-        close(pipefd[0]); // Fermer l'extrémité lecture après utilisation
+        close(pipefd[0]);
 
-        // Attendre la fin du processus enfant
         int status;
         waitpid(pid, &status, 0);
 
-        // Afficher la sortie du script
         std::cout << "Script output:\n" << output << std::endl;
 
-        // Vérifier le code de retour du processus enfant
         if (WIFEXITED(status))
         {
             int exitCode = WEXITSTATUS(status);
@@ -78,7 +74,8 @@ int main(void)
     }
 
     return 0;
-}#include <iostream>
+}
+#include <iostream>
 #include <vector>
 #include <unistd.h>
 #include <sys/types.h>
@@ -98,11 +95,11 @@ int main(void)
     }
 
     pid = fork();
-    if (pid == 0) // Processus enfant
+    if (pid == 0) 
     {
-        dup2(pipefd[1], STDOUT_FILENO); // Redirige stdout vers l'écriture du pipe
-        close(pipefd[0]);              // Ferme l'extrémité lecture dans le processus enfant
-        close(pipefd[1]);              // Ferme l'extrémité écriture après duplication
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[0]);
+        close(pipefd[1]);
 
         std::vector<const char*> argv;
         argv.push_back("/home/vda-conc/env.py");
@@ -115,32 +112,28 @@ int main(void)
             _exit(1);
         }
     }
-    else if (pid > 0) // Processus parent
+    else if (pid > 0)
     {
-        close(pipefd[1]); // Ferme l'extrémité écriture dans le parent
+        close(pipefd[1]);
 
         char buffer[1024];
         ssize_t bytesRead;
 
         std::string output;
 
-        // Lire la sortie du script depuis le pipe
         while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
         {
-            buffer[bytesRead] = '\0'; // Terminer la chaîne
-            output += buffer;        // Ajouter au résultat
+            buffer[bytesRead] = '\0';
+            output += buffer;
         }
 
-        close(pipefd[0]); // Fermer l'extrémité lecture après utilisation
+        close(pipefd[0]);
 
-        // Attendre la fin du processus enfant
         int status;
         waitpid(pid, &status, 0);
 
-        // Afficher la sortie du script
         std::cout << "Script output:\n" << output << std::endl;
 
-        // Vérifier le code de retour du processus enfant
         if (WIFEXITED(status))
         {
             int exitCode = WEXITSTATUS(status);

@@ -72,8 +72,8 @@ std::string Cgi::getPath()
 
 #include <vector>
 #include <string>
-#include <cstdlib> // Pour malloc, free, et strdup
-#include <cstring> // Pour strdup
+#include <cstdlib>
+#include <cstring>
 
 char **Cgi::build_env(Request &request)
 {
@@ -94,7 +94,6 @@ char **Cgi::build_env(Request &request)
     env.push_back("HTTP_COOKIE=" + request.get_request_header("Cookies"));
     env.push_back("HTTP_USER_AGENT=" + request.get_request_header("User-Agent"));
 
-    // Allocation de l'environnement final (+1 pour le pointeur NULL)
     char **final_env = (char **)malloc((env.size() + 1) * sizeof(char *));
     if (!final_env)
     {

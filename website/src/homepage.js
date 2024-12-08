@@ -35,10 +35,10 @@ export function MainBtn() {
     const [isActive, setIsActive] = useState(false);
     useEffect(() => {
         const timer = setTimeout(() => {
-            setIsActive(true); // met l'etat isActive a true apres un delai
-        }, 5000); // 5 secondes (durée de l'animation + délai)
+            setIsActive(true);
+        }, 5000);
 
-        return () => clearTimeout(timer); // Nettoyage du timer
+        return () => clearTimeout(timer);
     }, []);
 
     return (

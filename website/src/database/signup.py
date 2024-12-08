@@ -92,14 +92,14 @@ print("Content-Type: text/html")
 
 if created == 1:
 	print("Location:http://" + domain + ":" + port + config["redirects"].get("success form"))
-	print(cookie.output())  # Ajouter le cookie à la réponse
+	print(cookie.output())
 	print()
 	print("<html><body>")
 	print("<h1> Account created, redirecting</h1>")
 	print("</body></html>")
 else:
 	print("Location:http://" + domain + ":" + port + config["redirects"].get("fail form"))
-	print(cookie.output())  # Ajouter le cookie à la réponse
+	print(cookie.output())
 	print()
 	print("<html><body>")
 	print("<h1> Account creation failed, redirecting</h1>")
