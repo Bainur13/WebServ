@@ -85,12 +85,7 @@ void	handle_client(int client_fd, Server_conf &server_c)
 	std::string response = res.final_response();
 	std::cout << "Response sent:" << std::endl;
 	std::cout << response << std::endl;
-	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
-	{
-		std::cerr << strerror(errno) << std::endl;
-		close(client_fd);
-		return ;
-	}
+	send_check(client_fd, response);
 }
 
 void display_map(const std::map<int, bool>& my_map)

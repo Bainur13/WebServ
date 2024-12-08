@@ -190,7 +190,11 @@ bool Cgi:: executePostCgi(Request &request)
 	else if ( pid > 0)
 	{
 		std::cout << "CONTENU DU BODY" << request.get_request_body() << std::endl;
-		write(inpipe[1], request.get_request_body().c_str(), request.get_request_body().size());
+		if (write(inpipe[1], request.get_request_body().c_str(), request.get_request_body().size()) <= 0)
+		{
+			perror("Erreur writing to pipe");
+			return (1);
+		}
 		close(inpipe[0]);
 		close(inpipe[1]);
 		close(outpipe[1]);
@@ -235,12 +239,7 @@ void send_timeout_error(int client_fd, Server_conf server_c)
 
 	res.error_basic("Error 504 : Gateway Timeout", 504, server_c);
 	std::string response = res.final_response();
-	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
-	{
-		std::cerr << strerror(errno) << std::endl;
-		close(client_fd);
-		return ;
-	}
+	send_check(client_fd, response);
 }
 
 void set_res_status(std::string line, Response &res)
@@ -324,12 +323,7 @@ void send_cgi_response(int client_fd, int cgi_fd)
 
 	std::string response = res.final_response();
 
-	if (send(client_fd, response.c_str(), response.size(), 0) == -1)
-	{
-		std::cerr << strerror(errno) << std::endl;
-		close(client_fd);
-		return ;
-	}
+	send_check(client_fd, response);
 }
 
 void erase_cgi_from_vector(Server_conf& server_c, int client_fd)
@@ -357,6 +351,17 @@ int check_cgi_status(int client_fd, Server_conf &server_c)
 	if (!cgi)
 		return (1);
 	pid = waitpid(cgi->getCgiPid(), &status, WNOHANG); // Get the return of waitpid to know if CGI is done;
+	if (pid == -1) // if waitpid failed;
+	{
+		perror("waitpid");
+		close(cgi->getCgiFd());
+		Response res;
+		res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+		send_check(client_fd, res.final_response());
+		close(client_fd);
+		return (0);
+	}
+	else
 	if (pid == 0) // if he's not done;
 	{
 		timeout++;

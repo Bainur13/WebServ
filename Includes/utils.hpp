@@ -31,5 +31,6 @@ bool	unique_symbol(std::vector<std::string> line_s, std::string c);
 std::vector<std::string> split_line(const std::string &line,
 	const std::string charset);
 std::string read_fd_to_end(int fd);
+void send_check(int fd, std::string response);
 
 #endif

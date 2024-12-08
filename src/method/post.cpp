@@ -74,9 +74,16 @@ bool handle_multipart(Request &req, Response &res, Server_conf &server_c, std::s
 			res.error_basic("Error 500 : Internal Server Error", 500, server_c);
 			return (false);
 		}
-		write(file_fd, content.c_str(), content.size());
-		close(file_fd);
-		body = body.substr(end + boundary.size());
+		if (write(file_fd, content.c_str(), content.size()) <= 0)
+		{
+			res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+			return (false);
+		}
+		else
+		{
+			close(file_fd);
+			body = body.substr(end + boundary.size());
+		}
 	}
 	return (true);
 }
@@ -111,7 +118,11 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 	if (location.get_cgi())
 	{
 		location.get_cgi()->setMethod("POST");
-		location.get_cgi()->executePostCgi(req);
+		if (location.get_cgi()->executePostCgi(req) == 1)
+		{
+			res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+			return (false);
+		}
 		server_c.add_cgi(location.get_cgi()->clone());
 		res.set_cgi(location.get_cgi());
 		res.set_cgiRes(true);
@@ -135,7 +146,11 @@ bool post_request(Request &req, Server_conf &server_c, Response &res)
 			return false;
 		}
 		std::string body = req.get_request_body();
-		write(fd, body.c_str(), body.size());
+		if (write(fd, body.c_str(), body.size()) <= 0)
+		{
+			res.error_basic("Error 500 : Internal Server Error", 500, server_c);
+			return false;
+		}
 		close(fd);
 	}
 	else if (content_type == "multipart/form-data")

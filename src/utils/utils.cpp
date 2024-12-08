@@ -217,3 +217,25 @@ std::string read_fd_to_end(int fd)
     }
     return result;
 }
+
+void send_check(int fd, std::string response)
+{
+	int send_status; 
+
+	send_status = send(fd, response.c_str(), response.size(), 0);
+	if (send_status == -1)
+	{
+		std::cerr << "Error of send" << std::endl;
+		close(fd);
+		return ;
+	}
+	else 
+	{
+		if (send_status < (int)response.size())
+		{
+			std::cerr << "Error of send" << std::endl;
+			close(fd);
+			return ;
+		}
+	}
+}
